@@ -2,7 +2,6 @@ import { useNavigation } from 'expo-router';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 
-
 const WelcomeScreen = ({ }: any) => {
   const navigation: any = useNavigation();
   return (
