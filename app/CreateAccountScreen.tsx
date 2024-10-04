@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { useNavigation } from 'expo-router';
 
 const CreateAccountScreen = () => {
+  // const [accountType, setAccountType] = useState('');
   const [name, setName] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  // const [accountTypeError, setAccountTypeError] = useState('');
   const [nameError, setNameError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -23,6 +25,15 @@ const CreateAccountScreen = () => {
   const handleCreateAccount = () => {
 
     let valid = true;
+    // Account type validation
+    // if (accountType === '') {
+    //   setAccountTypeError('Please select account type.');
+    //   valid = false;
+    // } else {
+    //   setAccountTypeError('');
+    // }
+
+    
   // Name validation
   if (name ===''){
     setNameError('Name is required');
@@ -61,7 +72,7 @@ const CreateAccountScreen = () => {
   // If form is valid, proceed to login
   if (valid) {
     console.log({ name ,mobilenumber, email, password });
-    navigation.navigate('index'); 
+    navigation.navigate('CongratsScreen'); 
   } 
   };
 
@@ -71,8 +82,22 @@ const CreateAccountScreen = () => {
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
       <Text style={styles.title}>Create Account</Text>
       <Text style={styles.content}>open a account with a few details</Text>
+{/* 
+      <Picker
+        selectedValue={accountType}
+        style={styles.picker}
+        onValueChange={(itemValue) => setAccountType(itemValue)}
+      >
+        <Picker.Item label="Select Account Type" value="" />
+        <Picker.Item label="Institute" value="Institute" />
+        <Picker.Item label="Corporate" value="Corporate" />
+        <Picker.Item label="Others" value="Others" />
+      </Picker>
+      {accountTypeError ? <Text style={styles.errorText}>{accountTypeError}</Text> : null} */}
+
       <TextInput
         style={styles.input}
         placeholder="Name"
@@ -140,6 +165,15 @@ const styles = StyleSheet.create({
     fontWeight : 'medium',
     marginBottom : 30,
   },
+  // picker: {
+  //   height: 50,
+  //   width: '100%',
+  //   borderColor: '#dcdcdc',
+  //   borderWidth: 1,
+  //   borderRadius: 8,
+  //   marginBottom: 15,
+  //   justifyContent: 'center',
+  // },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',

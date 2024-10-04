@@ -1,92 +1,64 @@
-import { useNavigation } from 'expo-router';
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
 
-const WelcomeScreen = ({ }: any) => {
-  const navigation: any = useNavigation();
+
+import { useNavigation } from 'expo-router';
+import React, { useEffect } from 'react';
+import { View, Text, Image, StyleSheet } from 'react-native';
+
+const Index = () => {
+
+  const navigation: any = useNavigation();  
+  useEffect(() => {
+    // Navigate to another screen after 10 seconds
+    const timer = setTimeout(() => {
+      navigation.navigate('FirstScreen'); // Adjust navigation target
+    }, 5000); // 10 seconds
+
+    return () => clearTimeout(timer); // Cleanup the timer on unmount
+  }, [navigation]);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
-      <View style={styles.header} />
-      <View style={styles.body}>
-        <Text style={styles.welcomeText}>Welcome to Loanguru</Text>
-        <Text style={styles.subText}>Your trusted partner for all loan needs.</Text>
-      </View>
-      <View style={styles.footer}>
-        <TouchableOpacity 
-          style={styles.createAccountButton} 
-          onPress={() => navigation.navigate('CreateAccountScreen')} 
-        >
-          <Text style={styles.createAccountText}>CREATE YOUR FREE ACCOUNT</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-        style={styles.loginButton}
-        onPress={() => navigation.navigate('LoginScreen')} 
-        >
-          <Text style={styles.loginText}>LOG INTO YOUR ACCOUNT</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      {/* Logo */}
+      <Image
+        source={require('../assets/images/loan.jpg')} // Adjust image path
+        style={styles.logo}
+        resizeMode="contain"
+      />
+      
+      {/* Secure Icon */}
+      <Image
+        source={require('../assets/images/secure.png')} // Adjust image path
+        style={styles.icon}
+        resizeMode="contain"
+      />
+      
+      {/* 100% Secure App Text */}
+      <Text style={styles.text}>100% SECURE APP</Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff', // White background
   },
-  header: {
+  logo: {
+    width: 200,
+    height: 100,
+    marginBottom: 20, // Add some space between logo and the icon
+  },
+  icon: {
+    width: 50,
     height: 50,
-    backgroundColor: '#6C2EB9', // Purple top bar
+    marginBottom: 10, // Space between icon and text
   },
-  body: {
-    flex: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#000',
-    marginBottom: 10,
-  },
-  subText: {
+  text: {
     fontSize: 16,
-    color: '#777',
-  },
-  footer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  createAccountButton: {
-    backgroundColor: '#fff',
-    borderColor: '#000',
-    borderWidth: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 5,
-    marginBottom: 20,
-  },
-  createAccountText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  loginButton: {
-    backgroundColor: '#fff',
-    borderColor: '#000',
-    borderWidth: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 5,
-  },
-  loginText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#000', // Black color for text
   },
 });
 
-export default WelcomeScreen;
+export default Index;

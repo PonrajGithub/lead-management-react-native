@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, TextInput, TouchableOpacity,SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { useNavigation } from 'expo-router';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +15,7 @@ const LoginScreen = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
+
 
   const handleLogin = () => {
     let valid = true;
@@ -41,16 +42,21 @@ const LoginScreen = () => {
     // If form is valid, proceed to login
     if (valid) {
       console.log({ email, password });
-      navigation.navigate('index'); // Navigate to 'index' or another valid screen
+      navigation.navigate('DashboardScreen'); 
     }
   };
-
+  
+  const redirectToForgotPassword = () =>{
+    navigation.navigate('ForgotPasswordScreen')
+  }
   const redirectToCreateAccount = () => {
     navigation.navigate('CreateAccountScreen')
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+      
       <Text style={styles.title}>Sign into your Account</Text>
       <Text style={styles.content}>login into your account </Text>
       
@@ -70,17 +76,23 @@ const LoginScreen = () => {
         onChangeText={setPassword}
       />
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-
+      
+      <TouchableOpacity onPress={redirectToForgotPassword}>
+      <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+      </TouchableOpacity>
+      
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}> LOG IN</Text>
       </TouchableOpacity>
+
+
       <Text style={styles.singin}>
       Do you not have a account?{' '}
         <Text style={styles.link} onPress={redirectToCreateAccount}>
           Sign up here
         </Text>
         </Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -91,6 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+  },
+  header: {
+    height: 50,
+    backgroundColor: '#6C2EB9',
   },
   title: {
     fontSize: 24,
@@ -111,11 +127,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginBottom: 15,
   },
+  forgotPasswordText: {
+      color: '#007bff',
+      marginBottom: 20,
+      textAlign: 'right',
+    },
   button: {
     backgroundColor: '#0061F0',
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
+    marginTop: 100,
   },
   buttonText: {
     color: '#fff',
