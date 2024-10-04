@@ -25,23 +25,26 @@ const SecondScreen = ({ }: any) => {
 
       {/* Pagination and buttons */}
       <View style={styles.footer}>
-        {/* Pagination dots */}
-        <View style={styles.pagination}>
-          <View style={[styles.dot, styles.activeDot]} />
-          <View style={styles.dot} />
-          <View style={styles.dot} />
-        </View>
-
-        {/* Next button */}
-        <TouchableOpacity style={styles.nextButton} onPress={() => navigation.navigate('ThirdScreen')}>
-          <Text style={styles.nextButtonText}>NEXT</Text>
-        </TouchableOpacity>
-
-        {/* Skip option */}
-        <TouchableOpacity onPress={() => navigation.navigate('ThirdScreen')}>
-          <Text style={styles.skipText}>SKIP</Text>
-        </TouchableOpacity>
+      {/* Pagination dots */}
+      <View style={styles.pagination}>
+        <View style={styles.dot} />
+        <View style={[styles.dot, styles.activeDot]} />
+        <View style={styles.dot} />
       </View>
+
+      {/* Next button */}
+      <TouchableOpacity
+        style={styles.nextButton}
+        onPress={() => navigation.navigate('ThirdScreen')}
+      >
+        <Text style={styles.nextButtonText}>NEXT</Text>
+      </TouchableOpacity>
+
+      {/* Skip option */}
+      <TouchableOpacity onPress={() => navigation.navigate('ThirdScreen')}>
+        <Text style={styles.skipText}>SKIP</Text>
+      </TouchableOpacity>
+    </View>
     </View>
   );
 };
@@ -74,41 +77,50 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   footer: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    marginBottom: 40,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 50,
+    backgroundColor: '#fff',
+    marginTop:'auto',
+    marginBottom:30,
   },
   pagination: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 20,
+    alignItems: 'center',
+    
   },
   dot: {
-    width: 10,
-    height: 10,
-    borderRadius: 5,
-    backgroundColor: '#ccc',
-    marginHorizontal: 5,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#C4C4C4',
+    marginHorizontal: 4,
   },
   activeDot: {
-    backgroundColor: '#000',
+    width: 16,
+    height: 9,
+    borderRadius: 4,
+    backgroundColor: 'black', // Active dot color
   },
   nextButton: {
-    backgroundColor: '#2979FF',
-    paddingVertical: 15,
-    marginHorizontal: 40,
-    borderRadius: 30,
-    alignItems: 'center',
-    marginBottom: 20,
+    backgroundColor: '#007AFF', // Button blue color
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   nextButtonText: {
     color: '#fff',
-    fontSize: 16,
     fontWeight: 'bold',
+    fontSize: 16,
   },
   skipText: {
-    textAlign: 'center',
-    color: '#2979FF',
+    color: 'black', // Grey color for skip text
     fontSize: 16,
   },
 });
