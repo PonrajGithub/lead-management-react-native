@@ -11,7 +11,7 @@ const Index = () => {
     // Navigate to another screen after 10 seconds
     const timer = setTimeout(() => {
       navigation.navigate('FirstScreen'); // Adjust navigation target
-    }, 5000); // 10 seconds
+    }, 5000); // 5 seconds
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, [navigation]);

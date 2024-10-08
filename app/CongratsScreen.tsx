@@ -29,7 +29,8 @@ const CongratsScreen = () =>  {
         
         {/* Description */}
         <Text style={styles.description}>
-          We’re excited to have you onboard. Now you can explore tailored loan options and enjoy seamless financial support. Let’s get started on achieving your goals!
+          We’re excited to have you onboard. Now you can explore tailored loan options and
+           enjoy seamless financial support. Let’s get started on achieving your goals!
         </Text>
       </View>
     </SafeAreaView>

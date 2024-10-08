@@ -1,9 +1,28 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+// import * as Font from 'expo-font';
+// import AppLoading from 'expo-app-loading';
 
 const FirstScreen = ({ }: any) => {
     const navigation: any = useNavigation();
+    // const [fontsLoaded, setFontsLoaded] = useState(false);
+
+    // const loadFonts = async () => {
+    //   await Font.loadAsync({
+    //     'Nunito-Bold': require('../assets/fonts/Nunito-Bold.ttf'), // make sure to download the font and add it to your assets folder
+    //     'Nunito-Regular': require('../assets/fonts/Nunito-Regular.ttf'),
+    //   });
+    //   setFontsLoaded(true);
+    // };
+  
+    // useEffect(() => {
+    //   loadFonts();
+    // }, []);
+  
+    // if (!fontsLoaded) {
+    //   return <AppLoading />;
+    // }
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
@@ -60,35 +79,37 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 250,
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 200,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24, 
+    fontWeight: '600', 
+    // fontFamily: 'Helvetica', 
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 60,
+    lineHeight: 32, 
   },
   description: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 16,
-    color: '#7a7a7a',
+    // fontFamily: 'Arial', 
+    color: '#555', 
     marginHorizontal: 40,
     marginTop: 10,
+    lineHeight: 24, 
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // paddingVertical:250,
-    marginTop:'auto',
-    marginBottom:30,
+    marginTop: 'auto',
+    marginBottom: 30,
     paddingHorizontal: 50,
     backgroundColor: '#fff',
   },
   pagination: {
     flexDirection: 'row',
     alignItems: 'center',
-    
   },
   dot: {
     width: 8,
@@ -120,9 +141,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   skipText: {
-    color: 'black', // Grey color for skip text
+    color: '#555', // Grey color for skip text
     fontSize: 16,
   },
 });
+
 
 export default FirstScreen;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+
 const SecondScreen = ({ }: any) => {
     const navigation: any = useNavigation();
   return (
@@ -10,7 +11,7 @@ const SecondScreen = ({ }: any) => {
 
       {/* Image */}
       <Image
-        source={require('../assets/images/second.webp')} // Replace with your image path
+        source={require('../assets/images/second.webp')} 
         style={styles.image}
         resizeMode="contain"
       />
@@ -61,20 +62,24 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 250,
     alignSelf: 'center',
-    marginTop: 100,
+    marginTop: 200,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24, 
+    fontWeight: '600', 
+    // fontFamily: 'Helvetica', 
     textAlign: 'center',
-    marginTop: 20,
+    marginTop: 50,
+    lineHeight: 32, 
   },
   description: {
-    textAlign: 'center',
+    textAlign: 'left',
     fontSize: 16,
-    color: '#7a7a7a',
-    marginHorizontal: 40,
+    // fontFamily: 'Arial', 
+    color: '#555', 
+    marginHorizontal: 50,
     marginTop: 10,
+    lineHeight: 24, 
   },
   footer: {
     flexDirection: 'row',

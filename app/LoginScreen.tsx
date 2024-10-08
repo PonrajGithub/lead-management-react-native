@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity,SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity,SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 
 const LoginScreen = () => {
@@ -54,12 +54,14 @@ const LoginScreen = () => {
   }
 
   return (
+    <ScrollView>
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
       
       <Text style={styles.title}>Sign into your Account</Text>
       <Text style={styles.content}>login into your account </Text>
       
+      <Text style={styles.text}>Email ID</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -68,6 +70,8 @@ const LoginScreen = () => {
         onChangeText={setEmail}
       />
        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      
+       <Text style={styles.text}>Password</Text>
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -93,6 +97,7 @@ const LoginScreen = () => {
         </Text>
         </Text>
     </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -112,18 +117,22 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    marginTop:120,
     textAlign: 'center',
     color : '#0061F0',
   },
   content: {
     fontSize : 15,
     fontWeight : 'medium',
-    marginBottom : 30,
+    marginBottom : 150,
+  },
+  text: {
+    textAlign:'left',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
     marginBottom: 15,
   },
@@ -155,6 +164,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    textAlign:'right',
     marginBottom: 10,
     fontSize: 13,
   }

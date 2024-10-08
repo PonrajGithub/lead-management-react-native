@@ -39,12 +39,28 @@ const InstituteScreen = () => {
       setNameError('');
     }
 
+    // Spouse name
+    if(spousename === ''){
+      setSpouseNameError('Spouse Name is required');
+      valid = false;
+    } else {
+      setSpouseNameError('');
+    }
+
     // Mobile Number validation
     if (mobilenumber === '') {
       setMobileNumberError('Mobile number is required.');
       valid = false;
     } else {
       setMobileNumberError('');
+    }
+
+    // DOB
+    if( dob === '') {
+      setDOBError('DOB is required.');
+      valid = false;
+    } else{
+      setDOBError('');
     }
 
     // Email validation
@@ -191,7 +207,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
     marginBottom: 15,
   },
@@ -219,6 +235,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    textAlign:'right',
     marginBottom: 10,
     fontSize: 13,
   },

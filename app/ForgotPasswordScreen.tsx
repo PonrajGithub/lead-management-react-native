@@ -3,38 +3,41 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 
 const ForgotPasswordScreen = () => {
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [mobilenumber, setMobileNumber] = useState('');
+  const [mobilenumberError, setMobileNumberError] = useState('');
   const navigation: any = useNavigation();
 
-  const handleResetPassword = () => {  
-    if (!email) {
-      setEmailError('Email is required');
-    } else {
-      setEmailError('');
-      console.log('Password reset email sent to:', email);
-      navigation.navigate('LoginScreen');
-    }
+  const redirectToLogin = () => {
+    navigation.navigate('LoginScreen');
   };
+ 
 
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
       <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.content}>Enter your email to reset your password</Text>
-
+      <Text style={styles.content}>please Enter your phone number  to reset your password</Text>
+      
+      <Text style={styles.text}>Mobile Number</Text>
       <TextInput
         style={styles.input}
-        placeholder="Email"
-        value={email}
-        keyboardType="email-address"
-        onChangeText={setEmail}
+        placeholder="Mobile Number"
+        value={mobilenumber}
+        keyboardType="phone-pad"
+        onChangeText={setMobileNumber}
       />
-      {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleResetPassword}>
+      <TouchableOpacity style={styles.button} >
         <Text style={styles.buttonText}>Reset Password</Text>
       </TouchableOpacity>
+
+      <Text style={styles.singin}>
+        Do you already have an account?{' '}
+        <Text style={styles.link} onPress={redirectToLogin}>
+          Sign in here
+        </Text>
+        </Text>
     </View>
   );
 };
@@ -49,10 +52,16 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color : '#0061F0',
+  },
+  text:{
+    marginBottom:10,
   },
   content: {
     fontSize: 16,
-    marginBottom: 20,
+    marginBottom: 100,
+    textAlign:'left',
+    lineHeight:30,
   },
   input: {
     borderWidth: 1,
@@ -74,6 +83,17 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  singin: {
+    fontSize: 15,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginTop: 15,
+  },
+  link: {
+    color: '#0061F0',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
 });
 

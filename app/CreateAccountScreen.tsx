@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
+    letterSpacing:2,
     fontSize: 24,
     fontWeight: 'bold',
     marginTop: 40,
@@ -77,7 +78,7 @@ const styles = StyleSheet.create({
   content: {
     fontSize : 15,
     fontWeight : 'medium',
-    marginTop:30,
+    marginTop:20,
   },
   picker: {
     borderWidth: 1,

@@ -6,78 +6,156 @@ import { useNavigation } from 'expo-router';
 const DashboardScreen = () => {
     const navigation: any = useNavigation();
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView >
       {/* Header Section */}
       <View style={styles.header}>
         <Icon name="person-outline" type="material" color="#fff" size={30} />
         <View style={styles.userInfo}>
           <Image
-            source={{ uri: 'https://upload.wikimedia.org/wikipedia/en/thumb/4/41/Flag_of_India.svg/1200px-Flag_of_India.svg.png' }}
+            source={require('../assets/images/flag.png')}
             style={styles.flag}
           />
           <Text style={styles.username}>User Name</Text>
         </View>
-        <Icon name="wifi" type="material" color="#fff" size={30} />
+        <Icon name="circle-question" type="material" color="#fff" size={30} />
       </View>
 
       {/* Banner Section */}
       <Image
-        source={{ uri: 'https://via.placeholder.com/150x100' }}
+        source={require('../assets/images/banner.jpg')} 
         style={styles.banner}
       />
 
       {/* Loan Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Loan</Text>
-        <View style={styles.row}>
-          {['Unsecured', 'Secured', 'SME\'s', 'OD/CC', 'Project', 'Education', 'Property', 'Car'].map((item, index) => (
-            <TouchableOpacity key={index} style={styles.iconButton}>
-              <Icon name="account-balance" type="material" color="#fff" size={30} />
-              <Text style={styles.iconLabel}>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
+<View style={styles.sectionloan}>
+  <Text style={styles.sectionTitle}>Loan</Text>
+  <View style={styles.row}>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Unsecured</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Secured</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>SME's</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>OD/CC</Text>
+      </TouchableOpacity>
+  </View>
+
+  <View style={styles.row}>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Project</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Education</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Property</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Car</Text>
+      </TouchableOpacity>
+  </View>
+</View>
+
+
+<View style={styles.sectionlink}>
+  <Text style={styles.sectionTitle}>Quick Link</Text>
+  <View style={styles.row}>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Unsecured</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Secured</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>SME's</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>OD/CC</Text>
+      </TouchableOpacity>
+  </View>
+
+  <View style={styles.row}>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Project</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Education</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Property</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Car</Text>
+      </TouchableOpacity>
+  </View>
+</View>
+    <View style={styles.member}>
+    <Text>Total Members:4212</Text>
+    </View>
+
+    <View style ={styles.job}>
+      <View style ={styles.row}>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Car</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Car</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.iconButton}>
+        <Icon name="account-balance" type="material" color="#fff" size={30} />
+        <Text style={styles.iconLabel}>Car</Text>
+      </TouchableOpacity>
       </View>
 
-      {/* Quick Link Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Quick Link</Text>
-        <View style={styles.row}>
-          {['Calculator', 'Job', 'Women Empowerment', 'Link', 'Link', 'Link'].map((item, index) => (
-            <TouchableOpacity key={index} style={styles.iconButton}>
-              <Icon name="link" type="material" color="#fff" size={30} />
-              <Text style={styles.iconLabel}>{item}</Text>
-            </TouchableOpacity>
-          ))}
-        </View>
-      </View>
+    </View>
+
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F2F2F2',
-  },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#6200EE',
-    paddingHorizontal: 20,
+    backgroundColor: '#6C2EB9',
     paddingVertical: 10,
-  },
+    paddingHorizontal: 15,
+    height: 50, // Set a fixed height
+    marginTop:50,
+    zIndex: 1, // Bring header to front
+  },  
   userInfo: {
     flexDirection: 'row',
-    alignItems: 'center',
+    // paddingRight:160,
   },
   flag: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    marginRight: 10,
-  },
+    },
   username: {
     color: '#fff',
     fontSize: 16,
@@ -85,14 +163,36 @@ const styles = StyleSheet.create({
   banner: {
     width: '100%',
     height: 150,
-    marginVertical: 10,
+    marginVertical:15,
   },
-  section: {
-    marginHorizontal: 10,
-    marginVertical: 20,
+  sectionloan: {
+    padding: 10,
+    height:'25%',
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius:15,
+    backgroundColor:'#fff',
+  },
+  sectionlink: {
+    marginTop:10,
+    marginBottom:10,
+    padding: 10,
+    height:'25%',
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius:15,
+    backgroundColor:'#fff',
+  },
+  job:{
+    padding: 10,
+    height:'20%',
+    borderWidth: 1,
+    borderColor: '#555',
+    borderRadius:15,
+    backgroundColor:'#fff',
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
@@ -102,20 +202,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   iconButton: {
-    backgroundColor: '#6200EE',
-    borderRadius: 10,
-    width: '30%',
-    height: 80,
-    justifyContent: 'center',
+    width: '16%',
+    height: '40%',  
+    padding: 10,
     alignItems: 'center',
-    marginBottom: 10,
+    backgroundColor: '#6A1B9A',
+    borderRadius: 10,
+    marginVertical: 10,
   },
   iconLabel: {
-    color: '#fff',
-    marginTop: 5,
-    textAlign: 'center',
-    fontSize: 12,
+    marginTop: 10,
+    color: 'black',
   },
+  member:{
+    marginBottom:10,
+    width:'100%',
+    height:40,
+    backgroundColor:'#3e97c9',
+  }
 });
 
 export default DashboardScreen;

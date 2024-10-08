@@ -37,17 +37,17 @@ const CorporateScreen = () => {
   }
   // Company
   if (company ===''){
-    setNameError('Company Name is required');
+    setCompanyError('Company Name is required');
     valid = false;
   }  else{
-    setNameError('');
+    setCompanyError('');
   }
    // Designation
   if (designation ===''){
-    setNameError('Designation is required');
+    setDesignationError('Designation is required');
     valid = false;
   }  else{
-    setNameError('');
+    setDesignationError('');
   }
   // MobileNumber validation
   if (mobilenumber === ''){
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
+    padding: 8,
     borderRadius: 5,
     marginBottom: 15,
   },
@@ -195,6 +195,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
+    textAlign:'right',
     marginBottom: 10,
     fontSize: 13,
   }
