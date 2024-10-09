@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, Text, TextInput, TouchableOpacity,SafeAreaView, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import Index from '.';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -50,7 +51,7 @@ const LoginScreen = () => {
     navigation.navigate('ForgotPasswordScreen')
   }
   const redirectToCreateAccount = () => {
-    navigation.navigate('CreateAccountScreen')
+    navigation.navigate('CreateAccountScreen', {index:0})
   }
 
   return (

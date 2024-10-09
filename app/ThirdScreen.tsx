@@ -64,35 +64,34 @@ const styles = StyleSheet.create({
     marginTop: 200,
   },
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    fontSize: 24, 
+    fontWeight: '600', 
+    // fontFamily: 'Helvetica', 
     textAlign: 'center',
-    marginTop: 50,
-    lineHeight: 32,
+    marginTop: 60,
+    lineHeight: 32, 
   },
   description: {
     textAlign: 'left',
     fontSize: 16,
-    color: '#555',
-    marginHorizontal: 50,
+    // fontFamily: 'Arial', 
+    color: '#555', 
+    marginHorizontal: 40,
     marginTop: 10,
-    lineHeight:24,
+    lineHeight: 24, 
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    // paddingVertical:'auto',
-    marginTop:'auto',
-    marginBottom:30,
+    marginTop: 'auto',
+    marginBottom: 30,
     paddingHorizontal: 50,
     backgroundColor: '#fff',
-    
   },
   pagination: {
     flexDirection: 'row',
     alignItems: 'center',
-    
   },
   dot: {
     width: 8,
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   skipText: {
-    color: 'black', // Grey color for skip text
+    color: '#555', // Grey color for skip text
     fontSize: 16,
   },
 });

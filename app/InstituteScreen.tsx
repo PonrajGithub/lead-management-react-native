@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import Index from '.';
 
 const InstituteScreen = () => {
   const [name, setName] = useState('');
@@ -106,7 +107,7 @@ const InstituteScreen = () => {
   };
 
   const redirectToLogin = () => {
-    navigation.navigate('LoginScreen');
+    navigation.navigate('LoginScreen', {Index:0});
   };
 
   return (
@@ -182,12 +183,12 @@ const InstituteScreen = () => {
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}>CREATE INSTITUTE ACCOUNT</Text>
+        <Text style={styles.buttonText}> CREATE INSTITUTE ACCOUNT </Text>
       </TouchableOpacity>
 
       <Text style={styles.singin}>
-        Do you already have an account?{' '}
-        <Text style={styles.link} onPress={redirectToLogin}>
+      Do you already have an account?{' '}
+        <Text style={styles.link} onPress={redirectToLogin }>
           Sign in here
         </Text>
       </Text>
@@ -203,6 +204,7 @@ const styles = StyleSheet.create({
   },
   text:{
    textAlign:'left',
+   marginBottom:5,
   },
   input: {
     borderWidth: 1,
@@ -236,7 +238,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign:'right',
-    marginBottom: 10,
+    marginBottom:5,
     fontSize: 13,
   },
 });

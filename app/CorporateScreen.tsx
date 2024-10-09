@@ -164,7 +164,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text:{
-    textAlign:'left',
+   textAlign:'left',
+   marginBottom:5,
   },
   input: {
     borderWidth: 1,
@@ -184,21 +185,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  singin :{
-    fontSize : 15,
-    fontWeight : 'medium',
+  singin: {
+    fontSize: 15,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginTop: 15,
   },
-  link :{
-    color: '#0061F0', 
+  link: {
+    color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
   errorText: {
     color: 'red',
     textAlign:'right',
-    marginBottom: 10,
+    marginBottom:5,
     fontSize: 13,
-  }
+  },
 });
 
 export default CorporateScreen;

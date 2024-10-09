@@ -67,9 +67,8 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24, 
     fontWeight: '600', 
-    // fontFamily: 'Helvetica', 
     textAlign: 'center',
-    marginTop: 50,
+    marginTop: 60,
     lineHeight: 32, 
   },
   description: {
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     // fontFamily: 'Arial', 
     color: '#555', 
-    marginHorizontal: 50,
+    marginHorizontal: 40,
     marginTop: 10,
     lineHeight: 24, 
   },
@@ -85,15 +84,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginTop: 'auto',
+    marginBottom: 30,
     paddingHorizontal: 50,
     backgroundColor: '#fff',
-    marginTop:'auto',
-    marginBottom:30,
   },
   pagination: {
     flexDirection: 'row',
     alignItems: 'center',
-    
   },
   dot: {
     width: 8,
@@ -125,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   skipText: {
-    color: 'black', // Grey color for skip text
+    color: '#555', // Grey color for skip text
     fontSize: 16,
   },
 });
