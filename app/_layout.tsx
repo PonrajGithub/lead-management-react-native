@@ -15,7 +15,10 @@ export default function RootLayout() {
         <Stack.Screen name="OtherScreen" options={{ headerShown: false}}/>
         <Stack.Screen name="LoginScreen" options={{ headerShown: false }} />
         <Stack.Screen name="CongratsScreen" options={{ headerShown : false}} />
-        <Stack.Screen name="DashboardScreen" options={{ headerShown : false}} />
+        <Stack.Screen name="DashboardScreen"  options={{ headerShown : false}} />
+        <Stack.Screen name="Header" options={{ headerShown : false}} />
+        <Stack.Screen name="SliderPage" options={{ headerShown : false}}/>
+        <Stack.Screen name="IconGrid" options={{ headerShown: false}}/>
         <Stack.Screen name="ForgotPasswordScreen" options={{ headerShown: false}} />
       </Stack>
   );

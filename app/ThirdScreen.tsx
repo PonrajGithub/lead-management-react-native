@@ -6,7 +6,7 @@ const ThirdScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
-      <StatusBar backgroundColor="#6A1B9A" barStyle="light-content" />
+      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
 
       {/* Image */}
       <Image
@@ -35,13 +35,21 @@ const ThirdScreen = ({ }: any) => {
       {/* Next button */}
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={() => navigation.navigate('WelcomeScreen')}
-      >
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'WelcomeScreen' }],
+          })}>
+      
         <Text style={styles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
 
       {/* Skip option */}
-      <TouchableOpacity onPress={() => navigation.navigate('WelcomeScreen')}>
+      <TouchableOpacity onPress={() => 
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'WelcomeScreen' }],
+        })}>
         <Text style={styles.skipText}>SKIP</Text>
       </TouchableOpacity>
     </View>
@@ -55,7 +63,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#6A1B9A', // Purple background for header
+    backgroundColor: '#6A1B9B', // Purple background for header
   },
   image: {
     width: '80%',

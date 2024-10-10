@@ -55,7 +55,7 @@ const LoginScreen = () => {
   }
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
       
@@ -105,6 +105,9 @@ const LoginScreen = () => {
 // styles...
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+  },
   container: {
     flex: 1,
     padding: 20,
@@ -127,8 +130,9 @@ const styles = StyleSheet.create({
     fontWeight : 'medium',
     marginBottom : 150,
   },
-  text: {
-    textAlign:'left',
+  text:{
+   textAlign:'left',
+   marginBottom:5,
   },
   input: {
     borderWidth: 1,
@@ -138,37 +142,39 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   forgotPasswordText: {
-      color: '#007bff',
-      marginBottom: 20,
-      textAlign: 'right',
-    },
+    color: '#007bff',
+    marginBottom: 20,
+    textAlign: 'right',
+  },
   button: {
     backgroundColor: '#0061F0',
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 100,
+    marginTop:100,
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  singin :{
-    fontSize : 15,
-    fontWeight : 'medium',
+  singin: {
+    fontSize: 15,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginTop: 15,
   },
-  link :{
-    color: '#0061F0', 
+  link: {
+    color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
   },
   errorText: {
     color: 'red',
     textAlign:'right',
-    marginBottom: 10,
+    marginBottom:5,
     fontSize: 13,
-  }
+  },
 });
 
 export default LoginScreen;

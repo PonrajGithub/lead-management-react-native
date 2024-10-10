@@ -7,6 +7,8 @@ const WelcomeScreen = ({ }: any) => {
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
 
+ 
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
   },
   header: {
     height: 50,
-    backgroundColor: '#6C2EB9', // Purple top bar
+    backgroundColor: '#6A1B9A', // Purple top bar
   },
   body: {
     flex: 3,

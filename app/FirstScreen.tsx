@@ -26,7 +26,7 @@ const FirstScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
-      <StatusBar backgroundColor="#6A1B9A" barStyle="light-content" />
+      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
 
       {/* Image */}
       <Image
@@ -59,7 +59,11 @@ const FirstScreen = ({ }: any) => {
       </TouchableOpacity>
 
       {/* Skip option */}
-      <TouchableOpacity onPress={() => navigation.navigate('SecondScreen')}>
+      <TouchableOpacity onPress={() => 
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'WelcomeScreen' }],
+        })}>
         <Text style={styles.skipText}>SKIP</Text>
       </TouchableOpacity>
     </View>
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    backgroundColor: '#6A1B9A', // Purple background for header
+    backgroundColor: '#6A1B9B', // Purple background for header
   },
   image: {
     width: '80%',
