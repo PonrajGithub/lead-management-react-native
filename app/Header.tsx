@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between', 
+        marginBottom:20,
     },
     title: {
         color: '#FFFF',

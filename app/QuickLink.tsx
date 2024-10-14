@@ -3,17 +3,17 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native
 import { FontAwesome5 } from '@expo/vector-icons'; // Assuming you're using expo for icons
 
 const data = [
-  { id: '1', title: 'Unsecured' },
-  { id: '2', title: 'Secured' },
-  { id: '3', title: 'SME"s' },
+  { id: '1', title: 'Calculator' },
+  { id: '2', title: 'Job' },
+  { id: '3', title: 'Women Empowerment' },
   { id: '4', title: 'Link' },
-  { id: '5', title: 'OD/CC' },
-  { id: '6', title: 'Education' },
-  { id: '7', title: 'Property' },
-  { id: '8', title: 'Car' },
+  { id: '5', title: 'Link' },
+  { id: '6', title: 'Link' },
+  { id: '7', title: 'Link' },
+  { id: '8', title: 'Link' },
 ];
 
-const Loan = () => {
+const QuickLink = () => {
   const renderItem = ({ item }: { item: { id: string; title: string } }) => (
     <TouchableOpacity style={styles.item}>
       <View style={styles.iconContainer}>
@@ -25,7 +25,7 @@ const Loan = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Loan</Text>
+      <Text style={styles.heading}>Quick Link</Text>
       <FlatList
         data={data}
         renderItem={renderItem}
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginLeft:30,
+    marginLeft:20,
     marginTop:20,
     marginBottom: 30,
   },
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Loan;
+export default QuickLink;

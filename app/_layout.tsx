@@ -17,8 +17,12 @@ export default function RootLayout() {
         <Stack.Screen name="CongratsScreen" options={{ headerShown : false}} />
         <Stack.Screen name="DashboardScreen"  options={{ headerShown : false}} />
         <Stack.Screen name="Header" options={{ headerShown : false}} />
-        <Stack.Screen name="SliderPage" options={{ headerShown : false}}/>
-        <Stack.Screen name="IconGrid" options={{ headerShown: false}}/>
+        <Stack.Screen name="ParallaxCarousel" options={{ headerShown : false}}/>
+        <Stack.Screen name="Loan" options={{ headerShown: false}}/>
+        <Stack.Screen name="QuickLink" options={{ headerShown: false}}/>
+        <Stack.Screen name="TotalMember" options={{ headerShown: false}}/>
+        <Stack.Screen name="Job" options={{ headerShown: false}}/>
+        <Stack.Screen name="About" options={{ headerShown: false}}/>
         <Stack.Screen name="ForgotPasswordScreen" options={{ headerShown: false}} />
       </Stack>
   );

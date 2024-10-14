@@ -30,7 +30,7 @@ const CreateAccountScreen = () => {
         <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.content}>Open an account with a few details</Text>
-
+        {/* <Text style={styles.text}>Select User Type</Text> */}
         <DropDownPicker
           open={open}
           value={accountType}
@@ -82,6 +82,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginTop: 20,
   },
+  // text:{
+  //   textAlign:'left',
+  //   // marginTop:15,
+  //  },
   picker: {
     backgroundColor: '#fff',
     height: 50,
