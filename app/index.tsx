@@ -20,7 +20,7 @@ const Index = () => {
     <View style={styles.container}>
       {/* Logo */}
       <Image
-        source={require('../assets/images/loan.jpg')} // Adjust image path
+        source={require('../assets/images/loanguru.png')} // Adjust image path
         style={styles.logo}
         resizeMode="contain"
       />
@@ -45,19 +45,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#fff', // White background
   },
-  logo: {
-    width: 200,
-    height: 100,
-    marginBottom: 20, // Add some space between logo and the icon
-  },
+   logo: {
+    //  width: ,
+    //  height: 100,
+     marginTop:'50%',
+   },
   icon: {
     width: 50,
     height: 50,
-    marginBottom: 10, // Space between icon and text
+    marginBottom: 10, 
+    marginTop:'80%',
   },
   text: {
     fontSize: 16,
-    color: '#000', // Black color for text
+    color: '#000',
+    
   },
 });
 
