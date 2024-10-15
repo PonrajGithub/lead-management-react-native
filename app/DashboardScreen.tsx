@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import Header from './Header'; 
-import ParallaxCarousel from './ParallaxCarousel';
+// import ParallaxCarousel from './ParallaxCarousel';
 import Loan from './Loan';
 import QuickLink from './QuickLink';
 import About from './About';
@@ -10,12 +10,15 @@ import Job from './Job';
 
 const DashboardScreen = () => {
     return (
-        <ScrollView>
-                <View style={styles.header} >
+        <>
+        {/* <View style={styles.header} > */}
                     <Header />
-                </View>
+                {/* </View> */}
+        
+        <ScrollView>
+                
             <View style={styles.container}>
-                 <ParallaxCarousel />
+                 {/* <ParallaxCarousel /> */}
                 <Loan />
                 <QuickLink />
                 <TotalMember />
@@ -23,6 +26,7 @@ const DashboardScreen = () => {
                 <About />
             </View>
         </ScrollView>
+        </>
     );
 };
 
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10, // Applies padding to other components
     },
     header:{
-        backgroundColor: '#e5d0ff',
+        // backgroundColor: '#e5d0ff',
     }
    
 });
