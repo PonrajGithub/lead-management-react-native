@@ -1,28 +1,37 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
-// import * as Font from 'expo-font';
-// import AppLoading from 'expo-app-loading';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const FirstScreen = ({ }: any) => {
     const navigation: any = useNavigation();
-    // const [fontsLoaded, setFontsLoaded] = useState(false);
 
-    // const loadFonts = async () => {
-    //   await Font.loadAsync({
-    //     'Nunito-Bold': require('../assets/fonts/Nunito-Bold.ttf'), // make sure to download the font and add it to your assets folder
-    //     'Nunito-Regular': require('../assets/fonts/Nunito-Regular.ttf'),
-    //   });
-    //   setFontsLoaded(true);
-    // };
-  
-    // useEffect(() => {
-    //   loadFonts();
-    // }, []);
-  
-    // if (!fontsLoaded) {
-    //   return <AppLoading />;
-    // }
+    useEffect(  () => {
+    const checkUserData = async () => {
+      try {
+        const storedData = await AsyncStorage.getItem('@storage_user_data');
+        if (storedData !== null) {
+          const parsedData = JSON.parse(storedData);
+
+          const token = parsedData?.token; // Assuming you are storing a token
+          console.log(token);
+          if (token) {
+            return navigation.reset({
+              index: 0,
+              routes: [{ name: 'DashboardScreen' }],
+            });
+             
+          }
+        }
+      } catch (error) {
+        console.error('Error reading AsyncStorage:', error);
+      }
+    };
+
+    checkUserData();
+  })
+    
   return (
     <View style={styles.container}>
       {/* Status bar and header */}

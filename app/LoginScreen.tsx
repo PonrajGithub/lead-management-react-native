@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity,SafeAreaView, StyleSheet, StatusBar } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert } from 'react-native';
 import { useNavigation } from 'expo-router';
-import Index from '.';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigation: any = useNavigation();
 
   const validateEmail = (email: string) => {
-    // Simple regex to check for valid email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-
-  const handleLogin = () => {
+  const handleLogin = async () => {
     let valid = true;
     
     // Email validation
@@ -40,64 +41,88 @@ const LoginScreen = () => {
       setPasswordError('');
     }
 
-    // If form is valid, proceed to login
     if (valid) {
-      console.log({ email, password });
-      navigation.navigate('DashboardScreen'); 
+      setLoading(true); // Show loading state
+      try {
+        const response = await axios.post('https://loanguru.in/loan_guru_app/api/login', {
+          email,
+          password
+        });
+        
+        // Assuming the API sends back a success response with user data
+        if (response.data.success) {
+          console.log('Login Successful:', response.data);
+
+            await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data));
+            await AsyncStorage.setItem('isLoggedIn', 'true');
+          
+          navigation.navigate('DashboardScreen'); 
+
+          
+        } else {
+          Alert.alert('Login Failed', response.data.message || 'Invalid credentials');
+        }
+      } catch (error) {
+        console.error('Login Error:', error);
+        Alert.alert('Error', 'An error occurred during login. Please try again.');
+      } finally {
+        setLoading(false); // Hide loading state
+      }
     }
   };
   
-  const redirectToForgotPassword = () =>{
-    navigation.navigate('ForgotPasswordScreen')
-  }
+  
+  const redirectToForgotPassword = () => {
+    navigation.navigate('ForgotPasswordScreen');
+  };
+
   const redirectToCreateAccount = () => {
-    navigation.navigate('CreateAccountScreen', {index:0})
-  }
+    navigation.navigate('CreateAccountScreen', { index: 0 });
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-    <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
-      
-      <Text style={styles.title}>Sign into your Account</Text>
-      <Text style={styles.content}>login into your account </Text>
-      
-      <Text style={styles.text}>Email ID</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        keyboardType="email-address"
-        onChangeText={setEmail}
-      />
-       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-      
-       <Text style={styles.text}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        secureTextEntry
-        onChangeText={setPassword}
-      />
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-      
-      <TouchableOpacity onPress={redirectToForgotPassword}>
-      <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}> LOG IN</Text>
-      </TouchableOpacity>
+      <SafeAreaView style={styles.container}>
+        <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+        
+        <Text style={styles.title}>Sign into your Account</Text>
+        <Text style={styles.content}>Login into your account</Text>
+        
+        <Text style={styles.text}>Email ID</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          keyboardType="email-address"
+          onChangeText={setEmail}
+        />
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+        
+        <Text style={styles.text}>Password</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Password"
+          value={password}
+          secureTextEntry
+          onChangeText={setPassword}
+        />
+        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+        
+        <TouchableOpacity onPress={redirectToForgotPassword}>
+          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+          <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'LOG IN'}</Text>
+        </TouchableOpacity>
 
-
-      <Text style={styles.singin}>
-      Do you not have a account?{' '}
-        <Text style={styles.link} onPress={redirectToCreateAccount}>
-          Sign up here
+        <Text style={styles.singin}>
+          Do you not have an account?{' '}
+          <Text style={styles.link} onPress={redirectToCreateAccount}>
+            Sign up here
+          </Text>
         </Text>
-        </Text>
-    </SafeAreaView>
+      </SafeAreaView>
     </ScrollView>
   );
 };
@@ -121,18 +146,18 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    marginTop:120,
+    marginTop: 120,
     textAlign: 'center',
-    color : '#0061F0',
+    color: '#0061F0',
   },
   content: {
-    fontSize : 15,
-    fontWeight : 'medium',
-    marginBottom : 150,
+    fontSize: 15,
+    fontWeight: 'medium',
+    marginBottom: 150,
   },
-  text:{
-   textAlign:'left',
-   marginBottom:5,
+  text: {
+    textAlign: 'left',
+    marginBottom: 5,
   },
   input: {
     borderWidth: 1,
@@ -151,7 +176,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop:100,
+    marginTop: 100,
   },
   buttonText: {
     color: '#fff',
@@ -171,8 +196,8 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    textAlign:'right',
-    marginBottom:5,
+    textAlign: 'right',
+    marginBottom: 5,
     fontSize: 13,
   },
 });

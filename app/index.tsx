@@ -4,11 +4,15 @@ import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-const Index = () => {
 
+const Index = () => {
+ 
   const navigation: any = useNavigation();  
-  useEffect(() => {
-    // Navigate to another screen after 10 seconds
+
+ 
+  useEffect(  () => {
+
+    
     const timer = setTimeout(() => {
       navigation.navigate('FirstScreen'); // Adjust navigation target
     }, 5000); // 5 seconds

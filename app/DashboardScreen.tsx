@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import Header from './Header'; 
-// import ParallaxCarousel from './ParallaxCarousel';
 import Loan from './Loan';
 import QuickLink from './QuickLink';
 import About from './About';
 import TotalMember from './TotalMember';
 import Job from './Job';
+// import ImageCarousel from './ImageCarousel';
 
 const DashboardScreen = () => {
     // Data array for the FlatList
     const data = [
-        { id: '1', component: <Loan /> },
-        { id: '2', component: <QuickLink /> },
-        { id: '3', component: <TotalMember /> },
-        { id: '4', component: <Job /> },
-        { id: '5', component: <About /> },
+        // { id: '1', Component: <ImageCarousel />},
+        { id: '2', component: <Loan /> },
+        { id: '3', component: <QuickLink /> },
+        { id: '4', component: <TotalMember /> },
+        { id: '5', component: <Job /> },
+        { id: '6', component: <About /> },
     ];
 
     // Render item function for the FlatList
