@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { Alert ,View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import axios from 'axios';
 
 const CorporateScreen = () => {
   const [name, setName] = useState('');
@@ -16,7 +17,8 @@ const CorporateScreen = () => {
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
+ 
+  const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
 
   const validateEmail = (email: string) => {
@@ -25,7 +27,7 @@ const CorporateScreen = () => {
     return emailRegex.test(email);
   };
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
 
     let valid = true;
   // Name validation
@@ -78,9 +80,35 @@ const CorporateScreen = () => {
 
   // If form is valid, proceed to login
   if (valid) {
-    console.log({ name, company, designation, mobilenumber, email, password });
-    navigation.navigate('CongratsScreen'); 
-  } 
+    setLoading(true);
+
+    try {
+      // Making the POST request and awaiting the response
+      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
+        name,
+        company,
+        designation,
+        mobilenumber,
+        email,
+        password 
+      });
+
+      // Handle success response
+      if (response.data.success) {
+        Alert.alert('Success', 'Account created successfully!', [
+          { text: 'OK', onPress: () => navigation.navigate('LoginScreen') },
+        ]);
+      } else {
+        Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
+      }
+    } catch (error) {
+      // Handle error response
+      Alert.alert('Error', 'Failed to create account. Please try again.');
+      console.error('API error:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
   };
 
   const redirectToLogin = () => {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import {Alert, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import axios from 'axios';
 import { useNavigation } from 'expo-router';
 
 const OtherScreen = () => {
@@ -10,6 +10,7 @@ const OtherScreen = () => {
   const [company, setCompany] = useState('');
   const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState('');
+  const [c_password, setCPassword] = useState('');
 
   const [nameError, setNameError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
@@ -17,7 +18,9 @@ const OtherScreen = () => {
   const [companyError, setCompanyError] = useState('');
   const [designationError, setDesignationError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [cPasswordError, setCPasswordError] = useState('');
 
+  const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
 
   const validateEmail = (email: string) => {
@@ -26,7 +29,7 @@ const OtherScreen = () => {
     return emailRegex.test(email);
   };
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
 
     let valid = true;
   // Name validation
@@ -38,12 +41,12 @@ const OtherScreen = () => {
   }
 
   // MobileNumber validation
-  if (mobilenumber === ''){
-    setMobileNumberError('MobileNumber is required');
-    valid = false;
-  } else {
-    setMobileNumberError('');
-  }
+  // if (mobilenumber === ''){
+  //   setMobileNumberError('MobileNumber is required');
+  //   valid = false;
+  // } else {
+  //   setMobileNumberError('');
+  // }
 
   // Email validation
   if (email === '') {
@@ -57,19 +60,19 @@ const OtherScreen = () => {
   }
 
    // Company
-   if (company ===''){
-    setCompanyError('Company Name is required');
-    valid = false;
-  }  else{
-    setCompanyError('');
-  }
-   // Designation
-  if (designation ===''){
-    setDesignationError('Designation is required');
-    valid = false;
-  }  else{
-    setDesignationError('');
-  }
+  //  if (company ===''){
+  //   setCompanyError('Company Name is required');
+  //   valid = false;
+  // }  else{
+  //   setCompanyError('');
+  // }
+  //  // Designation
+  // if (designation ===''){
+  //   setDesignationError('Designation is required');
+  //   valid = false;
+  // }  else{
+  //   setDesignationError('');
+  // }
   // Password validation
   if (password === '') {
     setPasswordError('Password is required.');
@@ -78,11 +81,49 @@ const OtherScreen = () => {
     setPasswordError('');
   }
 
+  if (c_password === '') {
+    setCPasswordError('Confirmation password is required.');
+    valid = false;
+  } else if (c_password !== password) {
+    setCPasswordError('Passwords do not match.');
+    valid = false;
+  } else {
+    setCPasswordError('');
+  }
+
+
   // If form is valid, proceed to login
   if (valid) {
-    console.log({ name , mobilenumber, email, password });
-    navigation.navigate('CongratsScreen'); 
-  } 
+    setLoading(true);
+
+    try {
+      // Making the POST request and awaiting the response
+      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
+        name,
+        // mobilenumber,
+        email,
+        // company,
+        // designation,
+        password,
+        c_password
+      });
+
+      // Handle success response
+      if (response.data.success) {
+        Alert.alert('Success', 'Account created successfully!', [
+          { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
+        ]);
+      } else {
+        Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
+      }
+    } catch (error) {
+      // Handle error response
+      Alert.alert('Error', 'Failed to create account. Please try again.');
+      console.error('API error:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
   };
 
   const redirectToLogin = () => {
@@ -100,15 +141,15 @@ const OtherScreen = () => {
         onChangeText={setName}
       />
       {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-      <Text style={styles.text}>Mobile Number</Text>
+      {/* <Text style={styles.text}>Mobile Number</Text>
       <TextInput
         style={styles.input}
         placeholder="Mobile Number"
         value={mobilenumber}
         keyboardType="phone-pad"
         onChangeText={setMobileNumber}
-      />
-      {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null}
+      /> */}
+      {/* {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null} */}
       <Text style={styles.text}>Email Id</Text>
       <TextInput
         style={styles.input}
@@ -117,8 +158,8 @@ const OtherScreen = () => {
         keyboardType="email-address"
         onChangeText={setEmail}
       />
-       {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-       <Text style={styles.text}>Company Name</Text>
+        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
+      {/* <Text style={styles.text}>Company Name</Text>
        <TextInput
         style={styles.input}
         placeholder="Company Name"
@@ -133,7 +174,7 @@ const OtherScreen = () => {
         value={designation}
         onChangeText={setDesignation}
       />      
-       {designationError ? <Text style={styles.errorText}>{designationError}</Text> : null}
+       {designationError ? <Text style={styles.errorText}>{designationError}</Text> : null} */}
       <Text style={styles.text}>Password</Text>
       <TextInput
         style={styles.input}
@@ -143,6 +184,17 @@ const OtherScreen = () => {
         onChangeText={setPassword}
       /> 
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+
+      <Text style={styles.text}>Confirm Password</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        value={c_password}
+        secureTextEntry
+        onChangeText={setCPassword}
+      />
+      {cPasswordError ? <Text style={styles.errorText}>{cPasswordError}</Text> : null}
+
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
         <Text style={styles.buttonText}> CREATE OTHERS ACCOUNT </Text>

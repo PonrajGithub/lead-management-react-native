@@ -30,9 +30,9 @@ const DashboardScreen = () => {
             <View style={styles.header}>
                 <Header />
             </View>
-            <View>
-                <Slider />
-            </View>
+            {/* <View> */}
+                {/* <Slider /> */}
+            {/* S</View> */}
             <FlatList
                 data={data}
                 renderItem={renderItem}
