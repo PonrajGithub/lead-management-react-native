@@ -41,14 +41,7 @@ const SecondScreen = ({ }: any) => {
         <Text style={styles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
 
-      {/* Skip option */}
-      <TouchableOpacity onPress={() => 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'WelcomeScreen' }],
-        })}>
-        <Text style={styles.skipText}>SKIP</Text>
-      </TouchableOpacity>
+      
     </View>
     </View>
   );
@@ -126,10 +119,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  skipText: {
-    color: '#555', // Grey color for skip text
-    fontSize: 16,
-  },
+  
 });
 
 export default SecondScreen;

@@ -14,7 +14,7 @@ const ForgotPasswordScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <Text style={styles.title}>Forgot Password</Text>
       <Text style={styles.content}>please Enter your phone number  to reset your password</Text>
       

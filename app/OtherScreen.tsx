@@ -41,12 +41,12 @@ const OtherScreen = () => {
   }
 
   // MobileNumber validation
-  // if (mobilenumber === ''){
-  //   setMobileNumberError('MobileNumber is required');
-  //   valid = false;
-  // } else {
-  //   setMobileNumberError('');
-  // }
+  if (mobilenumber === ''){
+    setMobileNumberError('MobileNumber is required');
+    valid = false;
+  } else {
+    setMobileNumberError('');
+  }
 
   // Email validation
   if (email === '') {
@@ -60,19 +60,19 @@ const OtherScreen = () => {
   }
 
    // Company
-  //  if (company ===''){
-  //   setCompanyError('Company Name is required');
-  //   valid = false;
-  // }  else{
-  //   setCompanyError('');
-  // }
-  //  // Designation
-  // if (designation ===''){
-  //   setDesignationError('Designation is required');
-  //   valid = false;
-  // }  else{
-  //   setDesignationError('');
-  // }
+   if (company ===''){
+    setCompanyError('Company Name is required');
+    valid = false;
+  }  else{
+    setCompanyError('');
+  }
+   // Designation
+  if (designation ===''){
+    setDesignationError('Designation is required');
+    valid = false;
+  }  else{
+    setDesignationError('');
+  }
   // Password validation
   if (password === '') {
     setPasswordError('Password is required.');
@@ -100,10 +100,10 @@ const OtherScreen = () => {
       // Making the POST request and awaiting the response
       const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
         name,
-        // mobilenumber,
+        mobilenumber,
         email,
-        // company,
-        // designation,
+        company,
+        designation,
         password,
         c_password
       });
@@ -132,7 +132,7 @@ const OtherScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
         <Text style={styles.text}>Name</Text>
       <TextInput
         style={styles.input}
@@ -141,15 +141,15 @@ const OtherScreen = () => {
         onChangeText={setName}
       />
       {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
-      {/* <Text style={styles.text}>Mobile Number</Text>
+      <Text style={styles.text}>Mobile Number</Text>
       <TextInput
         style={styles.input}
         placeholder="Mobile Number"
         value={mobilenumber}
         keyboardType="phone-pad"
         onChangeText={setMobileNumber}
-      /> */}
-      {/* {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null} */}
+      />
+      {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null}
       <Text style={styles.text}>Email Id</Text>
       <TextInput
         style={styles.input}
@@ -159,7 +159,7 @@ const OtherScreen = () => {
         onChangeText={setEmail}
       />
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-      {/* <Text style={styles.text}>Company Name</Text>
+      <Text style={styles.text}>Company Name</Text>
        <TextInput
         style={styles.input}
         placeholder="Company Name"
@@ -174,7 +174,7 @@ const OtherScreen = () => {
         value={designation}
         onChangeText={setDesignation}
       />      
-       {designationError ? <Text style={styles.errorText}>{designationError}</Text> : null} */}
+       {designationError ? <Text style={styles.errorText}>{designationError}</Text> : null}
       <Text style={styles.text}>Password</Text>
       <TextInput
         style={styles.input}
@@ -197,7 +197,7 @@ const OtherScreen = () => {
 
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}> CREATE OTHERS ACCOUNT </Text>
+        <Text style={styles.buttonText}> CREATE ACCOUNT </Text>
       </TouchableOpacity>
       <Text style={styles.singin}>
       Do you already have a account?{' '}

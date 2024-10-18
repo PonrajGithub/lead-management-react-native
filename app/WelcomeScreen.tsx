@@ -11,7 +11,7 @@ const WelcomeScreen = ({ }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <View style={styles.body}>
         <Text style={styles.welcomeText}>Welcome to Loanguru</Text>
         <Text style={styles.subText}>Your trusted partner for all loan needs.</Text>

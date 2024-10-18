@@ -43,9 +43,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding: 10,
     backgroundColor:'#fff',
-    borderRadius:30,
-    marginBottom:20,
-   
+    borderRadius:30, 
   },
   heading: {
     fontSize: 18,

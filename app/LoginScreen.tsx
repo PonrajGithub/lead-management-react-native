@@ -56,7 +56,7 @@ const LoginScreen = () => {
             await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data));
             await AsyncStorage.setItem('isLoggedIn', 'true');
           
-          navigation.navigate('DashboardScreen'); 
+            navigation.navigate('DashboardScreen'); 
 
           
         } else {
@@ -83,7 +83,7 @@ const LoginScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
         
         <Text style={styles.title}>Sign into your Account</Text>
         <Text style={styles.content}>Login into your account</Text>

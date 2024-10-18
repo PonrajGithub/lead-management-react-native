@@ -27,7 +27,7 @@ const CreateAccountScreen = () => {
 
   return (
       <View style={styles.container}>
-        <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+         <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.content}>Open an account with a few details</Text>
         {/* <Text style={styles.text}>Select User Type</Text> */}

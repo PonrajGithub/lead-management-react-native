@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: '#F5F5F5',
     borderRadius:30,
-    marginBottom:20,
+    // marginBottom:20,
   },
   header: {
     fontSize: 18,

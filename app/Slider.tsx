@@ -1,57 +1,72 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+// import React, { useRef, useState } from 'react';
+// import { View, Text, Image, Dimensions, StyleSheet } from 'react-native';
+// import Carousel from 'react-native-snap-carousel';
 
-const { width: viewportWidth } = Dimensions.get('window');
+// const { width } = Dimensions.get('window');
 
-const Slider = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  
-  const data = [
-    { title: 'Welcome to the App' },
-    { title: 'Enjoy Great Features' },
-    { title: 'Stay Connected' },
-    { title: 'Explore More' },
-  ];
+// const data = [
+//   { title: 'First Item', image: require('../assets/images/banner.jpg') },
+//   { title: 'Second Item', image: require('../assets/images/banner.jpg') },
+//   { title: 'Third Item', image: require('../assets/images/banner.jpg') },
+// ];
 
-  const renderItem = ({ item }: { item: { title: string } }) => (
-    <View style={styles.slide}>
-      <Text style={styles.slideText}>{item.title}</Text>
-    </View>
-  );
+// const Slider = () => {
+//   const [activeIndex, setActiveIndex] = useState(0);
+//   const carouselRef = useRef(null);
 
-  return (
-    <View style={styles.container}>
-      <Carousel
-        layout={'default'}
-        data={data}
-        sliderWidth={viewportWidth}
-        itemWidth={viewportWidth}
-        renderItem={renderItem}
-        onSnapToItem={(index) => setActiveIndex(index)}
-      />
-    </View>
-  );
-};
+//   const _renderItem = ({ item, index }) => {
+//     return (
+//       <View style={styles.card}>
+//         <Image source={item.image} style={styles.image} />
+//         <Text style={styles.title}>{item.title}</Text>
+//       </View>
+//     );
+//   };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  slide: {
-    backgroundColor: '#f9c2ff',
-    borderRadius: 8,
-    height: 150,
-    padding: 50,
-    justifyContent: 'center',
-  },
-  slideText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-});
+//   return (
+//     <View style={styles.container}>
+//       <Carousel
+//         layout={'default'}
+//         ref={carouselRef}
+//         data={data}
+//         sliderWidth={width}
+//         itemWidth={width * 0.8}
+//         renderItem={_renderItem}
+//         onSnapToItem={(index) => setActiveIndex(index)}
+//       />
+//     </View>
+//   );
+// };
 
-export default Slider;
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//   },
+//   card: {
+//     backgroundColor: '#fff',
+//     borderRadius: 8,
+//     height: 250,
+//     padding: 10,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     shadowColor: '#000',
+//     shadowOpacity: 0.3,
+//     shadowRadius: 4,
+//     elevation: 8,
+//   },
+//   image: {
+//     width: '100%',
+//     height: 150,
+//     borderRadius: 8,
+//   },
+//   title: {
+//     fontSize: 18,
+//     marginTop: 10,
+//     fontWeight: 'bold',
+//   },
+// });
+
+
+// export default Slider;

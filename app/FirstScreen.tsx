@@ -7,30 +7,70 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const FirstScreen = ({ }: any) => {
     const navigation: any = useNavigation();
 
-    useEffect(  () => {
-    const checkUserData = async () => {
-      try {
-        const storedData = await AsyncStorage.getItem('@storage_user_data');
-        if (storedData !== null) {
-          const parsedData = JSON.parse(storedData);
 
-          const token = parsedData?.token; // Assuming you are storing a token
-          console.log(token);
-          if (token) {
-            return navigation.reset({
-              index: 0,
-              routes: [{ name: 'DashboardScreen' }],
-            });
-             
+    useEffect(() => {
+      const checkAppState = async () => {
+        try {
+          // Check if it's the first launch
+          const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
+          if (isFirstLaunch === null) {
+            // First launch, proceed through First, Second, Third Screens
+            return;
           }
+  
+          // Check if user data exists (not first launch)
+          const storedData = await AsyncStorage.getItem('@storage_user_data');
+          if (storedData !== null) {
+            const parsedData = JSON.parse(storedData);
+            const token = parsedData?.data?.token; // Assuming you are storing a token
+            
+            if (token) {
+              // Token exists, navigate to DashboardScreen
+              return navigation.reset({
+                index: 0,
+                routes: [{ name: 'DashboardScreen' }],
+              });
+            }
+          }
+  
+          // No token found or no user data, navigate to WelcomeScreen
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'WelcomeScreen' }],
+          });
+  
+        } catch (error) {
+          console.error('Error checking app state:', error);
         }
-      } catch (error) {
-        console.error('Error reading AsyncStorage:', error);
-      }
-    };
+      };
+  
+      checkAppState();
+    }, [navigation]);
 
-    checkUserData();
-  })
+  //   useEffect(  () => {
+  //   const checkUserData = async () => {
+  //     try {
+  //       const storedData = await AsyncStorage.getItem('@storage_user_data');
+  //       if (storedData !== null) {
+  //         const parsedData = JSON.parse(storedData);
+
+  //         const token = parsedData?.data?.token; // Assuming you are storing a token
+  //         console.log(token);
+  //         if (token) {
+  //           return navigation.reset({
+  //             index: 0,
+  //             routes: [{ name: 'DashboardScreen' }],
+  //           });
+             
+  //         }
+  //       }
+  //     } catch (error) {
+  //       console.error('Error reading AsyncStorage:', error);
+  //     }
+  //   };
+
+  //   checkUserData();
+  // })
     
   return (
     <View style={styles.container}>
@@ -67,14 +107,6 @@ const FirstScreen = ({ }: any) => {
         <Text style={styles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
 
-      {/* Skip option */}
-      <TouchableOpacity onPress={() => 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'WelcomeScreen' }],
-        })}>
-        <Text style={styles.skipText}>SKIP</Text>
-      </TouchableOpacity>
     </View>
     </View>
   );
@@ -153,11 +185,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  skipText: {
-    color: '#555', // Grey color for skip text
-    fontSize: 16,
-  },
 });
 
 
 export default FirstScreen;
+
+

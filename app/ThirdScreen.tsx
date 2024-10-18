@@ -1,8 +1,25 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const ThirdScreen = ({ }: any) => {
     const navigation: any = useNavigation();
+
+    useEffect( () => {
+      const handleFinishIntro = async () => {
+        try {
+            await AsyncStorage.setItem('isFirstLaunch', 'false');
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'WelcomeScreen' }],
+            });
+        } catch (error) {
+            console.error('Error setting first launch flag:', error);
+        }
+    };
+    }, []);
+
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
@@ -42,15 +59,6 @@ const ThirdScreen = ({ }: any) => {
           })}>
       
         <Text style={styles.nextButtonText}>NEXT</Text>
-      </TouchableOpacity>
-
-      {/* Skip option */}
-      <TouchableOpacity onPress={() => 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'WelcomeScreen' }],
-        })}>
-        <Text style={styles.skipText}>SKIP</Text>
       </TouchableOpacity>
     </View>
     </View>
@@ -128,10 +136,6 @@ const styles = StyleSheet.create({
   nextButtonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
-  },
-  skipText: {
-    color: '#555', // Grey color for skip text
     fontSize: 16,
   },
 });

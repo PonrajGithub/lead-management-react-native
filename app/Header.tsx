@@ -5,23 +5,29 @@ import { useNavigation } from '@react-navigation/native';
 
 const Header = () => {
     const [menuVisible, setMenuVisible] = useState(false);
-    const navigation : any = useNavigation();
+    const navigation: any = useNavigation();
 
     const handleLogout = () => {
         setMenuVisible(false);
-        navigation.navigate('WelcomeScreen', {index:0})
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'WelcomeScreen' }],
+        });
     };
 
     return (
         <View>
             <View style={styles.header}>
                 <Icon name="arrow-back" size={24} color="#FFFF" style={styles.icon} />
-                <Text style={styles.title}>surya</Text>
+                {/* <Header username={username} /> */}
+                <Text style={styles.name}>User name</Text>
+                
                 <TouchableOpacity onPress={() => setMenuVisible(true)}>
                     <Icon name="menu" size={24} color="#FFFF" style={styles.icon} />
                 </TouchableOpacity>
             </View>
-
+            
+                
             {/* Menu Modal */}
             <Modal
                 transparent={true}
@@ -29,8 +35,8 @@ const Header = () => {
                 visible={menuVisible}
                 onRequestClose={() => setMenuVisible(false)}
             >
-                <TouchableOpacity 
-                    style={styles.modalOverlay} 
+                <TouchableOpacity
+                    style={styles.modalOverlay}
                     onPress={() => setMenuVisible(false)}
                 >
                     <View style={styles.menu}>
@@ -46,20 +52,21 @@ const Header = () => {
 
 const styles = StyleSheet.create({
     header: {
-        // flex: 1,
         flexDirection: 'row',
         backgroundColor: '#6A1B9A',
-        paddingTop:'15%',
-        paddingBottom:20,
+        paddingTop: '15%',
+        paddingBottom: 20,
         alignItems: 'center',
-        // flexDirection: 'row',
-        justifyContent: 'space-between', 
-        marginBottom:5,
+        justifyContent: 'space-between',
     },
     title: {
         color: '#FFFF',
         fontSize: 20,
         fontWeight: 'bold',
+    },
+    name:{
+        color: '#FFFF',
+        fontSize:20,
     },
     icon: {
         paddingHorizontal: 10,
@@ -88,18 +95,3 @@ const styles = StyleSheet.create({
 });
 
 export default Header;
-
-
-
-
-// header: {
-//     // flex: 1,
-//     flexDirection: 'row',
-//     backgroundColor: '#6A1B9A',
-//     paddingTop:'15%',
-//     paddingBottom:20,
-//     alignItems: 'center',
-//     // flexDirection: 'row',
-//     justifyContent: 'space-between', 
-//     // marginBottom:20,
-// },

@@ -10,6 +10,7 @@ const CorporateScreen = () => {
   const [mobilenumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [c_password, setCPassword] = useState('');
 
   const [nameError, setNameError] = useState('');
   const [companyError, setCompanyError] = useState('');
@@ -17,6 +18,7 @@ const CorporateScreen = () => {
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [cPasswordError, setCPasswordError] = useState('');
  
   const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
@@ -78,6 +80,16 @@ const CorporateScreen = () => {
     setPasswordError('');
   }
 
+  if (c_password === '') {
+    setCPasswordError('Confirmation password is required.');
+    valid = false;
+  } else if (c_password !== password) {
+    setCPasswordError('Passwords do not match.');
+    valid = false;
+  } else {
+    setCPasswordError('');
+  }
+
   // If form is valid, proceed to login
   if (valid) {
     setLoading(true);
@@ -90,13 +102,14 @@ const CorporateScreen = () => {
         designation,
         mobilenumber,
         email,
-        password 
+        password ,
+        c_password
       });
 
       // Handle success response
       if (response.data.success) {
         Alert.alert('Success', 'Account created successfully!', [
-          { text: 'OK', onPress: () => navigation.navigate('LoginScreen') },
+          { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
         ]);
       } else {
         Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
@@ -117,7 +130,7 @@ const CorporateScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <Text style={styles.text}>Name</Text>
       <TextInput
         style={styles.input}
@@ -168,10 +181,20 @@ const CorporateScreen = () => {
         secureTextEntry
         onChangeText={setPassword}
       /> 
-      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+      {passwordError ? <Text style={styles.errorText}>{passwordError}</Text>: null}
+
+      <Text style={styles.text}>Confirm Password</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        value={c_password}
+        secureTextEntry
+        onChangeText={setCPassword}
+      />
+      {cPasswordError ? <Text style={styles.errorText}>{cPasswordError}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}> CREATE CORPORATE ACCOUNT </Text>
+        <Text style={styles.buttonText}> CREATE ACCOUNT </Text>
       </TouchableOpacity>
       <Text style={styles.singin}>
       Do you already have a account?{' '}
