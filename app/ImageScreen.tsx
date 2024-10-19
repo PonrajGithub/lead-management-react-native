@@ -8,7 +8,7 @@ const ImageScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('@/assets/images/loanbanner1.jpg')} // Replace with your image path
+        source={require('@/assets/images/banner.png')} // Replace with your image path
         style={styles.image}
         resizeMode="contain"
       />
@@ -22,7 +22,7 @@ marginTop:0,
   },
   image: {
    width:'100%',
-   height:300,
+   height:150,
   },
 });
 

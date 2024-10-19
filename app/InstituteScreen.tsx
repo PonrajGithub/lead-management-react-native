@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Alert, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Index from '.';
 import axios from 'axios';
@@ -13,6 +13,7 @@ const InstituteScreen = () => {
   const [institutionname, setInstitutionName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const [nameError, setNameError] = useState('');
   const [spouseNameError, setSpouseNameError] = useState('');
@@ -126,29 +127,28 @@ const InstituteScreen = () => {
       setLoading(true);
   
       try {
-        // Making the POST request and awaiting the response
         const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
           name,
-          spousename,
-          mobilenumber,
+          spouse_name: spousename, 
+          mobilenumber, 
           dob,
           email,
-          institutionname, 
-          occupation, 
-          password 
+          institution_name: institutionname, 
+          occupation,
+          password,
         });
   
         // Handle success response
         if (response.data.success) {
-          Alert.alert('Success', 'Account created successfully!', [
+          setMessage('Account created successfully!'), [
             { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
-          ]);
+          ];
         } else {
-          Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
+          setMessage( response.data.message || 'An error occurred. Please try again.');
         }
       } catch (error) {
         // Handle error response
-        Alert.alert('Error', 'Failed to create account. Please try again.');
+        setMessage('Failed to create account. Please try again.');
         console.error('API error:', error);
       } finally {
         setLoading(false);

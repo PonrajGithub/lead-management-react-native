@@ -23,7 +23,7 @@ const FirstScreen = ({ }: any) => {
           if (storedData !== null) {
             const parsedData = JSON.parse(storedData);
             const token = parsedData?.data?.token; // Assuming you are storing a token
-            
+            console.log(token);
             if (token) {
               // Token exists, navigate to DashboardScreen
               return navigation.reset({

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert } from 'react-native';
+import { ScrollView, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert, View } from 'react-native';
 import { useNavigation } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { FontAwesome } from '@expo/vector-icons';  // Import FontAwesome or another icon set
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +11,8 @@ const LoginScreen = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigation: any = useNavigation();
 
@@ -49,28 +51,35 @@ const LoginScreen = () => {
           password
         });
         
-        // Assuming the API sends back a success response with user data
+        console.log('Login Response:', response.data); // Log the response to check its structure
+    
         if (response.data.success) {
-          console.log('Login Successful:', response.data);
-
-            await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data));
-            await AsyncStorage.setItem('isLoggedIn', 'true');
-          
-            navigation.navigate('DashboardScreen'); 
-
-          
+          const { token } = response.data.data;
+          setIsLoggedIn(true);          await AsyncStorage.setItem('@storage_user_token', token); 
+          console.log('Token stored successfully:', token);
+          await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data)); // Store user data
+          await AsyncStorage.setItem('isLoggedIn', 'true');
+    
+          navigation.navigate('DashboardScreen'); 
         } else {
           Alert.alert('Login Failed', response.data.message || 'Invalid credentials');
         }
       } catch (error) {
         console.error('Login Error:', error);
         Alert.alert('Error', 'An error occurred during login. Please try again.');
-      } finally {
+      }finally {
         setLoading(false); // Hide loading state
       }
+
+
+      const checkStorage = async () => {
+        const token = await AsyncStorage.getItem('@storage_user_token');
+        console.log('Debug: Token from AsyncStorage:', token);
+      };
+      
+      checkStorage();
     }
   };
-  
   
   const redirectToForgotPassword = () => {
     navigation.navigate('ForgotPasswordScreen');
@@ -83,7 +92,7 @@ const LoginScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+        <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
         
         <Text style={styles.title}>Sign into your Account</Text>
         <Text style={styles.content}>Login into your account</Text>
@@ -99,15 +108,24 @@ const LoginScreen = () => {
         {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
         
         <Text style={styles.text}>Password</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-          secureTextEntry
-          onChangeText={setPassword}
-        />
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            value={password}
+            secureTextEntry={!showPassword}  // Toggle password visibility
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <FontAwesome
+              name={showPassword ? 'eye' : 'eye-slash'}  // Icon toggles based on state
+              size={20}
+              color="gray"
+            />
+          </TouchableOpacity>
+        </View>
         {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-        
+
         <TouchableOpacity onPress={redirectToForgotPassword}>
           <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
         </TouchableOpacity>
@@ -165,6 +183,18 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    padding: 8,
+    borderRadius: 5,
+    marginBottom: 15,
+  },
+  passwordInput: {
+    flex: 1,
   },
   forgotPasswordText: {
     color: '#007bff',

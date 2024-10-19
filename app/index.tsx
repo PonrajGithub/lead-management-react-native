@@ -11,8 +11,6 @@ const Index = () => {
 
  
   useEffect(  () => {
-
-    
     const timer = setTimeout(() => {
       navigation.navigate('FirstScreen'); // Adjust navigation target
     }, 5000); // 5 seconds
@@ -24,20 +22,17 @@ const Index = () => {
     <View style={styles.container}>
       {/* Logo */}
       <Image
-        source={require('../assets/images/loanguru.png')} // Adjust image path
+        source={require('../assets/images/loan.jpg')} // Adjust image path
         style={styles.logo}
         resizeMode="contain"
       />
       
       {/* Secure Icon */}
       <Image
-        source={require('../assets/images/secure.png')} // Adjust image path
+        source={require('../assets/images/image.png')} // Adjust image path
         style={styles.icon}
         resizeMode="contain"
       />
-      
-      {/* 100% Secure App Text */}
-      <Text style={styles.text}>100% SECURE APP</Text>
     </View>
   );
 };

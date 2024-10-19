@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {Alert, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from 'expo-router';
 
@@ -7,15 +7,16 @@ const OtherScreen = () => {
   const [name, setName] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [company, setCompany] = useState('');
+  const [company_name, setCompany] = useState('');
   const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState('');
-  const [c_password, setCPassword] = useState('');
+  const [message, setMessage] = useState('');
+
 
   const [nameError, setNameError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [companyError, setCompanyError] = useState('');
+  const [company_nameError, setCompanyError] = useState('');
   const [designationError, setDesignationError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [cPasswordError, setCPasswordError] = useState('');
@@ -60,7 +61,7 @@ const OtherScreen = () => {
   }
 
    // Company
-   if (company ===''){
+   if (company_name ===''){
     setCompanyError('Company Name is required');
     valid = false;
   }  else{
@@ -81,17 +82,6 @@ const OtherScreen = () => {
     setPasswordError('');
   }
 
-  if (c_password === '') {
-    setCPasswordError('Confirmation password is required.');
-    valid = false;
-  } else if (c_password !== password) {
-    setCPasswordError('Passwords do not match.');
-    valid = false;
-  } else {
-    setCPasswordError('');
-  }
-
-
   // If form is valid, proceed to login
   if (valid) {
     setLoading(true);
@@ -102,23 +92,22 @@ const OtherScreen = () => {
         name,
         mobilenumber,
         email,
-        company,
+        company_name,
         designation,
         password,
-        c_password
       });
 
       // Handle success response
       if (response.data.success) {
-        Alert.alert('Success', 'Account created successfully!', [
+        setMessage('Account created successfully!'), [
           { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
-        ]);
+        ];
       } else {
-        Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
+        setMessage( response.data.message || 'An error occurred. Please try again.');
       }
     } catch (error) {
       // Handle error response
-      Alert.alert('Error', 'Failed to create account. Please try again.');
+      setMessage( 'Failed to create account. Please try again.');
       console.error('API error:', error);
     } finally {
       setLoading(false);
@@ -163,10 +152,10 @@ const OtherScreen = () => {
        <TextInput
         style={styles.input}
         placeholder="Company Name"
-        value={company}
+        value={company_name}
         onChangeText={setCompany}
       />
-      {companyError ? <Text style={styles.errorText}>{companyError}</Text> : null}
+      {company_nameError ? <Text style={styles.errorText}>{company_nameError}</Text> : null}
       <Text style={styles.text}>Designation</Text>
        <TextInput
         style={styles.input}
@@ -184,17 +173,6 @@ const OtherScreen = () => {
         onChangeText={setPassword}
       /> 
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
-
-      <Text style={styles.text}>Confirm Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={c_password}
-        secureTextEntry
-        onChangeText={setCPassword}
-      />
-      {cPasswordError ? <Text style={styles.errorText}>{cPasswordError}</Text> : null}
-
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
         <Text style={styles.buttonText}> CREATE ACCOUNT </Text>

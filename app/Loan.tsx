@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
   closeButton: {
     position: 'absolute',
     top: 40,
-    left: 20,
+    right: 20,
     backgroundColor: 'grey',
     padding: 10,
     borderRadius: 10,
   },
   closeButtonText: {
-    color: 'white',
+    color: '#FFF',
     fontWeight: 'bold',
   },
 });
