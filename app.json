@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "lead-managemant",
-    "slug": "lead-managemant",
+    "name": "M.S Loanguru",
+    "slug": "Loanguru",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/loan.jpg",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/loan.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,10 +17,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/loanGuru_logo.jpg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ponraj.leadmanagemant"
+      "package": "com.ponraj.Loanguru"
     },
     "web": {
       "bundler": "metro",
@@ -39,7 +39,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "61de3802-ced6-43d6-8d89-8c8c38554dd6"
+        "projectId": "38c681e8-417f-438a-81e0-68d8450b4839"
       }
     }
   }
