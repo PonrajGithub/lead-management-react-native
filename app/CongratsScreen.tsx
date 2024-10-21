@@ -1,13 +1,24 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView, Image, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const CongratsScreen = () =>  {
     const navigation: any = useNavigation();
+
+    const [fontsLoaded] = useFonts({
+      'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+      'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    });
+  
+    if (!fontsLoaded) {
+      return <AppLoading />;
+    }
   useEffect(() => {
     // Navigate to Dashboard after 10 seconds
     const timer = setTimeout(() => {
-      navigation.navigate('DashboardScreen');
+      navigation.navigate('LoginScreen');
     }, 5000); 
 
     // Clean up the timer on unmount
@@ -16,7 +27,7 @@ const CongratsScreen = () =>  {
 
   return (
     <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+         <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <View style={styles.content}>
         {/* Checkmark Icon */}
         <Image 
@@ -59,12 +70,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#000',
+    fontFamily:'heading',
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
     color: '#6b6b6b',
     lineHeight: 24,
+    fontFamily:'text',
   },
 });
 

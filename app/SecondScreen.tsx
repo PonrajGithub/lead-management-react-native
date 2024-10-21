@@ -1,9 +1,19 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const SecondScreen = ({ }: any) => {
     const navigation: any = useNavigation();
+    const [fontsLoaded] = useFonts({
+      'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+      'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    });
+  
+    if (!fontsLoaded) {
+      return <AppLoading />;
+    }
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
@@ -41,36 +51,26 @@ const SecondScreen = ({ }: any) => {
         <Text style={styles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
 
-      {/* Skip option */}
-      <TouchableOpacity onPress={() => 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'WelcomeScreen' }],
-        })}>
-        <Text style={styles.skipText}>SKIP</Text>
-      </TouchableOpacity>
+      
     </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
   },
-  header: {
-    backgroundColor: '#6A1B9B', // Purple background for header
-  },
   image: {
     width: '80%',
     height: 250,
     alignSelf: 'center',
-    marginTop: 200,
+    marginTop:'20%'  
   },
   title: {
     fontSize: 24, 
     fontWeight: '600', 
+    fontFamily: 'heading', 
     textAlign: 'center',
     marginTop: 60,
     lineHeight: 32, 
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'left',
     fontSize: 16,
-    // fontFamily: 'Arial', 
+    fontFamily: 'text', 
     color: '#555', 
     marginHorizontal: 40,
     marginTop: 10,
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 'auto',
-    marginBottom: 30,
+    marginBottom:'10%',
     paddingHorizontal: 50,
     backgroundColor: '#fff',
   },
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: '#007AFF', // Button blue color
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -126,10 +126,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
-  skipText: {
-    color: '#555', // Grey color for skip text
-    fontSize: 16,
-  },
 });
-
 export default SecondScreen;

@@ -1,16 +1,16 @@
-
-
 import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Dimensions, Image, StyleSheet } from 'react-native';
 
 const Index = () => {
-
   const navigation: any = useNavigation();  
+
+  // Avoid conditionally rendering hooks
   useEffect(() => {
-    // Navigate to another screen after 10 seconds
     const timer = setTimeout(() => {
-      navigation.navigate('FirstScreen'); // Adjust navigation target
+      if (navigation) {  // Ensure navigation is ready
+        navigation.navigate('FirstScreen'); // Adjust navigation target
+      }
     }, 5000); // 5 seconds
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
@@ -18,22 +18,23 @@ const Index = () => {
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
-      <Image
-        source={require('../assets/images/loanguru.png')} // Adjust image path
-        style={styles.logo}
-        resizeMode="contain"
-      />
-      
-      {/* Secure Icon */}
-      <Image
-        source={require('../assets/images/secure.png')} // Adjust image path
-        style={styles.icon}
-        resizeMode="contain"
-      />
-      
-      {/* 100% Secure App Text */}
-      <Text style={styles.text}>100% SECURE APP</Text>
+      {/* Centered Loan Image */}
+      <View style={styles.centerContent}>
+        <Image
+          source={require('../assets/images/loan.jpg')} // Adjust image path
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+
+      {/* Footer Image (Secure Icon) */}
+      <View style={styles.footer}>
+        <Image
+          source={require('../assets/images/image.png')} // Adjust image path
+          style={styles.icon}
+          resizeMode="contain"
+        />
+      </View>
     </View>
   );
 };
@@ -41,25 +42,27 @@ const Index = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'space-between', // Space between the logo and the footer
+    alignItems: 'center', // Center items horizontally
+    backgroundColor: '#fff', // Optional: set background color
+  },
+  centerContent: {
+    flex: 1, // Take up available space for the center content
+    justifyContent: 'center', // Vertically center the loan.jpg image
     alignItems: 'center',
-    backgroundColor: '#fff', // White background
   },
-   logo: {
-    //  width: ,
-    //  height: 100,
-     marginTop:'50%',
-   },
+  logo: {
+    width: Dimensions.get('window').width * 0.8, // Set the logo to 80% of the screen width
+    height: Dimensions.get('window').height * 0.4, // Set the height to 40% of the screen height
+  },
+  footer: {
+    justifyContent: 'flex-end', // Ensure it's pinned to the bottom
+    alignItems: 'center',
+    paddingBottom: 20, // Optional: Add padding for the footer
+  },
   icon: {
-    width: 50,
-    height: 50,
-    marginBottom: 10, 
-    marginTop:'80%',
-  },
-  text: {
-    fontSize: 16,
-    color: '#000',
-    
+    width: 80, // Width of the footer icon
+    height: 80, // Height of the footer icon
   },
 });
 

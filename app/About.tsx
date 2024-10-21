@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Or any other icon library you prefer
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const data = [
   { id: '1', name: 'Intro', icon: 'battery' },
@@ -14,9 +16,18 @@ const data = [
 ];
 
 const About = () => {
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   const renderItem = ({ item }: { item: { id: string; name: string; icon: string } }) => (
     <View style={styles.gridItem}>
-      <Icon name={item.icon} size={30} color="#6A1B9A" />
+      <Icon name={item.icon} size={30} color="#47D147" />
       <Text style={styles.itemText}>{item.name}</Text>
     </View>
   );
@@ -42,13 +53,13 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: '#F5F5F5',
     borderRadius:30,
-    marginBottom:20,
+    // marginBottom:20,
   },
   header: {
     fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
+    marginLeft:20,
+    marginBottom:10,
+    fontFamily:'heading',
   },
   grid: {
     justifyContent: 'center',
@@ -64,6 +75,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333',
     textAlign: 'center',
+    fontFamily:'text',
   },
 });
 

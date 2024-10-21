@@ -1,30 +1,35 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet,StatusBar, FlatList } from 'react-native';
+import { useNavigation } from 'expo-router';
 import Header from './Header'; 
-// import ParallaxCarousel from './ParallaxCarousel';
 import Loan from './Loan';
 import QuickLink from './QuickLink';
 import About from './About';
 import TotalMember from './TotalMember';
 import Job from './Job';
+import ImageScreen from './ImageScreen';
 
 const DashboardScreen = () => {
+
+    const navigation: any = useNavigation();
     // Data array for the FlatList
     const data = [
-        { id: '1', component: <Loan /> },
-        { id: '2', component: <QuickLink /> },
-        { id: '3', component: <TotalMember /> },
-        { id: '4', component: <Job /> },
-        { id: '5', component: <About /> },
+        { id: '1', component: <ImageScreen /> }, 
+        { id: '2', component: <Loan /> },
+        { id: '3', component: <QuickLink /> },
+        { id: '4', component: <TotalMember /> },
+        { id: '5', component: <Job /> },
+        { id: '6', component: <About /> },
     ];
 
     // Render item function for the FlatList
-    const renderItem = ({ item }: any)  => (
+    const renderItem = ({ item }: any) => (
         <View style={styles.itemContainer}>{item.component}</View>
     );
 
     return (
         <>
+        <StatusBar backgroundColor="#47D147" barStyle="light-content" />
             <View style={styles.header}>
                 <Header />
             </View>
@@ -33,7 +38,6 @@ const DashboardScreen = () => {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 contentContainerStyle={styles.container}
-                // Optional: You can add more props like padding or margin here
             />
         </>
     );
@@ -49,7 +53,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#e5d0ff',
     },
     itemContainer: {
-        marginBottom: 10, // Add margin between items if needed
+        marginBottom: 10, 
     },
 });
 

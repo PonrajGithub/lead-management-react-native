@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import {ToastAndroid, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Index from '.';
+import axios from 'axios';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const InstituteScreen = () => {
   const [name, setName] = useState('');
@@ -12,6 +15,7 @@ const InstituteScreen = () => {
   const [institutionname, setInstitutionName] = useState('');
   const [occupation, setOccupation] = useState('');
   const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
   const [nameError, setNameError] = useState('');
   const [spouseNameError, setSpouseNameError] = useState('');
@@ -22,14 +26,24 @@ const InstituteScreen = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
 
+  const [loading, setLoading] = useState(false);
   const navigation :any = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const handleCreateAccount = () => {
+  const handleCreateAccount = async () => {
     let valid = true;
 
     // Name validation
@@ -57,11 +71,32 @@ const InstituteScreen = () => {
     }
 
     // DOB
-    if( dob === '') {
+    if (dob === '') {
       setDOBError('DOB is required.');
       valid = false;
-    } else{
-      setDOBError('');
+    } else {
+      // Regular expression to check for valid date format (YYYY-MM-DD)
+      const dobRegex = /^\d{2}-\d{2}-\d{4}$/;
+  
+      // Check if DOB matches the format
+      if (!dobRegex.test(dob)) {
+        setDOBError('Invalid DOB format. Use DD-MM-YYYY.');
+        valid = false;
+      } else {
+        // Parse the date and check age (e.g., user must be 18 or older)
+        const dobDate = new Date(dob);
+        const today = new Date();
+        const age = today.getFullYear() - dobDate.getFullYear();
+        const monthDiff = today.getMonth() - dobDate.getMonth();
+  
+        if (age < 18 || (age === 18 && monthDiff < 0)) {
+          setDOBError('You must be at least 18 years old.');
+          valid = false;
+        } else {
+          // Clear the error if all checks pass
+          setDOBError('');
+        }
+      }
     }
 
     // Email validation
@@ -99,12 +134,49 @@ const InstituteScreen = () => {
       setOccupationError('');
     }
 
-    // If form is valid, proceed to next step
     if (valid) {
-      console.log({ name, spousename, mobilenumber, dob, email, institutionname, occupation, password });
-      navigation.navigate('CongratsScreen');
+      setLoading(true);
+  
+      // Using FormData to append form fields
+      let data = new FormData();
+      data.append('name', name);
+      data.append('mobilenumber', mobilenumber);
+      data.append('email', email);
+      data.append('dob', dob);
+      data.append('occupation', occupation);
+      data.append('password', password);
+  
+      try {
+        // Making the POST request and awaiting the response
+        const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Important for FormData
+          },
+        });
+  
+        console.log(response.data);
+        if (response.data.success) {
+          ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
+          // Navigate to CongratsScreen on success
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'CongratsScreen' }],
+        });
+        } else {
+          setMessage(response.data.message || 'An error occurred. Please try again.');
+        }
+      } catch (error) {
+        console.error('API error:', error);
+        ToastAndroid.show('Failed to create account. Please try again.',ToastAndroid.LONG);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      ToastAndroid.show('Please fill in all required fields.',ToastAndroid.SHORT);
     }
   };
+
+    
 
   const redirectToLogin = () => {
     navigation.navigate('LoginScreen', {Index:0});
@@ -112,7 +184,7 @@ const InstituteScreen = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
+       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <Text style={styles.text}>Name</Text>
       <TextInput
         style={styles.input}
@@ -141,9 +213,8 @@ const InstituteScreen = () => {
       <Text style={styles.text}>DOB</Text>
       <TextInput
         style={styles.input}
-        placeholder="DOB"
+        placeholder="DD-MM-YYYY"
         value={dob}
-        keyboardType="phone-pad"
         onChangeText={setDOB}
       />
       {dobError ? <Text style={styles.errorText}>{dobError}</Text> : null}
@@ -183,7 +254,7 @@ const InstituteScreen = () => {
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
-        <Text style={styles.buttonText}> CREATE INSTITUTE ACCOUNT </Text>
+        <Text style={styles.buttonText}> CREATE ACCOUNT </Text>
       </TouchableOpacity>
 
       <Text style={styles.singin}>
@@ -205,6 +276,7 @@ const styles = StyleSheet.create({
   text:{
    textAlign:'left',
    marginBottom:5,
+   fontFamily:'text'
   },
   input: {
     borderWidth: 1,
@@ -212,6 +284,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+    fontFamily:'text',
   },
   button: {
     backgroundColor: '#0061F0',
@@ -222,24 +295,28 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading',
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
+    fontFamily:'text'
   },
   link: {
     color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily:'text',
   },
   errorText: {
     color: 'red',
     textAlign:'right',
     marginBottom:5,
     fontSize: 13,
+    fontFamily:'text',
   },
 });
 

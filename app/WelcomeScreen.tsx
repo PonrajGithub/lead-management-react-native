@@ -1,18 +1,26 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const WelcomeScreen = ({ }: any) => {
   const navigation: any = useNavigation();
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
  
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6C2EB9" barStyle="light-content" />
-      <View style={styles.header} />
+      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
       <View style={styles.body}>
         <Text style={styles.welcomeText}>Welcome to Loanguru</Text>
         <Text style={styles.subText}>Your trusted partner for all loan needs.</Text>
@@ -65,10 +73,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  header: {
-    height: 50,
-    backgroundColor: '#6A1B9A', // Purple top bar
-  },
   body: {
     flex: 3,
     justifyContent: 'center',
@@ -79,10 +83,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 10,
+    fontFamily:'heading'
   },
   subText: {
     fontSize: 16,
     color: '#777',
+    fontFamily:'text'
   },
   footer: {
     flex: 1,
@@ -103,6 +109,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily:'heading'
   },
   loginButton: {
     backgroundColor: '#fff',

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'; // Assuming you're using expo for icons
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const data = [
   { id: '1', title: 'Calculator' },
@@ -14,10 +16,19 @@ const data = [
 ];
 
 const QuickLink = () => {
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   const renderItem = ({ item }: { item: { id: string; title: string } }) => (
     <TouchableOpacity style={styles.item}>
       <View style={styles.iconContainer}>
-        <FontAwesome5 name="user" size={24} color="white" />
+        <FontAwesome5 name="user" size={20} color="white" />
       </View>
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
@@ -43,13 +54,12 @@ const styles = StyleSheet.create({
     flex: 1,
     // padding: 10,
     backgroundColor:'#fff',
-    borderRadius:30,
-    marginBottom:20,
-   
+    borderRadius:30, 
   },
   heading: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading',
     marginLeft:20,
     marginTop:20,
     marginBottom: 30,
@@ -64,12 +74,13 @@ const styles = StyleSheet.create({
     width: '23%', // Adjust to fit 4 columns
     alignItems: 'center',
     marginBottom: 30,
+    fontFamily:'text',
   },
   iconContainer: {
-    backgroundColor: '#6A0DAD', // Purple background
+    backgroundColor: '#47D147', // Purple background
     borderRadius: 20,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
