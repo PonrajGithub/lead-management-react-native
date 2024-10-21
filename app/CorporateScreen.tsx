@@ -1,27 +1,38 @@
 import React, { useState } from 'react';
-import { Alert ,View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import { ToastAndroid ,View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import axios from 'axios';
+import Index from '.';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const CorporateScreen = () => {
   const [name, setName] = useState('');
-  const [company, setCompany] = useState('');
-  const [designation, setDesignation] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [company_name, setCompanyName] = useState('');
+  const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState('');
-  const [c_password, setCPassword] = useState('');
-
+  const [message, setMessage] = useState('');
+ 
   const [nameError, setNameError] = useState('');
-  const [companyError, setCompanyError] = useState('');
-  const [designationError, setDesignationError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
+  const [company_nameError, setCompany_nameError] = useState('');
+  const [designationError, setDesignationError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [cPasswordError, setCPasswordError] = useState('');
+ 
  
   const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const validateEmail = (email: string) => {
     // Simple regex to check for valid email format
@@ -40,11 +51,11 @@ const CorporateScreen = () => {
     setNameError('');
   }
   // Company
-  if (company ===''){
-    setCompanyError('Company Name is required');
+  if (company_name ===''){
+    setCompany_nameError('Company Name is required');
     valid = false;
   }  else{
-    setCompanyError('');
+    setCompany_nameError('');
   }
    // Designation
   if (designation ===''){
@@ -80,49 +91,48 @@ const CorporateScreen = () => {
     setPasswordError('');
   }
 
-  if (c_password === '') {
-    setCPasswordError('Confirmation password is required.');
-    valid = false;
-  } else if (c_password !== password) {
-    setCPasswordError('Passwords do not match.');
-    valid = false;
-  } else {
-    setCPasswordError('');
-  }
-
   // If form is valid, proceed to login
   if (valid) {
     setLoading(true);
 
+    // Using FormData to append form fields
+    let data = new FormData();
+    data.append('name', name);
+    data.append('mobilenumber', mobilenumber);
+    data.append('email', email);
+    data.append('company_name', company_name);
+    data.append('designation', designation);
+    data.append('password', password);
+
     try {
       // Making the POST request and awaiting the response
-      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
-        name,
-        company,
-        designation,
-        mobilenumber,
-        email,
-        password ,
-        c_password
+      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important for FormData
+        },
       });
 
-      // Handle success response
+      console.log(response.data);
       if (response.data.success) {
-        Alert.alert('Success', 'Account created successfully!', [
-          { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
-        ]);
+        ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
+        // Navigate to CongratsScreen on success
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'CongratsScreen' }],
+      });
       } else {
-        Alert.alert('Error', response.data.message || 'An error occurred. Please try again.');
+        setMessage(response.data.message || 'An error occurred. Please try again.');
       }
     } catch (error) {
-      // Handle error response
-      Alert.alert('Error', 'Failed to create account. Please try again.');
       console.error('API error:', error);
+      ToastAndroid.show('Failed to create account. Please try again.',ToastAndroid.LONG);
     } finally {
       setLoading(false);
     }
+  } else {
+    ToastAndroid.show('Please fill in all required fields.',ToastAndroid.SHORT);
   }
-  };
+};
 
   const redirectToLogin = () => {
     navigation.navigate('LoginScreen')
@@ -140,13 +150,13 @@ const CorporateScreen = () => {
       />
       {nameError ? <Text style={styles.errorText}>{nameError}</Text> : null}
       <Text style={styles.text}>Company Name</Text>
-      <TextInput
+       <TextInput
         style={styles.input}
         placeholder="Company Name"
-        value={company}
-        onChangeText={setCompany}
+        value={company_name}
+        onChangeText={setCompanyName}
       />
-       {companyError ? <Text style={styles.errorText}>{companyError}</Text> : null}
+      {company_nameError ? <Text style={styles.errorText}>{company_nameError}</Text> : null}
       <Text style={styles.text}>Designation</Text>
        <TextInput
         style={styles.input}
@@ -182,17 +192,6 @@ const CorporateScreen = () => {
         onChangeText={setPassword}
       /> 
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text>: null}
-
-      <Text style={styles.text}>Confirm Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Confirm Password"
-        value={c_password}
-        secureTextEntry
-        onChangeText={setCPassword}
-      />
-      {cPasswordError ? <Text style={styles.errorText}>{cPasswordError}</Text> : null}
-
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
         <Text style={styles.buttonText}> CREATE ACCOUNT </Text>
       </TouchableOpacity>
@@ -217,6 +216,7 @@ const styles = StyleSheet.create({
   text:{
    textAlign:'left',
    marginBottom:5,
+   fontFamily:'text'
   },
   input: {
     borderWidth: 1,
@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+    fontFamily:'text'
   },
   button: {
     backgroundColor: '#0061F0',
@@ -234,11 +235,12 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading',
   },
   singin: {
     fontSize: 15,
-    fontWeight: '500',
+    fontFamily:'text',
     textAlign: 'center',
     marginTop: 15,
   },
@@ -246,12 +248,14 @@ const styles = StyleSheet.create({
     color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily:'text'
   },
   errorText: {
     color: 'red',
     textAlign:'right',
     marginBottom:5,
     fontSize: 13,
+    fontFamily:'text'
   },
 });
 

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import {ToastAndroid, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Index from '.';
 import axios from 'axios';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const InstituteScreen = () => {
   const [name, setName] = useState('');
@@ -26,6 +28,15 @@ const InstituteScreen = () => {
 
   const [loading, setLoading] = useState(false);
   const navigation :any = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -126,35 +137,46 @@ const InstituteScreen = () => {
     if (valid) {
       setLoading(true);
   
+      // Using FormData to append form fields
+      let data = new FormData();
+      data.append('name', name);
+      data.append('mobilenumber', mobilenumber);
+      data.append('email', email);
+      data.append('dob', dob);
+      data.append('occupation', occupation);
+      data.append('password', password);
+  
       try {
-        const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
-          name,
-          spouse_name: spousename, 
-          mobilenumber, 
-          dob,
-          email,
-          institution_name: institutionname, 
-          occupation,
-          password,
+        // Making the POST request and awaiting the response
+        const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', data, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Important for FormData
+          },
         });
   
-        // Handle success response
+        console.log(response.data);
         if (response.data.success) {
-          setMessage('Account created successfully!'), [
-            { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
-          ];
+          ToastAndroid.show('Request sent successfully!', ToastAndroid.SHORT);
+          // Navigate to CongratsScreen on success
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'CongratsScreen' }],
+        });
         } else {
-          setMessage( response.data.message || 'An error occurred. Please try again.');
+          setMessage(response.data.message || 'An error occurred. Please try again.');
         }
       } catch (error) {
-        // Handle error response
-        setMessage('Failed to create account. Please try again.');
         console.error('API error:', error);
+        ToastAndroid.show('Failed to create account. Please try again.',ToastAndroid.LONG);
       } finally {
         setLoading(false);
       }
+    } else {
+      ToastAndroid.show('Please fill in all required fields.',ToastAndroid.SHORT);
     }
   };
+
+    
 
   const redirectToLogin = () => {
     navigation.navigate('LoginScreen', {Index:0});
@@ -254,6 +276,7 @@ const styles = StyleSheet.create({
   text:{
    textAlign:'left',
    marginBottom:5,
+   fontFamily:'text'
   },
   input: {
     borderWidth: 1,
@@ -261,6 +284,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+    fontFamily:'text',
   },
   button: {
     backgroundColor: '#0061F0',
@@ -271,24 +295,28 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading',
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
+    fontFamily:'text'
   },
   link: {
     color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily:'text',
   },
   errorText: {
     color: 'red',
     textAlign:'right',
     marginBottom:5,
     fontSize: 13,
+    fontFamily:'text',
   },
 });
 

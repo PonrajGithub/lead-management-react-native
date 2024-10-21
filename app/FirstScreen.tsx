@@ -2,11 +2,16 @@ import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useFonts } from 'expo-font';
 
 const FirstScreen = ({ }: any) => {
     const navigation: any = useNavigation();
 
+    // Loading custom fonts
+    const [fontsLoaded] = useFonts({
+      'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+      'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    });
 
     useEffect(() => {
       const checkAppState = async () => {
@@ -14,16 +19,14 @@ const FirstScreen = ({ }: any) => {
           // Check if it's the first launch
           const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
           if (isFirstLaunch === null) {
-            // First launch, proceed through First, Second, Third Screens
             return;
           }
-  
-          // Check if user data exists (not first launch)
+
+          // Check if user data exists
           const storedData = await AsyncStorage.getItem('@storage_user_data');
           if (storedData !== null) {
             const parsedData = JSON.parse(storedData);
-            const token = parsedData?.data?.token; // Assuming you are storing a token
-            console.log(token);
+            const token = parsedData?.data?.token;
             if (token) {
               // Token exists, navigate to DashboardScreen
               return navigation.reset({
@@ -32,20 +35,26 @@ const FirstScreen = ({ }: any) => {
               });
             }
           }
-  
-          // No token found or no user data, navigate to WelcomeScreen
+
+          // No token found, navigate to WelcomeScreen
           navigation.reset({
             index: 0,
             routes: [{ name: 'WelcomeScreen' }],
           });
-  
+
         } catch (error) {
           console.error('Error checking app state:', error);
         }
       };
-  
+
+      // Execute app state check
       checkAppState();
     }, [navigation]);
+
+    // Loading state for fonts
+    if (!fontsLoaded) {
+      return null; // Return null for the loading state to avoid re-render issues
+    }
 
   //   useEffect(  () => {
   //   const checkUserData = async () => {
@@ -107,6 +116,13 @@ const FirstScreen = ({ }: any) => {
         <Text style={styles.nextButtonText}>NEXT</Text>
       </TouchableOpacity>
 
+      <TouchableOpacity
+      
+        onPress={() => navigation.navigate('WelcomeScreen')}
+      >
+        <Text style={styles.skip}>Skip</Text>
+      </TouchableOpacity>
+
     </View>
     </View>
   );
@@ -124,12 +140,12 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 250,
     alignSelf: 'center',
-    marginTop: 200,
+   marginTop:'20%'
   },
   title: {
     fontSize: 24, 
     fontWeight: '600', 
-    // fontFamily: 'Helvetica', 
+    fontFamily: 'heading', 
     textAlign: 'center',
     marginTop: 60,
     lineHeight: 32, 
@@ -137,7 +153,7 @@ const styles = StyleSheet.create({
   description: {
     textAlign: 'left',
     fontSize: 16,
-    // fontFamily: 'Arial', 
+    fontFamily: 'text', 
     color: '#555', 
     marginHorizontal: 40,
     marginTop: 10,
@@ -148,7 +164,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 'auto',
-    marginBottom: 30,
+    marginBottom: '10%',
     paddingHorizontal: 50,
     backgroundColor: '#fff',
   },
@@ -172,7 +188,7 @@ const styles = StyleSheet.create({
   nextButton: {
     backgroundColor: '#007AFF', // Button blue color
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     borderRadius: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -185,6 +201,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  skip:{
+    color:'black'
+  }
 });
 
 

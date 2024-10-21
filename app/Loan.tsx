@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'; // Assuming you're using expo for icons
 import { WebView } from 'react-native-webview';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const data = [
   { id: '1', title: 'Unsecured', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/' },
@@ -10,13 +12,24 @@ const data = [
   { id: '4', title: 'OD/CC', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/' },
   { id: '5', title: 'Project', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/' },
   { id: '6', title: 'Education', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
-  { id: '7', title: 'Property', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
-  { id: '8', title: 'Car', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
+  { id: '7', title: 'Property', link: '' },
+  { id: '8', title: 'Car', link: '' },
 ];
+
+
 
 const Loan = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLink, setSelectedLink] = useState('');
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const handlePress = (link: string) => {
     setSelectedLink(link);
@@ -30,7 +43,7 @@ const Loan = () => {
   const renderItem = ({ item }: { item: { id: string; title: string; link: string } }) => (
     <TouchableOpacity style={styles.item} onPress={() => handlePress(item.link)}>
       <View style={styles.iconContainer}>
-        <FontAwesome5 name="user" size={24} color="white" />
+        <FontAwesome5 name="user" size={20} color="white" />
       </View>
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
@@ -73,7 +86,8 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontSize: 18,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading',
     marginLeft: 30,
     marginTop: 20,
     marginBottom: 30,
@@ -90,10 +104,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   iconContainer: {
-    backgroundColor: '#6A0DAD', // Purple background
+    backgroundColor: '#47D147',
     borderRadius: 20,
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -101,6 +115,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 12,
     textAlign: 'center',
+    fontFamily:'text',
   },
   closeButton: {
     position: 'absolute',

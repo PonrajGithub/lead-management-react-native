@@ -1,28 +1,39 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import {ToastAndroid, View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from 'expo-router';
+import Index from '.';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
+
 
 const OtherScreen = () => {
   const [name, setName] = useState('');
   const [mobilenumber, setMobileNumber] = useState('');
   const [email, setEmail] = useState('');
-  const [company_name, setCompany] = useState('');
+  const [company_name, setCompanyName] = useState('');
   const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
+  
 
 
   const [nameError, setNameError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [company_nameError, setCompanyError] = useState('');
+  const [company_nameError, setCompany_nameError] = useState('');
   const [designationError, setDesignationError] = useState('');
   const [passwordError, setPasswordError] = useState('');
-  const [cPasswordError, setCPasswordError] = useState('');
 
   const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const validateEmail = (email: string) => {
     // Simple regex to check for valid email format
@@ -62,10 +73,10 @@ const OtherScreen = () => {
 
    // Company
    if (company_name ===''){
-    setCompanyError('Company Name is required');
+    setCompany_nameError('Company Name is required');
     valid = false;
   }  else{
-    setCompanyError('');
+    setCompany_nameError('');
   }
    // Designation
   if (designation ===''){
@@ -86,34 +97,44 @@ const OtherScreen = () => {
   if (valid) {
     setLoading(true);
 
+    // Using FormData to append form fields
+    let data = new FormData();
+    data.append('name', name);
+    data.append('mobilenumber', mobilenumber);
+    data.append('email', email);
+    data.append('company_name', company_name);
+    data.append('designation', designation);
+    data.append('password', password);
+
     try {
       // Making the POST request and awaiting the response
-      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', {
-        name,
-        mobilenumber,
-        email,
-        company_name,
-        designation,
-        password,
+      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Important for FormData
+        },
       });
 
-      // Handle success response
+      console.log(response.data);
       if (response.data.success) {
-        setMessage('Account created successfully!'), [
-          { text: 'OK', onPress: () => navigation.navigate('CongratsScreen') },
-        ];
+        ToastAndroid.show('Account created successfully!',ToastAndroid.LONG);
+        // Navigate to CongratsScreen on success
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'CongratsScreen' }],
+      });
       } else {
-        setMessage( response.data.message || 'An error occurred. Please try again.');
+        ToastAndroid.show(response.data.message || 'An error occurred. Please try again.',ToastAndroid.LONG);
       }
     } catch (error) {
-      // Handle error response
-      setMessage( 'Failed to create account. Please try again.');
       console.error('API error:', error);
+      ToastAndroid.show('Failed to create account. Please try again.',ToastAndroid.LONG);
     } finally {
       setLoading(false);
     }
+  } else {
+    ToastAndroid.show('Please fill in all required fields.',ToastAndroid.LONG);
   }
-  };
+};
 
   const redirectToLogin = () => {
     navigation.navigate('LoginScreen')
@@ -153,7 +174,7 @@ const OtherScreen = () => {
         style={styles.input}
         placeholder="Company Name"
         value={company_name}
-        onChangeText={setCompany}
+        onChangeText={setCompanyName}
       />
       {company_nameError ? <Text style={styles.errorText}>{company_nameError}</Text> : null}
       <Text style={styles.text}>Designation</Text>
@@ -198,6 +219,7 @@ const styles = StyleSheet.create({
   text:{
    textAlign:'left',
    marginBottom:5,
+   fontFamily:'text'
   },
   input: {
     borderWidth: 1,
@@ -205,6 +227,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+    fontFamily:'text',
   },
   button: {
     backgroundColor: '#0061F0',
@@ -215,24 +238,28 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'heading'
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
+    fontFamily:'text',
   },
   link: {
     color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily:'text'
   },
   errorText: {
     color: 'red',
     textAlign:'right',
     marginBottom:5,
     fontSize: 13,
+    fontFamily:'text',
   },
 });
 

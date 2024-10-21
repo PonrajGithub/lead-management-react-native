@@ -1,13 +1,17 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
+import { View, StyleSheet,StatusBar, FlatList } from 'react-native';
+import { useNavigation } from 'expo-router';
 import Header from './Header'; 
 import Loan from './Loan';
 import QuickLink from './QuickLink';
 import About from './About';
 import TotalMember from './TotalMember';
 import Job from './Job';
-import ImageScreen from './ImageScreen';  
+import ImageScreen from './ImageScreen';
+
 const DashboardScreen = () => {
+
+    const navigation: any = useNavigation();
     // Data array for the FlatList
     const data = [
         { id: '1', component: <ImageScreen /> }, 
@@ -25,6 +29,7 @@ const DashboardScreen = () => {
 
     return (
         <>
+        <StatusBar backgroundColor="#47D147" barStyle="light-content" />
             <View style={styles.header}>
                 <Header />
             </View>

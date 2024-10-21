@@ -4,20 +4,29 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const Header = () => {
     const [menuVisible, setMenuVisible] = useState(false);
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState('');
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [message, setMessage] = useState('');
     const navigation: any = useNavigation();
+
+    const [fontsLoaded] = useFonts({
+        'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+        'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+      });
+    
+      if (!fontsLoaded) {
+        return <AppLoading />;
+      }
 
         useEffect(() => {
             const fetchTokenAndUserName = async () => {
                 try {
                   // Only fetch if the user is logged in
-                  if (isLoggedIn) {
                     const storedToken = await AsyncStorage.getItem('@storage_user_token');
                     console.log('Stored Token:', storedToken); // Log to check if token is retrieved
                     if (storedToken) {
@@ -38,7 +47,6 @@ const Header = () => {
                     } else {
                       console.error('Token not found');
                     }
-                  }
                 } catch (error) {
                   console.error('Error fetching user info:', error);
                   Alert.alert('Error', 'Failed to fetch user details. Please try again.');
@@ -46,7 +54,7 @@ const Header = () => {
               };
             
               fetchTokenAndUserName();
-            }, [isLoggedIn]);
+            }, [isLoggedIn, userName]);
 
     const handleLogout = async () => {
         try {
@@ -115,8 +123,8 @@ const Header = () => {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        backgroundColor: '#6A1B9A',
-        paddingTop: '15%',
+        backgroundColor: '#6CB4EE',
+        paddingTop: '10%',
         paddingBottom: 20,
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -127,8 +135,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     name: {
-        color: '#FFFF',
+        color: 'black',
         fontSize: 20,
+        fontFamily:'heading'
     },
     icon: {
         paddingHorizontal: 10,

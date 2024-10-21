@@ -1,12 +1,21 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const WelcomeScreen = ({ }: any) => {
   const navigation: any = useNavigation();
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
  
 
   return (
@@ -74,10 +83,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#000',
     marginBottom: 10,
+    fontFamily:'heading'
   },
   subText: {
     fontSize: 16,
     color: '#777',
+    fontFamily:'text'
   },
   footer: {
     flex: 1,
@@ -98,6 +109,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily:'heading'
   },
   loginButton: {
     backgroundColor: '#fff',

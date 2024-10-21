@@ -5,10 +5,11 @@ import { useNavigation } from 'expo-router';
 import InstituteScreen from './InstituteScreen';
 import CorporateScreen from './CorporateScreen';
 import OtherScreen from './OtherScreen';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const CreateAccountScreen = () => {
   const [accountType, setAccountType] = useState(null);
-  const [accountTypeError, setAccountTypeError] = useState('');
   const [open, setOpen] = useState(false); // For controlling dropdown state
   const [items, setItems] = useState([
     { label: 'Institute', value: 'Institute' },
@@ -17,6 +18,15 @@ const CreateAccountScreen = () => {
   ]);
 
   const navigation: any = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -76,20 +86,18 @@ const styles = StyleSheet.create({
     marginTop: 40,
     textAlign: 'center',
     color: '#0061F0',
+    fontFamily:'heading'
   },
   content: {
     fontSize: 15,
-    fontWeight: '500',
     marginTop: 20,
+    fontFamily:'text'
   },
-  // text:{
-  //   textAlign:'left',
-  //   // marginTop:15,
-  //  },
   picker: {
     backgroundColor: '#fff',
     height: 50,
     marginTop: 30,
+    // fontFamily:'text',
   },
   dropdownContainer: {
     backgroundColor: '#fff',

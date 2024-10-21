@@ -1,8 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons'; // Assuming you're using expo for icons, or you can use react-native-vector-icons
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const Job = () => {
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button}>
@@ -31,10 +42,8 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: '#4B87F5',
+    backgroundColor: '#6CB4EE',
     borderRadius: 20,
-    // paddingVertical: 20,
-    // paddingHorizontal: 15,
     alignItems: 'center',
     justifyContent: 'center',
     width: 120,
@@ -45,6 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'center',
     marginTop: 8,
+    fontFamily:'heading'
   },
 });
 

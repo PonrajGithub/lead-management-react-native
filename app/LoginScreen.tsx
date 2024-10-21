@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { ScrollView, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert, View } from 'react-native';
+import { ScrollView,ToastAndroid, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert, View } from 'react-native';
 import { useNavigation } from 'expo-router';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';  // Import FontAwesome or another icon set
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -15,6 +17,15 @@ const LoginScreen = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigation: any = useNavigation();
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,6 +54,8 @@ const LoginScreen = () => {
       setPasswordError('');
     }
 
+    
+
     if (valid) {
       setLoading(true); // Show loading state
       try {
@@ -59,14 +72,18 @@ const LoginScreen = () => {
           console.log('Token stored successfully:', token);
           await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data)); // Store user data
           await AsyncStorage.setItem('isLoggedIn', 'true');
-    
-          navigation.navigate('DashboardScreen'); 
+          
+          ToastAndroid.show('Login successfully!', ToastAndroid.SHORT);
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardScreen' }],
+        });
         } else {
-          Alert.alert('Login Failed', response.data.message || 'Invalid credentials');
+          ToastAndroid.show('Login Failed', response.data.message || 'Invalid credentials');
         }
       } catch (error) {
         console.error('Login Error:', error);
-        Alert.alert('Error', 'An error occurred during login. Please try again.');
+        ToastAndroid.show('An error occurred during login. Please try again.',ToastAndroid.LONG);
       }finally {
         setLoading(false); // Hide loading state
       }
@@ -86,7 +103,7 @@ const LoginScreen = () => {
   };
 
   const redirectToCreateAccount = () => {
-    navigation.navigate('CreateAccountScreen', { index: 0 });
+    navigation.navigate('CreateAccountScreen');
   };
 
   return (
@@ -156,26 +173,26 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
   },
-  header: {
-    height: 50,
-    backgroundColor: '#6C2EB9',
-  },
+
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     marginBottom: 20,
-    marginTop: 120,
+    marginTop:'30%',
     textAlign: 'center',
     color: '#0061F0',
+    fontFamily:'heading',
   },
   content: {
     fontSize: 15,
-    fontWeight: 'medium',
-    marginBottom: 150,
+    // fontWeight: 'medium',
+    marginBottom: '20%',
+    fontFamily:'text'
   },
   text: {
     textAlign: 'left',
     marginBottom: 5,
+    fontFamily:'text',
   },
   input: {
     borderWidth: 1,
@@ -183,6 +200,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 5,
     marginBottom: 15,
+    fontFamily:'text'
   },
   passwordContainer: {
     flexDirection: 'row',
@@ -200,35 +218,40 @@ const styles = StyleSheet.create({
     color: '#007bff',
     marginBottom: 20,
     textAlign: 'right',
+    fontFamily:'text'
   },
   button: {
     backgroundColor: '#0061F0',
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 100,
+    marginTop:'20%'
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+    fontFamily:'heading'
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
+    fontFamily:'text'
   },
   link: {
     color: '#0061F0',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily:'text',
   },
   errorText: {
     color: 'red',
     textAlign: 'right',
     marginBottom: 5,
     fontSize: 13,
+    fontFamily:'text',
   },
 });
 
