@@ -28,7 +28,7 @@ const Header = () => {
                 try {
                   // Only fetch if the user is logged in
                     const storedToken = await AsyncStorage.getItem('@storage_user_token');
-                    console.log('Stored Token:', storedToken); // Log to check if token is retrieved
+                    // console.log('Stored Token:', storedToken); // Log to check if token is retrieved
                     if (storedToken) {
                       setToken(storedToken);
                       

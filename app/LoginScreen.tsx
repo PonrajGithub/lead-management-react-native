@@ -64,12 +64,12 @@ const LoginScreen = () => {
           password
         });
         
-        console.log('Login Response:', response.data); // Log the response to check its structure
+        // console.log('Login Response:', response.data); // Log the response to check its structure
     
         if (response.data.success) {
           const { token } = response.data.data;
           setIsLoggedIn(true);          await AsyncStorage.setItem('@storage_user_token', token); 
-          console.log('Token stored successfully:', token);
+          // console.log('Token stored successfully:', token);
           await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data)); // Store user data
           await AsyncStorage.setItem('isLoggedIn', 'true');
           
@@ -91,7 +91,7 @@ const LoginScreen = () => {
 
       const checkStorage = async () => {
         const token = await AsyncStorage.getItem('@storage_user_token');
-        console.log('Debug: Token from AsyncStorage:', token);
+        // console.log('Debug: Token from AsyncStorage:', token);
       };
       
       checkStorage();
