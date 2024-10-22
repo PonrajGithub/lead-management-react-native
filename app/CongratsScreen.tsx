@@ -12,9 +12,7 @@ const CongratsScreen = () =>  {
       'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
     });
   
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
+   
   useEffect(() => {
     // Navigate to Dashboard after 10 seconds
     const timer = setTimeout(() => {
@@ -24,6 +22,10 @@ const CongratsScreen = () =>  {
     // Clean up the timer on unmount
     return () => clearTimeout(timer);
   }, [navigation]);
+  
+  if (!fontsLoaded) {
+    return null; // Return null for the loading state to avoid re-render issues
+  }
 
   return (
     <SafeAreaView style={styles.container}>

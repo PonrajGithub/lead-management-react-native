@@ -12,6 +12,7 @@ const FirstScreen = ({ }: any) => {
       'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
       'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
     });
+    
 
     useEffect(() => {
       const checkAppState = async () => {

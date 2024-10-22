@@ -21,7 +21,7 @@ const Index = () => {
       {/* Centered Loan Image */}
       <View style={styles.centerContent}>
         <Image
-          source={require('../assets/images/loan.jpg')} // Adjust image path
+          source={require('../assets/images/loan.png')} // Adjust image path
           style={styles.logo}
           resizeMode="contain"
         />

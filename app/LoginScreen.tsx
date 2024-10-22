@@ -76,7 +76,7 @@ const LoginScreen = () => {
           ToastAndroid.show('Login successfully!', ToastAndroid.SHORT);
           navigation.reset({
             index: 0,
-            routes: [{ name: 'DashboardScreen' }],
+            routes: [{ name: 'DashboardScreen' }],  
         });
         } else {
           ToastAndroid.show('Login Failed', response.data.message || 'Invalid credentials');

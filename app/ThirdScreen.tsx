@@ -11,10 +11,7 @@ const ThirdScreen = ({ }: any) => {
       'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
       'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
     });
-  
-    if (!fontsLoaded) {
-      return <AppLoading />;
-    }
+
 
     useEffect( () => {
       const handleFinishIntro = async () => {
@@ -29,6 +26,10 @@ const ThirdScreen = ({ }: any) => {
         }
     }; handleFinishIntro();
     }, [navigation]);
+
+    if (!fontsLoaded) {
+      return null; // Return null for the loading state to avoid re-render issues
+    }
 
   return (
     <View style={styles.container}>

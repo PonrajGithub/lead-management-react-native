@@ -118,6 +118,7 @@ const OtherScreen = () => {
       if (response.data.success) {
         ToastAndroid.show('Account created successfully!',ToastAndroid.LONG);
         // Navigate to CongratsScreen on success
+        console.log(response.data);
         navigation.reset({
           index: 0,
           routes: [{ name: 'CongratsScreen' }],
