@@ -20,7 +20,7 @@ const WelcomeScreen = ({ }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+      <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
       <View style={styles.body}>
         <Text style={styles.welcomeText}>Welcome to Loanguru</Text>
         <Text style={styles.subText}>Your trusted partner for all loan needs.</Text>
@@ -71,8 +71,7 @@ const WelcomeScreen = ({ }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-  },
+    backgroundColor: '#f5f5f5',  },
   body: {
     flex: 3,
     justifyContent: 'center',
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#000',
+    color: '#1e3a8a',
     marginBottom: 10,
     fontFamily:'heading'
   },
@@ -98,11 +97,16 @@ const styles = StyleSheet.create({
   },
   createAccountButton: {
     backgroundColor: '#fff',
-    borderColor: '#000',
+    borderColor: '#1e3a8a',
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    borderRadius: 5,
+    borderRadius: 10,
     marginBottom: 20,
   },
   createAccountText: {
@@ -113,11 +117,17 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     backgroundColor: '#fff',
-    borderColor: '#000',
+    borderColor: '#1e3a8a',
     borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
     paddingVertical: 15,
     paddingHorizontal: 40,
-    borderRadius: 5,
+    borderRadius: 10,
+    marginBottom: 20,
   },
   loginText: {
     color: '#000',

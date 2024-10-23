@@ -37,7 +37,7 @@ const CreateAccountScreen = () => {
 
   return (
       <View style={styles.container}>
-         <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+         <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
         <Text style={styles.title}>Create Account</Text>
         <Text style={styles.content}>Open an account with a few details</Text>
         {/* <Text style={styles.text}>Select User Type</Text> */}
@@ -69,10 +69,10 @@ const CreateAccountScreen = () => {
 };
 
 // styles...
-
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
+    // backgroundColor: '#f2f6ff', 
   },
   container: {
     flex: 1,
@@ -80,33 +80,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    letterSpacing: 2,
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 40,
+    fontSize: 28, // Slightly larger title
+    marginBottom: 20,
+    marginTop: '20%',
     textAlign: 'center',
-    color: '#0061F0',
-    fontFamily:'heading'
+    color: '#1e3a8a', // Darker blue for contrast
+    fontFamily: 'heading',
   },
   content: {
-    fontSize: 15,
-    marginTop: 20,
-    fontFamily:'text'
+    fontSize: 16,
+    marginBottom: '5%',
+    textAlign: 'center',
+    color: '#64748b', // Lighter gray-blue for subheading
+    fontFamily: 'text',
   },
   picker: {
     backgroundColor: '#fff',
     height: 50,
     marginTop: 30,
-    // fontFamily:'text',
   },
   dropdownContainer: {
     backgroundColor: '#fff',
     borderColor: '#ccc',
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
-    fontSize: 13,
   },
 });
 

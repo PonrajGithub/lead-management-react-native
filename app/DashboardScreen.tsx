@@ -29,8 +29,8 @@ const DashboardScreen = () => {
 
     return (
         <>
-        <StatusBar backgroundColor="#47D147" barStyle="light-content" />
-            <View style={styles.header}>
+        <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
+            <View >
                 <Header />
             </View>
             <FlatList
@@ -49,9 +49,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#e5d0ff',
         paddingHorizontal: 10,
     },
-    header: {
-        backgroundColor: '#e5d0ff',
-    },
+
     itemContainer: {
         marginBottom: 10, 
     },

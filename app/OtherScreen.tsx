@@ -3,6 +3,7 @@ import {ToastAndroid, View, Text, TextInput, TouchableOpacity, StyleSheet, Statu
 import axios from 'axios';
 import { useNavigation } from 'expo-router';
 import Index from '.';
+import { FontAwesome } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
@@ -14,8 +15,7 @@ const OtherScreen = () => {
   const [company_name, setCompanyName] = useState('');
   const [designation, setDesignation] = useState('');
   const [password, setPassword] = useState('');
-  
-
+  const [showPassword, setShowPassword] = useState(false);
 
   const [nameError, setNameError] = useState('');
   const [mobilenumberError, setMobileNumberError] = useState('');
@@ -143,7 +143,7 @@ const OtherScreen = () => {
 
   return (
     <View style={styles.container}>
-       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+       <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
         <Text style={styles.text}>Name</Text>
       <TextInput
         style={styles.input}
@@ -187,13 +187,22 @@ const OtherScreen = () => {
       />      
        {designationError ? <Text style={styles.errorText}>{designationError}</Text> : null}
       <Text style={styles.text}>Password</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        value={password}
-        secureTextEntry
-        onChangeText={setPassword}
-      /> 
+      <View style={styles.passwordContainer}>
+        <TextInput
+          style={styles.passwordInput}
+          placeholder="Password"
+          value={password}
+          secureTextEntry={!showPassword} // Toggle visibility based on state
+          onChangeText={setPassword}
+        />
+        <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+          <FontAwesome
+            name={showPassword ? 'eye' : 'eye-slash'} // Change the icon based on visibility state
+            size={20}
+            color="#000"
+          />
+        </TouchableOpacity>
+      </View>
       {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
 
       <TouchableOpacity style={styles.button} onPress={handleCreateAccount}>
@@ -216,51 +225,81 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     justifyContent: 'center',
+    backgroundColor: '#f5f5f5',
   },
-  text:{
-   textAlign:'left',
-   marginBottom:5,
-   fontFamily:'text'
+  text: {
+    textAlign: 'left',
+    marginBottom: 5,
+    fontFamily: 'text',
+    color: '#1e40af', // Adjust text color to a darker tone for better readability
+    fontSize: 14, // Consistent font size for labels
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 8,
-    borderRadius: 5,
+    padding: 12,
+    borderRadius: 10, // More rounded input fields
     marginBottom: 15,
-    fontFamily:'text',
+    backgroundColor: '#fff', // White background for inputs
+    fontFamily: 'text',
+    shadowColor: '#000', // Soft shadow for depth
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3, // Android shadow
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
+    marginBottom: 15,
+    backgroundColor: '#fff',
+    padding: 12,
+  },
+  passwordInput: {
+    flex: 1,
+    fontFamily: 'text',
   },
   button: {
-    backgroundColor: '#0061F0',
+    backgroundColor: '#1e3a8a', // Primary blue button color
     paddingVertical: 15,
-    borderRadius: 5,
+    borderRadius: 10, // Rounded button for a modern look
     alignItems: 'center',
+    marginTop: '5%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, // Shadow to elevate the button
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
-    // fontWeight: 'bold',
-    fontFamily:'heading'
+    fontWeight: 'bold',
+    fontFamily: 'heading',
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
-    fontFamily:'text',
+    color: '#64748b', // Subtle blue for the text below the button
+    fontFamily: 'text',
   },
   link: {
-    color: '#0061F0',
+    color: '#0066cc', // Matching link color with the forgot password text
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    fontFamily:'text'
+    fontFamily: 'text',
   },
   errorText: {
     color: 'red',
-    textAlign:'right',
-    marginBottom:5,
-    fontSize: 13,
-    fontFamily:'text',
+    textAlign: 'right',
+    // marginBottom: 5,
+    fontSize: 10,
+    fontFamily: 'text',
   },
 });
 

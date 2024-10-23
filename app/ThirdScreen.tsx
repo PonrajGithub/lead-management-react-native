@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppLoading from 'expo-app-loading';
+// import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const ThirdScreen = ({ }: any) => {
@@ -28,17 +28,17 @@ const ThirdScreen = ({ }: any) => {
     }, [navigation]);
 
     if (!fontsLoaded) {
-      return null; // Return null for the loading state to avoid re-render issues
+      return null; 
     }
 
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
-      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+      <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
 
       {/* Image */}
       <Image
-        source={require('../assets/images/third.png')} // Replace with your image path
+        source={require('../assets/images/third.png')} 
         style={styles.image}
         resizeMode="contain"
       />
@@ -80,9 +80,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  header: {
-    backgroundColor: '#6A1B9B', // Purple background for header
-  },
   image: {
     width: '80%',
     height: 250,
@@ -95,6 +92,7 @@ const styles = StyleSheet.create({
     fontFamily: 'heading', 
     textAlign: 'center',
     marginTop: 60,
+    color: '#1e3a8a',
     lineHeight: 32, 
   },
   description: {

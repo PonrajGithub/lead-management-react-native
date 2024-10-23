@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     title: {
-        color: '#FFFF',
+        color: '#1e3a8a',
         fontSize: 20,
         fontWeight: 'bold',
     },

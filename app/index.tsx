@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between', // Space between the logo and the footer
     alignItems: 'center', // Center items horizontally
-    backgroundColor: '#fff', // Optional: set background color
+    backgroundColor: '#fff',
   },
   centerContent: {
     flex: 1, // Take up available space for the center content

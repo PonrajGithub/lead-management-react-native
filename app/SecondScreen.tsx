@@ -17,7 +17,7 @@ const SecondScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       {/* Status bar and header */}
-      <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+      <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
 
       {/* Image */}
       <Image
@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     fontFamily: 'heading', 
     textAlign: 'center',
     marginTop: 60,
+    color: '#1e3a8a',
     lineHeight: 32, 
   },
   description: {

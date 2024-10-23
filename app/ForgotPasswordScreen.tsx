@@ -1,6 +1,8 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const ForgotPasswordScreen = () => {
   const [mobilenumber, setMobileNumber] = useState('');
@@ -10,11 +12,20 @@ const ForgotPasswordScreen = () => {
   const redirectToLogin = () => {
     navigation.navigate('LoginScreen');
   };
+
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
  
 
   return (
     <View style={styles.container}>
-       <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+       <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
       <Text style={styles.title}>Forgot Password</Text>
       <Text style={styles.content}>please Enter your phone number  to reset your password</Text>
       
@@ -49,51 +60,78 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 28, // Slightly larger title
     marginBottom: 20,
-    color : '#0061F0',
+    marginTop: '30%',
+    textAlign: 'center',
+    color: '#1e3a8a', // Darker blue for contrast
+    fontFamily: 'heading',
   },
   text:{
-    marginBottom:10,
+    textAlign: 'left',
+    marginBottom: 8,
+    color: '#1e40af', // Darker blue for input labels
+    fontFamily: 'text',
   },
   content: {
     fontSize: 16,
-    marginBottom: 100,
-    textAlign:'left',
-    lineHeight:30,
+    marginBottom: '20%',
+    textAlign: 'center',
+    color: '#64748b', // Lighter gray-blue for subheading
+    fontFamily: 'text',
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 20,
-    borderRadius: 5,
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
+    padding: 12,
+    borderRadius: 10, // More rounded input fields
+    marginBottom: 15,
+    backgroundColor: '#fff', // White background for inputs
+    fontFamily: 'text',
+    shadowColor: '#000', // Soft shadow for depth
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
   button: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 5,
+    backgroundColor: '#1e3a8a', // Primary blue button color
+    paddingVertical: 15,
+    borderRadius: 10, // Rounded button for a modern look
     alignItems: 'center',
+    marginTop: '20%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, // Shadow to elevate the button
   },
   buttonText: {
     color: '#fff',
     fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'heading',
   },
   singin: {
     fontSize: 15,
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
+    color: '#64748b', // Subtle blue for the text below the button
+    fontFamily: 'text',
   },
   link: {
-    color: '#0061F0',
+    color: '#0066cc', // Matching link color with the forgot password text
     fontWeight: 'bold',
     textDecorationLine: 'underline',
+    fontFamily: 'text',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'right',
+    marginBottom: 5,
+    fontSize: 13,
+    fontFamily: 'text',
   },
 });
 

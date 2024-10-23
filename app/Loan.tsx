@@ -41,6 +41,7 @@ const Loan = () => {
     document.querySelector('.mobile-app-call-to-action').style.display = 'none';
     document.querySelector('.mobile-app-types-of-loan').style.display = 'none';
     document.querySelector('#weglot-switcher-1').style.display = 'none';
+    document.querySelector('.cnb-action.cnb-icon-type-font').style.display = 'none';
   `;
 
   const renderItem = ({ item }: { item: { id: string; title: string; link: string } }) => (

@@ -29,7 +29,7 @@ const CongratsScreen = () =>  {
 
   return (
     <SafeAreaView style={styles.container}>
-         <StatusBar backgroundColor="#6A1B9B" barStyle="light-content" />
+         <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
       <View style={styles.content}>
         {/* Checkmark Icon */}
         <Image 
@@ -53,7 +53,7 @@ const CongratsScreen = () =>  {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f5f5f5',
     justifyContent: 'center',
     alignItems: 'center',
   },
