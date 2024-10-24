@@ -12,8 +12,8 @@ const data = [
   { id: '4', title: 'OD/CC', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/' },
   { id: '5', title: 'Project', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/' },
   { id: '6', title: 'Education', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
-  { id: '7', title: 'Property', link: '' },
-  { id: '8', title: 'Car', link: '' },
+  { id: '7', title: 'Property', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
+  { id: '8', title: 'Car', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' },
 ];
 
 
@@ -126,12 +126,19 @@ const styles = StyleSheet.create({
     top: 40,
     right: 20,
     backgroundColor: 'grey',
-    padding: 10,
-    borderRadius: 10,
+    padding: 8,
+    borderRadius: 15,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
   closeButtonText: {
     color: '#FFF',
     fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 
