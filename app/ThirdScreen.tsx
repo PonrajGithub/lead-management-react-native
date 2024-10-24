@@ -1,8 +1,6 @@
 import React,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-// import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const ThirdScreen = ({ }: any) => {
@@ -11,21 +9,6 @@ const ThirdScreen = ({ }: any) => {
       'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
       'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
     });
-
-
-    useEffect( () => {
-      const handleFinishIntro = async () => {
-        try {
-            await AsyncStorage.setItem('isFirstLaunch', 'false');
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'WelcomeScreen' }],
-            });
-        } catch (error) {
-            console.error('Error setting first launch flag:', error);
-        }
-    }; handleFinishIntro();
-    }, [navigation]);
 
     if (!fontsLoaded) {
       return null; 

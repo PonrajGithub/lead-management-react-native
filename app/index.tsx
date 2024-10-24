@@ -1,20 +1,63 @@
 import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
-import { View, Dimensions, Image, StyleSheet } from 'react-native';
+import { Text, View, Dimensions, Image, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
 
 const Index = () => {
   const navigation: any = useNavigation();  
 
-  // Avoid conditionally rendering hooks
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (navigation) {  // Ensure navigation is ready
-        navigation.navigate('FirstScreen'); // Adjust navigation target
-      }
-    }, 5000); // 5 seconds
+  // Load custom fonts
+  const [fontsLoaded] = useFonts({
+    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
+    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'),
+  });
 
-    return () => clearTimeout(timer); // Cleanup the timer on unmount
-  }, [navigation]);
+  // Check app state effect
+  useEffect(() => {
+    const checkAppState = async () => {
+      try {
+        // Check if it's the first launch
+        const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
+        if (isFirstLaunch === null) {
+          return; // Handle the first launch logic here if necessary
+        }
+
+        // Check if user data exists
+        const storedData = await AsyncStorage.getItem('@storage_user_data');
+        if (storedData !== null) {
+          const parsedData = JSON.parse(storedData);
+          const token = parsedData?.data?.token;
+          if (token) {
+            // Token exists, navigate to DashboardScreen
+            return navigation.reset({
+              index: 0,
+              routes: [{ name: 'DashboardScreen' }],
+            });
+          }
+        }
+
+        // No token found, navigate to WelcomeScreen
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'WelcomeScreen' }],
+        });
+
+      } catch (error) {
+        console.error('Error checking app state:', error);
+      }
+    };
+
+    // Check if fonts are loaded before executing app state check
+    if (fontsLoaded) {
+      checkAppState();
+    }
+  }, [navigation, fontsLoaded]); // Add fontsLoaded to the dependency array
+
+  // Render loading state if fonts are not loaded
+  if (!fontsLoaded) {
+    return <View style={styles.loadingContainer}><Text>Loading...</Text></View>; // Show a loading state
+  }
 
   return (
     <View style={styles.container}>
@@ -40,6 +83,11 @@ const Index = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     justifyContent: 'space-between', // Space between the logo and the footer
@@ -48,7 +96,7 @@ const styles = StyleSheet.create({
   },
   centerContent: {
     flex: 1, // Take up available space for the center content
-    justifyContent: 'center', // Vertically center the loan.jpg image
+    justifyContent: 'center', // Vertically center the loan image
     alignItems: 'center',
   },
   logo: {

@@ -95,13 +95,32 @@ const styles = StyleSheet.create({
     fontFamily: 'text',
   },
   picker: {
-    backgroundColor: '#fff',
-    height: 50,
-    marginTop: 30,
+    width:'89%',
+    borderWidth: 1,
+    borderColor: '#4B5563', // Updated to a dark gray border
+    padding: 12,
+    borderRadius: 10, // More rounded for a modern look
+    backgroundColor: '#E5E7EB', // Light gray background
+    fontFamily: 'text',
+    shadowColor: '#000', // Soft shadow
+    shadowOffset: { width: 0, height: 2 }, // Slightly increased shadow offset
+    shadowOpacity: 0.15, // Reduced opacity for a subtle effect
+    shadowRadius: 4, // Increased radius for a softer shadow
+    elevation: 4, // Android shadow
+    marginLeft: 20,
   },
   dropdownContainer: {
-    backgroundColor: '#fff',
-    borderColor: '#ccc',
+    backgroundColor: '#E5E7EB', // White dropdown container
+    borderColor: '#4B5563', // Light border
+    borderRadius: 10, // Rounded corners for dropdown
+    shadowColor: '#000', // Shadow for dropdown
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+    elevation: 5,
+    width:'89%',
+    marginLeft:20,
+    marginTop:5,
   },
 });
 
