@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         backgroundColor: '#6CB4EE',
-        paddingTop: '15%',
+        paddingTop: '8%',
         // paddingBottom:'3%',
         alignItems: 'center',
         justifyContent: 'space-between',

@@ -1,7 +1,8 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FirstScreen = () => {
   const navigation: any = useNavigation();
@@ -16,6 +17,42 @@ const FirstScreen = () => {
   if (!fontsLoaded) {
     return <View style={styles.loadingContainer}><Text>Loading...</Text></View>; // Show a loading state
   }
+
+  useEffect(() => {
+    const checkAppState = async () => {
+      if (!fontsLoaded) return; // Ensure fonts are loaded first
+  
+      try {
+        // Check if it's the first launch
+        const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
+        if (isFirstLaunch === null) {
+          await AsyncStorage.setItem('isFirstLaunch', 'false');
+          return; // Handle any first-launch logic here if necessary
+        }
+  
+        // Check if user data exists
+        const storedData = await AsyncStorage.getItem('@storage_user_data');
+        if (storedData) {
+          const parsedData = JSON.parse(storedData);
+          const token = parsedData?.data?.token;
+          if (token) {
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'DashboardScreen' }],
+            });
+            return;
+          }
+        }
+      } catch (error) {
+        console.error('Error checking app state:', error);
+      }
+    };
+  
+    if (fontsLoaded) {
+      checkAppState(); // Correctly call the function here
+    }
+  }, [fontsLoaded, navigation]); // Add fontsLoaded to the dependency array
+  
 
   return (
     <View style={styles.container}>
