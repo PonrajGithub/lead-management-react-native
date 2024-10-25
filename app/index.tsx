@@ -54,6 +54,17 @@ const Index = () => {
     }
   }, [navigation, fontsLoaded]); // Add fontsLoaded to the dependency array
 
+  // Avoid conditionally rendering hooks
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (navigation) {  // Ensure navigation is ready
+        navigation.navigate('FirstScreen'); // Adjust navigation target
+      }
+    }, 5000); // 5 seconds
+
+    return () => clearTimeout(timer); // Cleanup the timer on unmount
+  }, [navigation]);
+
   // Render loading state if fonts are not loaded
   if (!fontsLoaded) {
     return <View style={styles.loadingContainer}><Text>Loading...</Text></View>; // Show a loading state
