@@ -28,7 +28,7 @@ const QuickLink = () => {
   const renderItem = ({ item }: { item: { id: string; title: string } }) => (
     <TouchableOpacity style={styles.item}>
       <View style={styles.iconContainer}>
-        <FontAwesome5 name="user" size={20} color="white" />
+        <FontAwesome5 name="user" size={20} color="#1e3a8a" />
       </View>
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
@@ -52,33 +52,31 @@ const QuickLink = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 10,
+    padding: 10,
     backgroundColor:'#fff',
     borderRadius:30, 
   },
   heading: {
     fontSize: 18,
-    // fontWeight: 'bold',
     fontFamily:'heading',
-    marginLeft:20,
-    marginTop:20,
     marginBottom: 30,
   },
   row: {
-    justifyContent: 'space-around',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   flatListContent: {
     alignItems: 'center',
   },
   item: {
-    width: '23%', // Adjust to fit 4 columns
+    width: '22%', 
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: 20,
     fontFamily:'text',
   },
   iconContainer: {
-    backgroundColor: '#47D147', // Purple background
-    borderRadius: 20,
+    borderRadius: 25,
     width: 50,
     height: 50,
     alignItems: 'center',
@@ -86,8 +84,10 @@ const styles = StyleSheet.create({
   },
   itemText: {
     marginTop: 8,
-    fontSize: 12,
+    fontSize: 15,
     textAlign: 'center',
+    fontFamily: 'text',
+    color: '#333',
   },
 });
 
