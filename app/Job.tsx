@@ -28,7 +28,7 @@ const Job = () => {
 
       <TouchableOpacity style={styles.button}>
         <FontAwesome5 name="whatsapp" size={24} color="white" />
-        <Text style={styles.buttonText}>Whatsapp</Text>
+        <Text style={styles.buttonText}>What`s app</Text>
       </TouchableOpacity>
     </View>
   );
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: '#6CB4EE',
+    backgroundColor: '#1e3a8a',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

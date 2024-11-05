@@ -46,7 +46,7 @@ const DashboardScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        backgroundColor: '#e5d0ff',
+        // backgroundColor: '#e5d0ff',
         paddingHorizontal: 10,
     },
 

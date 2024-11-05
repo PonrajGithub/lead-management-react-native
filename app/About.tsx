@@ -27,7 +27,7 @@ const About = () => {
   }
   const renderItem = ({ item }: { item: { id: string; name: string; icon: string } }) => (
     <View style={styles.gridItem}>
-      <Icon name={item.icon} size={30} color="#47D147" />
+      <Icon name={item.icon} size={30} color="#1e3a8a" />
       <Text style={styles.itemText}>{item.name}</Text>
     </View>
   );
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingVertical: 20,
-    backgroundColor: '#F5F5F5',
+    // backgroundColor: '#F5F5F5',
     borderRadius:30,
     // marginBottom:20,
   },
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     marginLeft:20,
     marginBottom:10,
     fontFamily:'heading',
+    color:'#1e3a8a',
   },
   grid: {
     justifyContent: 'center',
