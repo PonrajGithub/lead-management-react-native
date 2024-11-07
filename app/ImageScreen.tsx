@@ -8,7 +8,7 @@ const ImageScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('@/assets/images/banner.png')} // Replace with your image path
+        source={require('@/assets/images/2.png')} // Replace with your image path
         style={styles.image}
         resizeMode="contain"
       />

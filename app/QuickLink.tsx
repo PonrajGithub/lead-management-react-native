@@ -1,17 +1,16 @@
 import React from 'react';
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons'; 
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Updated import
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const data = [
-  { id: '1', title: 'Calculator' , icon: 'unlock-alt'},
-  { id: '2', title: 'Job', icon: 'unlock-alt' },
-  { id: '3', title: 'Women Empowerment', icon: 'unlock-alt' },
-  { id: '4', title: 'Query', icon: 'unlock-alt' },
-  { id: '5', title: 'Insurance', icon: 'unlock-alt' },
-  { id: '6', title: 'Health Insurance', icon: 'unlock-alt'}
- 
+  { id: '1', title: 'Calculator', icon: 'calculator-variant' },
+  { id: '2', title: 'Job', icon: 'briefcase-outline' },
+  { id: '3', title: 'Women Empowerment', icon: 'human-female' },
+  { id: '4', title: 'Query', icon: 'comment-question-outline' },
+  { id: '5', title: 'Insurance', icon: 'shield-outline' },
+  { id: '6', title: 'Health Insurance', icon: 'medical-bag' }
 ];
 
 const QuickLink = () => {
@@ -27,7 +26,7 @@ const QuickLink = () => {
   const renderItem = ({ item }: { item: { id: string; title: string; icon: string } }) => (
     <TouchableOpacity style={styles.item}>
       <View style={styles.iconContainer}>
-      <FontAwesome5 name={item.icon} size={28} color="#1e3a8a" />
+      <Icon name={item.icon} size={28} color="#fff" />
       </View>
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft:20,
     marginBottom:10,
-    color:'#1e3a8a',
+    color:'#333333',
   },
   row: {
     flexDirection: 'row',
@@ -71,6 +70,8 @@ const styles = StyleSheet.create({
   item: {
     width: '30%', 
     alignItems: 'center',
+    padding: 10,
+    borderRadius: 15,
   },
   iconContainer: {
     borderRadius: 30,
@@ -79,12 +80,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 8,
+    // borderWidth: 2,
+    // borderColor: '#FF4C4C',
+    backgroundColor: '#0096FF',
   },
   itemText: {
     fontSize: 14,
     fontFamily: 'Rubik-Regular',
     textAlign: 'center',
-    color: '#333',
+    color: '#333333',
   },
 });
 

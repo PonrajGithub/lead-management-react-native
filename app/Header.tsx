@@ -38,8 +38,9 @@ const Header = () => {
                     };
 
                     const response = await axios.request(config);
-                    const name = response.data?.name || 'User'; // Default to 'User' if name is not found
+                    const name = response.data?.name || 'User'; 
                     setUserName(name);
+                    
                 } else {
                     console.error('Token not found');
                 }
@@ -69,24 +70,25 @@ const Header = () => {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        backgroundColor: '#6CB4EE',
+        backgroundColor: '#4A4A4A', // Dark grey background for the header
         paddingTop: '14%',
-        paddingBottom:'3%',
+        paddingBottom: '3%',
         alignItems: 'center',
         justifyContent: 'space-between',
     },
     title: {
-        color: '#1e3a8a',
+        color: '#FF4C4C', // Red color for the title text
         fontSize: 20,
         fontWeight: 'bold',
     },
     name: {
-        color: 'black',
+        color: '#FF4C4C', // Red color for the user name text
         fontSize: 20,
-        fontFamily:'heading'
+        fontFamily: 'heading',
     },
     icon: {
         paddingHorizontal: 10,
+        color: '#D3D3D3', // Light grey color for the icons
     },
 });
 

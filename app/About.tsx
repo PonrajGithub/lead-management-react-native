@@ -27,7 +27,7 @@ const About = () => {
   }
   const renderItem = ({ item }: { item: { id: string; name: string; icon: string } }) => (
     <View style={styles.gridItem}>
-      <Icon name={item.icon} size={30} color="#1e3a8a" />
+      <Icon name={item.icon} size={30} color="#0096FF" />
       <Text style={styles.itemText}>{item.name}</Text>
     </View>
   );

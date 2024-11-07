@@ -1,7 +1,8 @@
-import React,{useEffect} from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, StatusBar } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FirstScreen = () => {
@@ -9,28 +10,26 @@ const FirstScreen = () => {
 
   // Load custom fonts
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'),
+     'text': require('../assets/fonts/Lato/Lato-Regular.ttf'),
+    'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'), 
   });
 
   // Render loading state if fonts are not loaded
   if (!fontsLoaded) {
-    return <View style={styles.loadingContainer}><Text>Loading...</Text></View>; // Show a loading state
+    return <View style={styles.loadingContainer}><Text>Loading...</Text></View>;
   }
 
   useEffect(() => {
     const checkAppState = async () => {
-      if (!fontsLoaded) return; // Ensure fonts are loaded first
-  
+      if (!fontsLoaded) return;
+
       try {
-        // Check if it's the first launch
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
         if (isFirstLaunch === null) {
           await AsyncStorage.setItem('isFirstLaunch', 'false');
-          return; // Handle any first-launch logic here if necessary
+          return;
         }
-  
-        // Check if user data exists
+
         const storedData = await AsyncStorage.getItem('@storage_user_data');
         if (storedData) {
           const parsedData = JSON.parse(storedData);
@@ -47,46 +46,42 @@ const FirstScreen = () => {
         console.error('Error checking app state:', error);
       }
     };
-  
+
     if (fontsLoaded) {
-      checkAppState(); // Correctly call the function here
+      checkAppState();
     }
-  }, [fontsLoaded, navigation]); // Add fontsLoaded to the dependency array
-  
+  }, [fontsLoaded, navigation]);
 
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
-
-      <Image
-        source={require('../assets/images/first.jpg')}
-        style={styles.image}
-        resizeMode="contain"
-      />
-
+       <View style={styles.backgroundWrapper}>
+        <ImageBackground 
+          source={require('../assets/images/1.png')} 
+          style={styles.background}
+          resizeMode="cover"
+        >
+          </ImageBackground>
+      </View>
       <Text style={styles.title}>Find the Loan You Need</Text>
       <Text style={styles.description}>
-        Easily browse through multiple loan options, tailored to your needs. Fast approvals, flexible terms.
+        Easily browse through multiple loan options,{"\n"} 
+        tailored to your needs. Fast approvals,{"\n"}    
+                 flexible terms.
       </Text>
-
       <View style={styles.footer}>
         <View style={styles.pagination}>
           <View style={[styles.dot, styles.activeDot]} />
           <View style={styles.dot} />
           <View style={styles.dot} />
         </View>
-
+        <TouchableOpacity onPress={() => navigation.navigate('WelcomeScreen')}>
+          <Text style={styles.skip}>Skip</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.nextButton}
           onPress={() => navigation.navigate('SecondScreen')}
         >
-          <Text style={styles.nextButtonText}>NEXT</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate('WelcomeScreen')}
-        >
-          <Text style={styles.skip}>Skip</Text>
+          <Icon name="chevron-right" size={24} color="#fff" />
         </TouchableOpacity>
       </View>
     </View>
@@ -103,29 +98,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  image: {
-    width: '80%',
-    height: 250,
-    alignSelf: 'center',
-    marginTop: '20%',
+  backgroundWrapper: {
+    height: '60%',
+    width:'100%',
+    overflow: 'hidden',
+    backgroundColor: '#f0f0f0',
+    position: 'relative',
+  },
+  background: {
+    flex: 1, // This allows the image to take the full space of the wrapper
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
   title: {
-    fontSize: 24,
-    fontWeight: '600',
+    fontSize: 25,
+    fontWeight: 'bold',
     fontFamily: 'heading',
     textAlign: 'center',
-    marginTop: 60,
-    color: '#1e3a8a',
-    lineHeight: 32,
+    lineHeight: 35,
+    marginTop: 30,
+    color:'#333333',
   },
   description: {
-    textAlign: 'left',
+    textAlign: 'center',
     fontSize: 16,
     fontFamily: 'text',
-    color: '#555',
-    marginHorizontal: 40,
-    marginTop: 10,
-    lineHeight: 24,
+    marginTop: 20,
+    color:'#666666',
+    lineHeight: 26,
   },
   footer: {
     flexDirection: 'row',
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 'auto',
     marginBottom: '10%',
-    paddingHorizontal: 50,
+    paddingHorizontal: 40,
     backgroundColor: '#fff',
   },
   pagination: {
@@ -148,16 +148,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   activeDot: {
-    width: 16,
-    height: 9,
+    width: 17,
+    height: 8,
     borderRadius: 4,
-    backgroundColor: 'black',
+    backgroundColor: '#622CFD',
   },
   nextButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#622CFD',
     paddingVertical: 10,
-    paddingHorizontal: 30,
-    borderRadius: 5,
+    paddingHorizontal: 20,
+    borderRadius: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
@@ -170,7 +170,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   skip: {
-    color: 'black',
+    color: '#555',
+    fontSize: 16,
+    paddingLeft:120,
   },
 });
 

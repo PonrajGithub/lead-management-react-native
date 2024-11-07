@@ -1,6 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity,ImageBackground, SafeAreaView, Image } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
@@ -20,17 +20,25 @@ const WelcomeScreen = ({ }: any) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
+       <ImageBackground 
+      source={require('../assets/images/background.jpg')} 
+      style={styles.background}
+      resizeMode="cover"
+    >
+       <Image
+        source={require('@/assets/images/Frame.png')} // Replace with your image path
+        style={styles.image}
+        resizeMode="contain"
+      />
       <View style={styles.body}>
-        <Text style={styles.welcomeText}>Welcome to Loanguru</Text>
-        <Text style={styles.subText}>Your trusted partner for all loan needs.</Text>
+        <Text style={styles.title}>Your Trusted{"\n"}Partner For All{"\n"}Loan Needs</Text>
+        <Text style={styles.description}>The best app for getting loan{"\n"}easy and secure</Text>
       </View>
       <View style={styles.footer}>
         <TouchableOpacity
           style={[
             styles.createAccountButton,
-            isHoveredCreate && styles.buttonHovered,
-          ]}
+                    ]}
           onPressIn={() => setIsHoveredCreate(true)}
           onPressOut={() => setIsHoveredCreate(false)}
           onPress={() => navigation.navigate('CreateAccountScreen')}
@@ -38,32 +46,29 @@ const WelcomeScreen = ({ }: any) => {
           <Text
             style={[
               styles.createAccountText,
-              isHoveredCreate && styles.textHovered,
             ]}
-          >
-            CREATE YOUR FREE ACCOUNT
+          > Get Started
           </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={[
             styles.loginButton,
-            isHoveredLogin && styles.buttonHovered,
           ]}
-          onPressIn={() => setIsHoveredLogin(true)}
-          onPressOut={() => setIsHoveredLogin(false)}
           onPress={() => navigation.navigate('LoginScreen')}
         >
           <Text
             style={[
               styles.loginText,
-              isHoveredLogin && styles.textHovered,
             ]}
           >
-            LOG INTO YOUR ACCOUNT
+            Log In
           </Text>
         </TouchableOpacity>
+        <Text style={styles.terms}>By creating account.you'er agree to out {"\n"}         <Text style={{fontWeight: "bold"}}>Privacy policy</Text> and <Text style={{fontWeight: "bold"}}>Term of use</Text></Text>
+
       </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -71,34 +76,48 @@ const WelcomeScreen = ({ }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',  },
+    backgroundColor: '#f5f5f5',  
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  image:{
+  marginTop:"30%",
+  marginLeft:"10%",
+  },
+  title: {
+    fontSize: 40,
+    fontWeight: '700',
+    fontFamily: 'heading',
+    marginRight:"20%",
+    lineHeight: 48,
+    // marginTop: 20,
+    color:"#FFFFF",
+  },
+  description: {
+    // textAlign: 'left',
+    marginRight:"33%",
+    fontSize: 15,
+    fontFamily: 'text',
+    // marginTop: 20,
+    lineHeight: 25,
+    color:"#FFFFF",
+  },
   body: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#1e3a8a',
-    marginBottom: 10,
-    fontFamily:'heading'
-  },
-  subText: {
-    fontSize: 16,
-    color: '#777',
-    fontFamily:'text'
-  },
   footer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom:"15%",
   },
   createAccountButton: {
     backgroundColor: '#fff',
-    borderColor: '#1e3a8a',
-    borderWidth: 1,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
@@ -108,12 +127,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 10,
     marginBottom: 20,
+    width:"80%",
   },
   createAccountText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily:'heading'
+    color: '#FFFFF',
+    fontSize: 18,
+    fontWeight: '500',
+    fontFamily:'heading',
+    textAlign:"center",
   },
   loginButton: {
     backgroundColor: '#fff',
@@ -128,17 +149,21 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 10,
     marginBottom: 20,
+    width:"60%",
   },
   loginText: {
-    color: '#000',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#FFFFF',
+    fontSize: 18,
+    fontWeight: '500',
+    fontFamily:'heading',
+    textAlign:"center",
   },
-  buttonHovered: {
-    backgroundColor: '#0061F0', 
-  },
-  textHovered: {
-    color: '#fff', 
+  terms:{
+    fontSize: 15,
+    fontFamily: 'text',
+    // marginTop: 20,
+    lineHeight: 25,
+    color:"#FFF",
   },
 });
 

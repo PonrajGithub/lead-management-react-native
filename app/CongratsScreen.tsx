@@ -34,7 +34,7 @@ const CongratsScreen = () =>  {
         {/* Checkmark Icon */}
         <Image 
           style={styles.icon} 
-          source={require('../assets/images/tik.png')}
+          source={require('../assets/images/2.png')}
         />
         
         {/* Heading */}
