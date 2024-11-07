@@ -121,11 +121,12 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: 'center',
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'text',
     marginTop: 20,
     color:'#666666',
-    lineHeight: 26,
+    lineHeight: 30,
+    fontWeight: 'light',
   },
   footer: {
     flexDirection: 'row',

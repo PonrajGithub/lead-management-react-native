@@ -30,7 +30,7 @@ const SecondScreen = () => {
       {/* Title and Description */}
       <Text style={styles.title}>Apply in Minutes</Text>
       <Text style={styles.description}>
-        Easily browse through multiple loan options.{"\n"} Simple and quick application process with guidance {"\n"} at every step. Submit your request in just a few taps,{"\n"} tailored to your needs. Fast approvals, flexible terms.
+        Easily browse through multiple loan options. Simple and quick application process with guidance at every step. Submit your request in just a few taps, tailored to your needs. Fast approvals, flexible terms.
       </Text>
 
       {/* Footer with Pagination and Next Button */}
@@ -77,10 +77,12 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: 'text',
     marginTop: 20,
-    lineHeight: 25,
+    color:'#666666',
+    lineHeight: 30,
+    fontWeight: 'light',
   },
   footer: {
     flexDirection: 'row',

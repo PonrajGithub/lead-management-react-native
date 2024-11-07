@@ -82,10 +82,12 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: 'center',
-    fontSize: 15,
+    fontSize: 18,
     fontFamily: 'text',
     marginTop: 20,
-    lineHeight: 25,
+    color:'#666666',
+    lineHeight: 30,
+    fontWeight: 'light',
   },
   footer: {
     flexDirection: 'row',
