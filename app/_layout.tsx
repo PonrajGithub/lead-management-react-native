@@ -16,6 +16,8 @@ export default function RootLayout() {
       <Stack.Screen name="CongratsScreen" options={{ headerShown: false }} />
       <Stack.Screen name="DashboardScreen" options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPasswordScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="MultiStepForm" options={{ headerShown: false }} />
+
     </Stack>
   );
 }

@@ -110,10 +110,10 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
   dropdownContainer: {
-    backgroundColor: '#E5E7EB', // White dropdown container
-    borderColor: '#4B5563', // Light border
-    borderRadius: 10, // Rounded corners for dropdown
-    shadowColor: '#000', // Shadow for dropdown
+    backgroundColor: '#E5E7EB',
+    borderColor: '#4B5563', 
+    borderRadius: 10, 
+    shadowColor: '#000', 
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 5,
