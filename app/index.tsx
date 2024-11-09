@@ -1,6 +1,6 @@
 import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Text, View, Dimensions, Image, StyleSheet, ImageBackground } from 'react-native';
+import { Text, View, Image, StyleSheet, ImageBackground } from 'react-native';
 import { useFonts } from 'expo-font';
 
 const Index = () => {
@@ -32,6 +32,11 @@ const Index = () => {
       style={styles.background}
       resizeMode="cover"
     >
+      <Image
+       source={require('../assets/images/c.png')}
+       style={styles.image}
+      //  resizeMode="contain"
+       />
     </ImageBackground>
   );
 };
@@ -47,10 +52,9 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  image:{
+    alignSelf:'center',
+    marginVertical:'auto'
   },
 });
 

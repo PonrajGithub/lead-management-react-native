@@ -8,7 +8,7 @@ const ImageScreen = ({ }: any) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require('@/assets/images/2.png')} // Replace with your image path
+        source={require('@/assets/images/Group.png')} // Replace with your image path
         style={styles.image}
         resizeMode="contain"
       />
@@ -18,11 +18,11 @@ const ImageScreen = ({ }: any) => {
 
 const styles = StyleSheet.create({
   container:{
-marginTop:0,
+    flex:1,
   },
   image: {
    width:'100%',
-   height:150,
+   height:200,
   },
 });
 

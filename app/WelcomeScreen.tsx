@@ -37,7 +37,7 @@ const WelcomeScreen = ({ }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={require('../assets/images/background.jpg')}
+        source={require('../assets/images/index.png')}
         style={styles.background}
         resizeMode="cover"
       >
@@ -124,9 +124,9 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
-    marginLeft: "10%",
     width:250,
     height:250,
+    alignSelf:'center',
   },
   title: {
     fontSize: 35,
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     width: "80%",
-    height: '35%',
+    height: '40%',
   },
   createAccountText: {
     color: '#622CFD',

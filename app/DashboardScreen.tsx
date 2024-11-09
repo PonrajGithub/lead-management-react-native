@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet,StatusBar, FlatList } from 'react-native';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { useNavigation } from 'expo-router';
 import Header from './Header'; 
 import Loan from './Loan';
@@ -29,7 +29,6 @@ const DashboardScreen = () => {
 
     return (
         <>
-        <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
             <View >
                 <Header />
             </View>
@@ -46,12 +45,11 @@ const DashboardScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        // backgroundColor: '#e5d0ff',
-        paddingHorizontal: 10,
+        
     },
 
     itemContainer: {
-        marginBottom: 10, 
+        // marginBottom: 10, 
     },
 });
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Modal, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,74 +8,55 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const Header = () => {
-    const [menuVisible, setMenuVisible] = useState(false);
+    const [dropdownVisible, setDropdownVisible] = useState(false);
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState('');
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const navigation: any = useNavigation();
+    const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
         'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-        'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
-      });
-    
-      if (!fontsLoaded) {
-        return <AppLoading />;
-      }
+        'heading': require('../assets/fonts/static/Rubik-Bold.ttf'),
+    });
 
-        useEffect(() => {
-            const fetchTokenAndUserName = async () => {
-                try {
-                  // Only fetch if the user is logged in
-                    const storedToken = await AsyncStorage.getItem('@storage_user_token');
-                    // console.log('Stored Token:', storedToken); // Log to check if token is retrieved
-                    if (storedToken) {
-                      setToken(storedToken);
-                      
-                      // Fetch user information using the stored token
-                      let config = {
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
+
+    useEffect(() => {
+        const fetchTokenAndUserName = async () => {
+            try {
+                const storedToken = await AsyncStorage.getItem('@storage_user_token');
+                if (storedToken) {
+                    setToken(storedToken);
+                    const config = {
                         method: 'get',
                         url: 'https://loanguru.in/loan_guru_app/api/userinfo',
-                        headers: { 
-                          'Authorization': `Bearer ${storedToken}` 
-                        }
-                      };
-                      
-                      const response = await axios.request(config);
-                      const name = response.data?.name || 'User'; // Default to 'User' if name is not found
-                      setUserName(name);
-                    } else {
-                      console.error('Token not found');
-                    }
-                } catch (error) {
-                  console.error('Error fetching user info:', error);
-                  Alert.alert('Error', 'Failed to fetch user details. Please try again.');
+                        headers: { 'Authorization': `Bearer ${storedToken}` },
+                    };
+                    const response = await axios.request(config);
+                    const name = response.data?.name || 'User';
+                    setUserName(name);
+                } else {
+                    console.error('Token not found');
                 }
-              };
-            
-              fetchTokenAndUserName();
-            }, [isLoggedIn, userName]);
+            } catch (error) {
+                console.error('Error fetching user info:', error);
+                Alert.alert('Error', 'Failed to fetch user details. Please try again.');
+            }
+        };
+        fetchTokenAndUserName();
+    }, []);
 
     const handleLogout = async () => {
         try {
-            let config = {
+            const config = {
                 method: 'get',
-                maxBodyLength: Infinity,
                 url: 'https://loanguru.in/loan_guru_app/api/logout',
-                headers: { 
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` },
             };
-
             await axios.request(config);
 
-            // Remove specific items from AsyncStorage
-            await AsyncStorage.removeItem('@storage_user_token');
-            await AsyncStorage.removeItem('@storage_user_data');
-            await AsyncStorage.removeItem('isLoggedIn');
             await AsyncStorage.clear();
-            console.log(isLoggedIn);
-            // Reset the navigation and navigate to WelcomeScreen
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'WelcomeScreen' }],
@@ -86,36 +67,41 @@ const Header = () => {
         }
     };
 
+    const handleSettings = () => {
+        setDropdownVisible(false);
+        navigation.navigate('');
+    };
+
     return (
         <View>
             <View style={styles.header}>
-                <Icon name="arrow-back" size={24} color="#FFFF" style={styles.icon} />
-                
-                <Text style={styles.name}>{userName}</Text>
-                
-                <TouchableOpacity onPress={() => setMenuVisible(true)}>
-                    <Icon name="menu" size={24} color="#FFFF" style={styles.icon} />
-                </TouchableOpacity>
-            </View>
-            
-            {/* Menu Modal */}
-            <Modal
-                transparent={true}
-                animationType="fade"
-                visible={menuVisible}
-                onRequestClose={() => setMenuVisible(false)}
-            >
-                <TouchableOpacity
-                    style={styles.modalOverlay}
-                    onPress={() => setMenuVisible(false)}
+                <ImageBackground
+                    source={require('../assets/images/background.jpg')}
+                    style={styles.background}
+                    resizeMode="cover"
                 >
-                    <View style={styles.menu}>
-                        <TouchableOpacity style={styles.menuItem} onPress={handleLogout}>
-                            <Text style={styles.menuText}>Logout</Text>
-                        </TouchableOpacity>
-                    </View>
-                </TouchableOpacity>
-            </Modal>
+                    <Image
+                        source={require('../assets/images/loan.png')}
+                        style={styles.image}
+                        resizeMode="contain"
+                    />
+                    <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
+                        <Icon name="menu" size={30} color="#FFFF" style={styles.icon} />
+                    </TouchableOpacity>
+                </ImageBackground>
+            </View>
+
+            {/* Dropdown Menu */}
+            {dropdownVisible && (
+                <View style={styles.dropdown}>
+                    <TouchableOpacity style={styles.dropdownItem} onPress={handleSettings}>
+                        <Text style={styles.dropdownText}>Settings</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.dropdownItem} onPress={handleLogout}>
+                        <Text style={styles.dropdownText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 };
@@ -123,45 +109,47 @@ const Header = () => {
 const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
-        backgroundColor: '#6CB4EE',
-        paddingTop: '10%',
-        paddingBottom: 20,
-        alignItems: 'center',
         justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
     },
-    title: {
-        color: '#1e3a8a',
-        fontSize: 20,
-        fontWeight: 'bold',
+    background: {
+        width: '100%',
+        height: 200,
     },
-    name: {
-        color: 'black',
-        fontSize: 20,
-        fontFamily:'heading'
+    image: {
+        width: 200,
+        height: 200,
+        position: 'absolute',
+        marginLeft: '5%',
+        marginTop: '-7%',
     },
     icon: {
-        paddingHorizontal: 10,
+        position: 'absolute',
+        top: 50,
+        right: 20,
+        zIndex: 10,
     },
-    modalOverlay: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    },
-    menu: {
+    dropdown: {
+        position: 'absolute',
+        top: 110,
+        right: 20,
         backgroundColor: '#FFF',
-        padding: 20,
-        borderRadius: 10,
+        borderRadius: 5,
         elevation: 5,
-        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        shadowOffset: { width: 0, height: 2 },
     },
-    menuItem: {
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+    dropdownItem: {
+        padding: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#EEE',
     },
-    menuText: {
-        fontSize: 18,
-        color: '#000',
+    dropdownText: {
+        fontSize: 16,
+        color: '#333',
     },
 });
 

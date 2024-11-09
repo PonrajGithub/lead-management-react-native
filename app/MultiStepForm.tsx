@@ -50,7 +50,10 @@ const MultiStepForm = ({ }: any) => {
 
   const handleSubmit = () => {
     console.log('Form Submitted', formData);
-    // Add form submission logic here
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'CongratsScreen' }],
+  });
   };
 
   const renderStep = () => {
@@ -87,7 +90,7 @@ const MultiStepForm = ({ }: any) => {
       case 2:
         return (
           <View style={styles.stepTwoContainer}>
-            <Text style={styles.label}>What is your{"\n"}nice name?</Text>
+            <Text style={styles.label}>What is your?</Text>
             <TextInput
               style={styles.input}
               placeholder="Full name"
@@ -147,8 +150,7 @@ const MultiStepForm = ({ }: any) => {
       case 6:
         return (
           <View style={styles.stepTwoContainer}>
-            <Text style={styles.done}>Yeah! Almost done</Text>
-            <Text style={styles.label}>Create your Log in{"\n"}details</Text>
+            <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
             <TextInput
               style={styles.input}
               placeholder="Create Password"
@@ -229,7 +231,7 @@ const MultiStepForm = ({ }: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    // flexGrow: 1,
+    flexGrow: 1,
     justifyContent: 'center',
     // padding: 15,
     height:'100%',
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
   stepOneContainer: {
     flex: 1,
     marginBottom:'-100%',
-    backgroundColor: '#5A2BD9', 
+    backgroundColor: '#5A2BD9',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
     padding: 20,
@@ -314,12 +316,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop:'50%',
     marginBottom: '10%',
-  },
-  done:{
-    textAlign:'center',
-    fontSize: 30,
-    fontFamily:'heading',
-    fontWeight: 'bold',
   },
   input: {
     borderWidth: 1,

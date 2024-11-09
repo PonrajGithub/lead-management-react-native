@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { ScrollView,ToastAndroid, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, StatusBar, Alert, View } from 'react-native';
+import { ScrollView,ToastAndroid, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useNavigation } from 'expo-router';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FontAwesome } from '@expo/vector-icons';  // Import FontAwesome or another icon set
 import AppLoading from 'expo-app-loading';
@@ -105,17 +106,25 @@ const LoginScreen = () => {
   };
 
   const redirectToCreateAccount = () => {
-    navigation.navigate('CreateAccountScreen');
+    navigation.navigate('MultiStepForm');
   };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <SafeAreaView style={styles.container}>
-        <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
-        
-        <Text style={styles.title}>Sign into your Account</Text>
-        <Text style={styles.content}>Login into your account</Text>
-        
+      <SafeAreaView >        
+      <View>
+  <View style={styles.row}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('WelcomeScreen')}
+      style={styles.iconContainer}
+    >
+      <Icon name="chevron-left" size={30} color="#000" />
+    </TouchableOpacity>
+    <Text style={styles.tittel}>Sign in</Text>
+  </View>
+  <Text style={styles.description}>Login with your details</Text>
+</View>
+        <View style={styles.stepOneContainer}>
         <Text style={styles.text}>Email ID</Text>
         <TextInput
           style={styles.input}
@@ -150,15 +159,16 @@ const LoginScreen = () => {
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-          <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'LOG IN'}</Text>
+          <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Sign in'}</Text>
         </TouchableOpacity>
 
         <Text style={styles.singin}>
-          Do you not have an account?{' '}
+          If you don't have an account?{' '}
           <Text style={styles.link} onPress={redirectToCreateAccount}>
-            Sign up here
+            Register
           </Text>
         </Text>
+        </View>
       </SafeAreaView>
     </ScrollView>
   );
@@ -168,85 +178,90 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor: '#f2f6ff', // Light background for the entire screen
+    backgroundColor:'#fff',
   },
-  container: {
+  stepOneContainer: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    alignSelf:'center',
+    width:'85%',
+    marginTop:'50%'
   },
-  title: {
-    fontSize: 28, // Slightly larger title
-    marginBottom: 20,
-    marginTop: '30%',
-    textAlign: 'center',
-    color: '#1e3a8a', // Darker blue for contrast
-    fontFamily: 'heading',
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: '8%',
+    paddingHorizontal: '5%',
   },
-  content: {
-    fontSize: 16,
-    marginBottom: '20%',
-    textAlign: 'center',
-    color: '#64748b', // Lighter gray-blue for subheading
+  iconContainer: {
+    marginRight: 10,
+  },
+  tittel: {
+    color: 'black',
+    fontSize: 28,
+    fontWeight: '600',
+    fontFamily: 'text', // Use a valid font or remove if not required
+  },
+  description: {
+    color: '#666666',
+    fontWeight: '400',
+    fontSize: 18,
+    // marginBottom:'70%',
+    marginLeft: '10%',
     fontFamily: 'text',
   },
   text: {
-    textAlign: 'left',
+    marginLeft:'5%',
     marginBottom: 8,
-    color: '#1e40af', // Darker blue for input labels
+    fontSize:18,
+    color:'#666666',
     fontFamily: 'text',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 12,
-    borderRadius: 10, // More rounded input fields
-    marginBottom: 15,
-    backgroundColor: '#fff', // White background for inputs
-    fontFamily: 'text',
-    shadowColor: '#000', // Soft shadow for depth
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3, // Android shadow
-  },
+      borderWidth: 1,
+      borderColor: '#000',
+      color:'#666666',
+      borderRadius: 8,
+      fontFamily:'text',
+      fontSize:15,
+      fontWeight:'ultralight',
+      padding: 10,
+      marginBottom:30,
+    },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 12,
-    borderRadius: 10,
-    marginBottom: 15,
-    backgroundColor: '#fff',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
+     borderWidth: 1,
+      borderColor: '#000',
+      color:'#666666',
+      borderRadius: 8,
+      fontFamily:'text',
+      fontSize:15,
+      fontWeight:'ultralight',
+      padding: 10,
+      // marginBottom:30,
   },
   passwordInput: {
     flex: 1,
     fontFamily: 'text',
   },
   forgotPasswordText: {
-    color: '#0066cc', // Brighter blue for clickable links
-    marginBottom: 20,
+    color: '#622CFD',
+    marginTop: 20,
     textAlign: 'right',
     fontFamily: 'text',
     textDecorationLine: 'underline',
   },
   button: {
-    backgroundColor: '#1e3a8a', // Primary blue button color
+    backgroundColor: '#622CFD',
     paddingVertical: 15,
-    borderRadius: 10, // Rounded button for a modern look
+    borderRadius: 10,
     alignItems: 'center',
     marginTop: '20%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 5, // Shadow to elevate the button
+    elevation: 5, 
   },
   buttonText: {
     color: '#fff',
@@ -259,11 +274,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     textAlign: 'center',
     marginTop: 15,
-    color: '#64748b', // Subtle blue for the text below the button
+    color: '#666666', // Subtle blue for the text below the button
     fontFamily: 'text',
   },
   link: {
-    color: '#0066cc', // Matching link color with the forgot password text
+    color: '#622CFD', // Matching link color with the forgot password text
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     fontFamily: 'text',
@@ -271,7 +286,7 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign: 'right',
-    marginBottom: 5,
+    // marginBottom: 5,
     fontSize: 13,
     fontFamily: 'text',
   },

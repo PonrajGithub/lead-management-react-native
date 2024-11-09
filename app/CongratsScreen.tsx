@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, Image, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, SafeAreaView,TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from 'expo-router';
-import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const CongratsScreen = () =>  {
     const navigation: any = useNavigation();
@@ -11,40 +12,52 @@ const CongratsScreen = () =>  {
       'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
       'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
     });
-  
+    const handleDone = () => {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'DashboardScreen' }],
+    });
+    };
    
-  useEffect(() => {
-    // Navigate to Dashboard after 10 seconds
-    const timer = setTimeout(() => {
-      navigation.navigate('LoginScreen');
-    }, 5000); 
+  // useEffect(() => {
+  //   // Navigate to Dashboard after 10 seconds
+  //   const timer = setTimeout(() => {
+  //     navigation.navigate('LoginScreen');
+  //   }, 3000); 
 
-    // Clean up the timer on unmount
-    return () => clearTimeout(timer);
-  }, [navigation]);
+  //   // Clean up the timer on unmount
+  //   return () => clearTimeout(timer);
+  // }, [navigation]);
   
-  if (!fontsLoaded) {
-    return null; // Return null for the loading state to avoid re-render issues
-  }
+  // if (!fontsLoaded) {
+  //   return null; // Return null for the loading state to avoid re-render issues
+  // }
 
   return (
     <SafeAreaView style={styles.container}>
-         <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
       <View style={styles.content}>
+
+      <TouchableOpacity onPress={() => navigation.navigate('WelcomeScreen')}>
+    <Icon style={styles.icon} name="chevron-left" size={50} color="#000" />
+  </TouchableOpacity>
+
         {/* Checkmark Icon */}
         <Image 
-          style={styles.icon} 
-          source={require('../assets/images/2.png')}
+          style={styles.image} 
+          source={require('../assets/images/tik.png')}
         />
         
         {/* Heading */}
-        <Text style={styles.heading}>Congratulations!</Text>
+        <Text style={styles.heading}>Congratulations! {"\n"} You're verified</Text>
         
         {/* Description */}
         <Text style={styles.description}>
-          We’re excited to have you onboard. Now you can explore tailored loan options and
-           enjoy seamless financial support. Let’s get started on achieving your goals!
+          You have been verified your information with {"\n"} us.Let's make transaction's!
         </Text>
+
+        <TouchableOpacity style={styles.button} onPress={handleDone} >
+          <Text style={styles.buttonText}>Done</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -53,9 +66,7 @@ const CongratsScreen = () =>  {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
     justifyContent: 'center',
-    alignItems: 'center',
   },
   content: {
     justifyContent: 'center',
@@ -63,23 +74,48 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   icon: {
-    width: 120,
-    height: 100,
-    marginBottom: 30,
+    marginRight:'90%',
+    marginBottom:'50%',
+  },
+  image: {
+   alignItems:'center',
+   marginBottom:'20%', 
   },
   heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
+    fontSize: 28,
+    fontWeight: '700',
     marginBottom: 20,
     color: '#000',
+    textAlign: 'center',
     fontFamily:'heading',
+    letterSpacing:1
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#6b6b6b',
+    color: '#666666',
     lineHeight: 24,
     fontFamily:'text',
+  },
+  button: {
+    backgroundColor: '#622CFD',
+    paddingVertical: 15,
+    borderRadius: 10,
+    width:'85%',
+    alignItems: 'center',
+    marginTop: '20%',
+    marginBottom:'30%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5, 
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    fontFamily: 'heading',
   },
 });
 
