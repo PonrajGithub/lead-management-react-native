@@ -1,56 +1,190 @@
 import React from 'react';
-import { View, StyleSheet, FlatList } from 'react-native';
-import { useNavigation } from 'expo-router';
-import Header from './Header'; 
-import Loan from './Loan';
-import QuickLink from './QuickLink';
-import About from './About';
-import TotalMember from './TotalMember';
-import Job from './Job';
-import ImageScreen from './ImageScreen';
+import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ImageBackground } from 'react-native';
 
 const DashboardScreen = () => {
+  return (
+    <ScrollView style={styles.container}>
+      {/* Header */}
+      <ImageBackground
+        source={require('../assets/images/index.jpg')}
+        style={styles.background}
+        resizeMode="cover"
+      >
+      <View style={styles.header}>
+      <Image
+          source={require('../assets/images/loan.png')} // Replace with your banner image URI
+          style={styles.image}
+           resizeMode="contain"
+        />
+        <View style={styles.profileIcon}>
+          <Text style={styles.profileText}>A</Text>
+        </View>
+       
+      </View>
 
-    const navigation: any = useNavigation();
-    // Data array for the FlatList
-    const data = [
-        { id: '1', component: <ImageScreen /> }, 
-        { id: '2', component: <Loan /> },
-        { id: '3', component: <QuickLink /> },
-        { id: '4', component: <TotalMember /> },
-        { id: '5', component: <Job /> },
-        { id: '6', component: <About /> },
-    ];
+      {/* Banner */}
+      <View style={styles.bannerContainer}>
+        <Image
+          source={require('../assets/images/Group.png')} // Replace with your banner image URI
+          style={styles.bannerImage}
+        />
+      </View>
 
-    // Render item function for the FlatList
-    const renderItem = ({ item }: any) => (
-        <View style={styles.itemContainer}>{item.component}</View>
-    );
+      {/* Loan Section */}
+      <View style={styles.sectionContainer}>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Loan</Text>
+        <View style={styles.row}>
+          <Button label="Unsecured Loan" />
+          <Button label="Secured Loan" />
+        </View>
+        <View style={styles.row}>
+          <Button label="SME's" />
+          <Button label="OD/CC" />
+          <Button label="Project" />
+          <Button label="Education" />
+        </View>
+        <Text style={styles.totalMembers}>Total Members: 5327</Text>
+      </View>
 
-    return (
-        <>
-            <View >
-                <Header />
-            </View>
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                contentContainerStyle={styles.container}
-            />
-        </>
-    );
+      {/* Quick Links Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Quick Links</Text>
+        <View style={styles.row}>
+          <Button label="Insurance" />
+          <Button label="Job" />
+          <Button label="EMI Calculator" />
+          <Button label="Query" />
+        </View>
+      </View>
+
+      {/* Features Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Features</Text>
+        <View style={styles.row}>
+          <Button label="Job Vacancies" />
+          <Button label="Women Empower" />
+          <Button label="Whatsapp" />
+        </View>
+      </View>
+
+      {/* About Us Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Know More About Us</Text>
+        <View style={styles.row}>
+          <Button label="Intro" />
+          <Button label="Team" />
+          <Button label="Media" />
+          <Button label="Email" />
+        </View>
+        <View style={styles.row}>
+          <Button label="DGNMS" />
+          <Button label="Privacy Policy" />
+          <Button label="T&C" />
+          <Button label="List" />
+        </View>
+      </View>
+      </View>
+      </ImageBackground>
+    </ScrollView>
+  );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        
-    },
+const Button = ({ label } : any ) => (
+  <TouchableOpacity style={styles.button}>
+    <Text style={styles.buttonText}>{label}</Text>
+  </TouchableOpacity>
+);
 
-    itemContainer: {
-        // marginBottom: 10, 
-    },
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    // backgroundColor: '#f5f5f5',
+  },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    marginTop:'8%',
+  },
+ image:{
+height:100,
+width:100,
+ },
+  profileIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileText: {
+    fontSize: 18,
+    color: '#6200EE',
+    fontWeight: 'bold',
+  },
+  bannerContainer: {
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  bannerImage: {
+    width: '100%',
+    height: 150,
+    borderRadius: 10,
+  },
+  sectionContainer: {
+    flex: 1,
+    // marginBottom:'-100%',
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 50, 
+    borderTopRightRadius: 50,
+    padding: 20,
+    marginTop:'5%',
+  },
+  section: {
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    
+  },
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  button: {
+    width: '48%',
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 8,
+    marginBottom: 10,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  buttonText: {
+    fontSize: 14,
+    color: '#6200EE',
+    fontWeight: 'bold',
+  },
+  totalMembers: {
+    marginTop: 8,
+    fontSize: 14,
+    color: '#333',
+  },
 });
 
 export default DashboardScreen;

@@ -76,7 +76,7 @@ const Header = () => {
         <View>
             <View style={styles.header}>
                 <ImageBackground
-                    source={require('../assets/images/background.jpg')}
+                    source={require('../assets/images/index.jpg')}
                     style={styles.background}
                     resizeMode="cover"
                 >

@@ -8,8 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const SecondScreen = () => {
   const navigation :any = useNavigation();
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/Lato/Lato-Light.ttf'),
-    'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'), 
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -30,7 +29,7 @@ const SecondScreen = () => {
       {/* Title and Description */}
       <Text style={styles.title}>Apply in Minutes</Text>
       <Text style={styles.description}>
-        Easily browse through multiple loan options. Simple and quick application process with guidance at every step. Submit your request in just a few taps, tailored to your needs. Fast approvals, flexible terms.
+        Easily browse through multiple loan{"\n"}options. Simple and quick application{"\n"}process with guidance at every step.{"\n"}Submit your request in just a few taps,{"\n"}tailored to your needs. Fast approvals,{"\n"}flexible terms.
       </Text>
 
       {/* Footer with Pagination and Next Button */}
@@ -69,20 +68,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight: '700',
-    fontFamily: 'heading',
+    fontWeight:'700',
+    fontFamily: 'Lato',
     textAlign: 'center',
-    lineHeight: 35,
+    lineHeight: 35.25,
     marginTop: 30,
+    color:'#001533',
   },
   description: {
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: 'text',
-    marginTop: 20,
-    color:'#666666',
-    lineHeight: 30,
-    fontWeight: 'light',
+    fontSize: 17,
+    fontFamily: 'Lato',
+    marginTop: 15,
+    color:'#001533',
+    lineHeight: 25.5,
+    fontWeight: '300',
   },
   footer: {
     flexDirection: 'row',

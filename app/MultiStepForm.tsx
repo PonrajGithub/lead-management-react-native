@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  ImageBackground,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -27,8 +28,7 @@ const MultiStepForm = ({ }: any) => {
   });
 
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/Lato/Lato-Light.ttf'),
-      'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'),
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
   
   if (!fontsLoaded) {
@@ -89,8 +89,8 @@ const MultiStepForm = ({ }: any) => {
         );
       case 2:
         return (
-          <View style={styles.stepTwoContainer}>
-            <Text style={styles.label}>What is your?</Text>
+          <View style={styles.stepOneContainer}>
+            <Text style={styles.label}>What is your name?</Text>
             <TextInput
               style={styles.input}
               placeholder="Full name"
@@ -101,7 +101,7 @@ const MultiStepForm = ({ }: any) => {
         );
       case 3:
         return (
-          <View style={styles.stepTwoContainer}>
+          <View style={styles.stepOneContainer}>
             <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
             <TextInput
               style={styles.input}
@@ -113,7 +113,7 @@ const MultiStepForm = ({ }: any) => {
         );
       case 4:
         return (
-          <View style={styles.stepTwoContainer}>
+          <View style={styles.stepOneContainer}>
             <Text style={styles.label}>Contact details</Text>
             <TextInput
               style={styles.input}
@@ -131,7 +131,7 @@ const MultiStepForm = ({ }: any) => {
         );
       case 5:
         return (
-          <View style={styles.stepTwoContainer}>
+          <View style={styles.stepOneContainer}>
             <Text style={styles.label}>More details</Text>
             <TextInput
               style={styles.input}
@@ -149,7 +149,7 @@ const MultiStepForm = ({ }: any) => {
         );
       case 6:
         return (
-          <View style={styles.stepTwoContainer}>
+          <View style={styles.stepOneContainer}>
             <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
             <TextInput
               style={styles.input}
@@ -162,12 +162,13 @@ const MultiStepForm = ({ }: any) => {
         );
       case 7:
         return (
-          <View>
-            <Text style={styles.label}>Review your details</Text>
+          <View style={styles.stepTwoContainer}>
+            
             {Object.entries(formData).map(([key, value]) => (
-              <Text key={key} style={styles.reviewText}>
-                {key}: {value}
-              </Text>
+               <View key={key} style={styles.reviewRow}>
+               <Text style={styles.reviewKey}>{key}:</Text>
+               <Text style={styles.reviewValue}>{value}</Text>
+             </View>
             ))}
             <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
               <Text style={styles.submitButtonText}>Create an Account</Text>
@@ -180,6 +181,10 @@ const MultiStepForm = ({ }: any) => {
   };
 
   return (
+    <ImageBackground
+      source={require('../assets/images/index.jpg')}
+      resizeMode="cover"
+      >
     
     <ScrollView contentContainerStyle={styles.container}>
       
@@ -188,9 +193,8 @@ const MultiStepForm = ({ }: any) => {
   <View style={styles.row}>
     <TouchableOpacity
       onPress={() => navigation.navigate('WelcomeScreen')}
-      style={styles.iconContainer}
     >
-      <Icon name="chevron-left" size={30} color="#000" />
+      <Icon name="chevron-left" size={40} color="#FFFFFF" />
     </TouchableOpacity>
     <Text style={styles.text}>Sign up</Text>
   </View>
@@ -201,17 +205,31 @@ const MultiStepForm = ({ }: any) => {
 {step >= 2 && step <= 6 && ( // Only render the icon in case 1
   <View>
     <View style={styles.rowone}>
-        <Text style={styles.text}>Sign up</Text>
+        <Text style={styles.textone}>Sign up</Text>
     </View>
-    <Text style={styles.description}>Register with a few details</Text>
+    <Text style={styles.descriptionone}>Register with a few details</Text>
   </View>
+)}
+
+{step === 7 && ( // Only render the icon in case 1
+  <View>
+  <View style={styles.row}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('WelcomeScreen')}
+    >
+      <Icon name="chevron-left" size={30} color="#FFFFFF" />
+    </TouchableOpacity>
+    <Text style={styles.text}>Review</Text>
+  </View>
+  <Text style={styles.description}>check your details are correct</Text>
+</View>
 )}
       
       
       {renderStep()}
       
       <View style={styles.navigation}>
-  {step > 1 &&  (
+  {step > 1 && step !== 7 && (
     <TouchableOpacity  onPress={handleBack}>
       <Text style={styles.back}>Back</Text>
       
@@ -219,45 +237,46 @@ const MultiStepForm = ({ }: any) => {
   )}
   {step < 7 && step !== 1 && (
     <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-      <Icon name="chevron-right" size={30} color="#fff" />
+      <Icon name="chevron-right" size={30} color="#F5F5F5" />
     </TouchableOpacity>
   )}
 </View>
 
     </ScrollView>
-    
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    // flex:1,
     justifyContent: 'center',
-    // padding: 15,
     height:'100%',
     width:'100%',
   },
   stepOneContainer: {
     flex: 1,
     marginBottom:'-100%',
-    backgroundColor: '#5A2BD9',
+    backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
     padding: 20,
-    marginTop:'30%'
+    marginTop:'40%',
   },
   stepOneLabel: {
-    fontSize: 30,
-    fontFamily:'heading',
-    fontWeight: 'bold',
-    color: '#FFFFFF',
+    fontSize: 32,
+    fontFamily:'Lato',
+    fontWeight: '700',
+    lineHeight:38.4,
+    color: '#1E1E1E',
     textAlign: 'center',
     marginBottom: 30,
   },
   userTypeButton: {
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
-    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: '#E3E2E2',
+    borderRadius: 10,
     paddingVertical: 15,
     marginBottom: 30,
     alignItems: 'center',
@@ -268,12 +287,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   userTypeButtonText: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontFamily:'text',
+    color: '#1E1E1E',
+    fontSize: 24,
+    fontFamily:'Lato',
+    fontWeight:'600',
+    lineHeight:28.8,
   },
   selectedUserTypeButtonText: {
-    color: '#5A2BD9', // Change text color when selected
+    color: '#1E1E1E', // Change text color when selected
   },
   row: {
     flexDirection: 'row',
@@ -281,50 +302,60 @@ const styles = StyleSheet.create({
     marginTop: '10%',
     paddingHorizontal: '5%',
   },
-  iconContainer: {
-    marginRight: 10,
-  },
   text: {
-    color: 'black',
-    fontSize: 28,
+    color: '#FFFFFF',
+    fontSize: 36,
     fontWeight: '600',
-    fontFamily: 'text', // Use a valid font or remove if not required
+    fontFamily: 'Lato', 
   },
   description: {
-    color: '#666666',
-    fontWeight: '400',
-    fontSize: 18,
-    marginLeft: '5%',
+    color: '#FFFFFF',
+    fontWeight: '300',
+    fontSize: 20,
+    marginLeft: '12%',
+    lineHeight:30,
     marginTop: 5,
-    fontFamily: 'text',
-  },
-
-  stepTwoContainer:{
-    flex:1,
-    padding:30,
+    fontFamily: 'Lato',
   },
   rowone: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     marginTop: '10%',
     paddingHorizontal: '5%',
   },
+  textone: {
+    color: '#FFFFFF',
+    fontSize: 36,
+    fontWeight: '600',
+    fontFamily: 'Lato', 
+  },
+  descriptionone: {
+    color: '#FFFFFF',
+    fontWeight: '300',
+    fontSize: 20,
+    marginLeft: '5%',
+    lineHeight:30,
+    marginTop: 5,
+    fontFamily: 'Lato',
+  },
   label: {
-    textAlign:'center',
-    fontSize: 30,
-    fontFamily:'heading',
-    fontWeight: 'bold',
-    marginTop:'50%',
-    marginBottom: '10%',
+    fontSize: 32,
+    fontFamily:'Lato',
+    fontWeight: '700',
+    lineHeight:38.4,
+    color: '#1E1E1E',
+    textAlign: 'center',
+    marginBottom: 30,
+    marginTop:'10%',
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#000',
-    color:'#666666',
-    borderRadius: 8,
-    fontFamily:'text',
-    fontSize:15,
-    fontWeight:'ultralight',
+    borderWidth: 2,
+    borderColor: '#9C9C9C',
+    color:'#9C9C9C',
+    borderRadius: 10,
+    fontFamily:'Lato',
+    fontSize:24,
+    fontWeight:'600',
+    lineHeight:28.8,
     padding: 10,
     marginBottom:30,
   },
@@ -336,9 +367,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   back:{
-  fontFamily:'text',
-  color:'#000',
-  marginTop:'30%'
+  fontFamily:'Lato',
+  color:'#1E1E1E',
+  marginTop:'30%',
+  fontWeight:'400',
+  fontSize:17,
+  lineHeight:25.5,
   },
   selectedButton: {
     backgroundColor: '#6200ea',
@@ -348,19 +382,45 @@ const styles = StyleSheet.create({
   },
   navigation: {
     flexDirection: 'row',
+    // flex:1,
     padding:30,
     justifyContent: 'space-between',
     width:'100%',
-    marginBottom:'20%',
+    marginBottom:'10%',
   },
   navButton: {
     padding: 10,
-    backgroundColor: '#6200ea',
+    backgroundColor: '#622CFD',
     borderRadius: 40,
+  },
+  stepTwoContainer:{
+    flex: 1,
+    marginBottom:'-100%',
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 50, 
+    borderTopRightRadius: 50,
+    padding: 50,
+    marginTop:'20%',
   },
   reviewText: {
     fontSize: 16,
     marginVertical: 5,
+  },
+  reviewRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+  },
+  reviewKey: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1E1E1E',
+  },
+  reviewValue: {
+    fontSize: 16,
+    color: '#555555',
+    textAlign: 'right',
+    flex: 1,
   },
   submitButton: {
     marginTop: 20,

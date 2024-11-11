@@ -7,8 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const ThirdScreen = ({ }: any) => {
     const navigation: any = useNavigation();
     const [fontsLoaded] = useFonts({
-      'text': require('../assets/fonts/Lato/Lato-Light.ttf'),
-      'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'),  
+      'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
     });
 
     if (!fontsLoaded) {
@@ -74,20 +73,21 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight: '700',
-    fontFamily: 'heading',
+    fontWeight:'700',
+    fontFamily: 'Lato',
     textAlign: 'center',
-    lineHeight: 35,
+    lineHeight: 35.25,
     marginTop: 30,
+    color:'#001533',
   },
   description: {
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: 'text',
-    marginTop: 20,
-    color:'#666666',
-    lineHeight: 30,
-    fontWeight: 'light',
+    fontSize: 17,
+    fontFamily: 'Lato',
+    marginTop: 15,
+    color:'#001533',
+    lineHeight: 25.5,
+    fontWeight: '300',
   },
   footer: {
     flexDirection: 'row',

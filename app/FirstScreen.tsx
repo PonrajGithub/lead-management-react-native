@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,69 +10,64 @@ const FirstScreen = () => {
 
   // Load custom fonts
   const [fontsLoaded] = useFonts({
-     'text': require('../assets/fonts/Lato/Lato-Regular.ttf'),
-    'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'), 
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
-
-  // Render loading state if fonts are not loaded
-  if (!fontsLoaded) {
-    return <View style={styles.loadingContainer}><Text>Loading...</Text></View>;
-  }
 
   useEffect(() => {
     const checkAppState = async () => {
       try {
-        // Check if it's the first launch
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
         if (isFirstLaunch === null) {
-          // First launch, proceed through First, Second, Third Screens
           return;
         }
 
-        // Check if user data exists (not first launch)
         const storedData = await AsyncStorage.getItem('@storage_user_data');
         if (storedData !== null) {
           const parsedData = JSON.parse(storedData);
-          const token = parsedData?.data?.token; // Assuming you are storing a token
-          
+          const token = parsedData?.data?.token;
+
           if (token) {
-            // Token exists, navigate to DashboardScreen
-            return navigation.reset({
+            navigation.reset({
               index: 0,
               routes: [{ name: 'DashboardScreen' }],
             });
+            return;
           }
         }
 
-        // No token found or no user data, navigate to WelcomeScreen
         navigation.reset({
           index: 0,
           routes: [{ name: 'WelcomeScreen' }],
         });
-
       } catch (error) {
         console.error('Error checking app state:', error);
       }
     };
 
     checkAppState();
-  }, [fontsLoaded, navigation]);
+  }, [navigation]);
+
+  // Render loading state if fonts are not loaded
+  if (!fontsLoaded) {
+    return (
+      <View style={styles.loadingContainer}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-       <View style={styles.backgroundWrapper}>
-        <ImageBackground 
-          source={require('../assets/images/1.png')} 
+      <View style={styles.backgroundWrapper}>
+        <ImageBackground
+          source={require('../assets/images/1.png')}
           style={styles.background}
           resizeMode="cover"
-        >
-          </ImageBackground>
+        />
       </View>
       <Text style={styles.title}>Find the Loan You Need</Text>
       <Text style={styles.description}>
-        Easily browse through multiple loan options,{"\n"} 
-        tailored to your needs. Fast approvals,{"\n"}    
-                 flexible terms.
+        Easily browse through multiple loan{"\n"}options, tailored to your needs. Fast{"\n"}approvals, flexible terms.
       </Text>
       <View style={styles.footer}>
         <View style={styles.pagination}>
@@ -106,33 +101,33 @@ const styles = StyleSheet.create({
   },
   backgroundWrapper: {
     height: '60%',
-    width:'100%',
+    width: '100%',
     overflow: 'hidden',
     backgroundColor: '#f0f0f0',
     position: 'relative',
   },
   background: {
-    flex: 1, // This allows the image to take the full space of the wrapper
-    alignItems: 'center', 
-    justifyContent: 'center', 
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 25,
-    fontWeight: 'bold',
-    fontFamily: 'heading',
+    fontWeight: '700',
+    fontFamily: 'Lato',
     textAlign: 'center',
-    lineHeight: 35,
+    lineHeight: 35.25,
     marginTop: 30,
-    color:'#333333',
+    color: '#001533',
   },
   description: {
     textAlign: 'center',
-    fontSize: 18,
-    fontFamily: 'text',
+    fontSize: 17,
+    fontFamily: 'Lato',
     marginTop: 20,
-    color:'#666666',
-    lineHeight: 30,
-    fontWeight: 'light',
+    color: '#001533',
+    lineHeight: 25.5,
+    fontWeight: '300',
   },
   footer: {
     flexDirection: 'row',
@@ -179,7 +174,7 @@ const styles = StyleSheet.create({
   skip: {
     color: '#555',
     fontSize: 16,
-    paddingLeft:120,
+    paddingLeft: 120,
   },
 });
 

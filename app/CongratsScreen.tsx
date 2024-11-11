@@ -9,8 +9,7 @@ const CongratsScreen = () =>  {
     const navigation: any = useNavigation();
 
     const [fontsLoaded] = useFonts({
-      'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-      'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+      'Lato': require('../assets/fonts/static/Rubik-Regular.ttf'),
     });
     const handleDone = () => {
       navigation.reset({
@@ -52,7 +51,7 @@ const CongratsScreen = () =>  {
         
         {/* Description */}
         <Text style={styles.description}>
-          You have been verified your information with {"\n"} us.Let's make transaction's!
+          You have been verified your information with {"\n"} us.Let's make transactions!
         </Text>
 
         <TouchableOpacity style={styles.button} onPress={handleDone} >
@@ -75,27 +74,28 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight:'90%',
-    marginBottom:'50%',
+    marginBottom:'60%',
   },
   image: {
    alignItems:'center',
-   marginBottom:'20%', 
+   marginBottom:'30%', 
   },
   heading: {
-    fontSize: 28,
+    fontSize: 40,
     fontWeight: '700',
-    marginBottom: 20,
-    color: '#000',
+    marginBottom: 15,
+    color: '#1E1E1E',
+    lineHeight:48,
     textAlign: 'center',
-    fontFamily:'heading',
-    letterSpacing:1
+    fontFamily:'Lato',
   },
   description: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#666666',
-    lineHeight: 24,
-    fontFamily:'text',
+    color: '#9C9C9C',
+    lineHeight: 19.2,
+    fontFamily:'Lato',
+    fontWeight:'600',
   },
   button: {
     backgroundColor: '#622CFD',
@@ -103,19 +103,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width:'85%',
     alignItems: 'center',
-    marginTop: '20%',
-    marginBottom:'30%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5, 
+    marginTop: '15%',
+    marginBottom:'15%',
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'heading',
+    color: '#F5F5F5',
+    fontSize: 20,
+    lineHeight:24,
+    fontWeight: '700',
+    fontFamily: 'Lato',
   },
 });
 

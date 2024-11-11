@@ -20,8 +20,7 @@ const WelcomeScreen = ({ }: any) => {
   const [isHoveredLogin, setIsHoveredLogin] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/Lato/Lato-Light.ttf'),
-      'heading': require('../assets/fonts/Lato/Lato-Bold.ttf'),
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -37,7 +36,7 @@ const WelcomeScreen = ({ }: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={require('../assets/images/index.png')}
+        source={require('../assets/images/index.jpg')}
         style={styles.background}
         resizeMode="cover"
       >
@@ -48,7 +47,7 @@ const WelcomeScreen = ({ }: any) => {
         />
         <View style={styles.body}>
           <Text style={styles.title}>
-            Your Trusted Partner{"\n"} For All Loan Needs
+            Your Trusted{"\n"}Partner For All{"\n"}Loan Needs
           </Text>
           <Text style={styles.description}>
             The best app for getting loan{"\n"}easy and secure
@@ -65,7 +64,7 @@ const WelcomeScreen = ({ }: any) => {
           </TouchableOpacity>
           
           <Text style={styles.singin}>
-         Do you already have an account?{' '}
+         Already have an account?{' '}
         <Text style={styles.link} onPress={redirectToLogin }>
           Sign in here
           </Text>
@@ -74,13 +73,13 @@ const WelcomeScreen = ({ }: any) => {
           <Text style={styles.terms}>
             By creating an account, you're agreeing to our{"\n"}
             <Text
-              style={{ fontWeight: "bold",textDecorationLine: 'underline', }}
+              style={{ fontWeight: "700",textDecorationLine: 'underline', }}
               onPress={() => setIsModalVisible(true)}
             >
               Privacy Policy
             </Text>{" "}
             and{" "}
-            <Text style={{ fontWeight: "bold" }}>Terms of Use</Text>
+            <Text style={{ fontWeight: "700" }}>Terms of Use</Text>
           </Text>
         </View>
 
@@ -116,7 +115,6 @@ const WelcomeScreen = ({ }: any) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#f5f5f5',
   },
   background: {
     flex: 1,
@@ -129,22 +127,21 @@ const styles = StyleSheet.create({
     alignSelf:'center',
   },
   title: {
-    fontSize: 35,
+    fontSize: 40,
     fontWeight: '700',
-    fontFamily: 'heading',
-    // marginRight: "20%",
-    textAlign:'center',
+    fontFamily: 'Lato',
+    textAlign:'left',
     lineHeight: 48,
-    color: "#fff",
+    color: "#FFFFFF",
   },
   description: {
-    // marginBottom:80,
-    fontSize: 18,
-    fontFamily: 'text',
+    fontWeight:'300',
+    fontSize: 20,
+    fontFamily: 'Lato',
     marginTop: 20,
     lineHeight: 30,
-    color: "#FFF",
-    textAlign:'center',
+    color: "#FFFFFF",
+    textAlign:'left',
   },
   body: {
     flex: 3,
@@ -169,34 +166,38 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 20,
     width: "80%",
-    height: '40%',
   },
   createAccountText: {
     color: '#622CFD',
-    fontSize: 18,
-    fontFamily: 'heading',
+    fontSize: 20,
+    fontWeight:'600',
+    lineHeight:24,
+    fontFamily: 'Lato',
     textAlign: "center",
+
   },
   singin: {
     fontSize: 15,
-    fontWeight: 'semibold',
+    fontWeight: '300',
     textAlign: 'center',
-    // marginBottom: 30,
-    color: '#fff', // Subtle blue for the text below the button
-    fontFamily: 'text',
+    color: '#F5F5F5',
+    lineHeight:22.59,
+    fontFamily: 'Lato',
   },
   link: {
-    color: '#fffff', // Matching link color with the forgot password text
-    fontWeight: 'bold',
+    color: '#F5F5F5', // Matching link color with the forgot password text
+    fontWeight: '700',
     textDecorationLine: 'underline',
-    fontFamily: 'text',
+    fontFamily: 'Lato',
     
   },
   terms: {
     fontSize: 15,
-    fontFamily: 'text',
-    lineHeight: 25,
-    color: "#FFF",
+    fontWeight: '300',
+    textAlign: 'center',
+    color: '#F5F5F5',
+    lineHeight:22.59,
+    fontFamily: 'Lato',
     marginTop:'10%',
     marginBottom: 30,
   },

@@ -20,8 +20,7 @@ const LoginScreen = () => {
   const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    'Lato': require('../assets/fonts/static/Rubik-Regular.ttf'), 
   });
 
   if (!fontsLoaded) {
@@ -120,7 +119,7 @@ const LoginScreen = () => {
     >
       <Icon name="chevron-left" size={30} color="#000" />
     </TouchableOpacity>
-    <Text style={styles.tittel}>Sign in</Text>
+    <Text style={styles.title}>Sign in</Text>
   </View>
   <Text style={styles.description}>Login with your details</Text>
 </View>
@@ -195,46 +194,48 @@ const styles = StyleSheet.create({
   iconContainer: {
     marginRight: 10,
   },
-  tittel: {
-    color: 'black',
-    fontSize: 28,
-    fontWeight: '600',
-    fontFamily: 'text', // Use a valid font or remove if not required
+  title: {
+    color: '#1E1E1E',
+    fontSize: 36,
+    fontWeight: '700',
+    lineHeight:43.2,
+    fontFamily: 'Lato',
   },
   description: {
-    color: '#666666',
-    fontWeight: '400',
-    fontSize: 18,
-    // marginBottom:'70%',
-    marginLeft: '10%',
-    fontFamily: 'text',
+    color: '#1E1E1E',
+    fontWeight: '300',
+    fontSize: 20,
+    marginLeft: '15%',
+    fontFamily: 'Lato',
   },
   text: {
     marginLeft:'5%',
     marginBottom: 8,
-    fontSize:18,
-    color:'#666666',
-    fontFamily: 'text',
+    fontSize:16,
+    lineHeight:19.2,
+    color:'#9C9C9C',
+    fontFamily: 'Lato',
   },
   input: {
       borderWidth: 1,
       borderColor: '#000',
-      color:'#666666',
+      color:'#1E1E1E',
       borderRadius: 8,
-      fontFamily:'text',
-      fontSize:15,
-      fontWeight:'ultralight',
+      fontFamily:'Lato',
+      fontSize:24,
+      fontWeight:'600',
+      lineHeight:28.8,
       padding: 10,
-      marginBottom:30,
+      marginBottom:20,
     },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
      borderWidth: 1,
       borderColor: '#000',
-      color:'#666666',
+      color:'#1E1E1E',
       borderRadius: 8,
-      fontFamily:'text',
+      fontFamily:'Lato',
       fontSize:15,
       fontWeight:'ultralight',
       padding: 10,
@@ -242,14 +243,20 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
-    fontFamily: 'text',
+    color:'#1E1E1E',
+    borderRadius: 8,
+    fontFamily:'Lato',
+    fontSize:24,
+    fontWeight:'600',
+    lineHeight:28.8,
   },
   forgotPasswordText: {
     color: '#622CFD',
     marginTop: 20,
     textAlign: 'right',
-    fontFamily: 'text',
-    textDecorationLine: 'underline',
+    fontFamily: 'Lato',
+    fontSize:16,
+    lineHeight:19.2,
   },
   button: {
     backgroundColor: '#622CFD',
@@ -264,33 +271,35 @@ const styles = StyleSheet.create({
     elevation: 5, 
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: 'heading',
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '600',
+    fontFamily: 'Lato',
+    lineHeight:24,
   },
   singin: {
     fontSize: 15,
-    fontWeight: '500',
+    fontWeight: '300',
     textAlign: 'center',
     marginTop: 15,
-    color: '#666666', // Subtle blue for the text below the button
-    fontFamily: 'text',
+    lineHeight:22.59,
+    color: '#1E1E1E', 
+    fontFamily: 'Lato',
   },
   link: {
-    color: '#622CFD', // Matching link color with the forgot password text
-    fontWeight: 'bold',
+    color: '#622CFD',
+    fontWeight: '300',
+    lineHeight:22.59,
     textDecorationLine: 'underline',
-    fontFamily: 'text',
+    fontFamily: 'Lato',
   },
   errorText: {
-    color: 'red',
     textAlign: 'right',
-    // marginBottom: 5,
-    fontSize: 13,
-    fontFamily: 'text',
+    fontFamily: 'Lato',
+    fontSize:16,
+    lineHeight:19.2,
+    color:'red',
   },
 });
-
 
 export default LoginScreen;
