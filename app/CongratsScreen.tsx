@@ -14,7 +14,7 @@ const CongratsScreen = () =>  {
     const handleDone = () => {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'DashboardScreen' }],
+        routes: [{ name: 'Home' }],
     });
     };
    
@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    backgroundColor:'#FFFFFF'
   },
   content: {
     justifyContent: 'center',

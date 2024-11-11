@@ -78,7 +78,7 @@ const LoginScreen = () => {
 
           navigation.reset({
             index: 0,
-            routes: [{ name: 'DashboardScreen' }],  
+            routes: [{ name: 'Home' }],  
         });
         } else {
           ToastAndroid.show('Login Failed', response.data.message || 'Invalid credentials');
@@ -101,7 +101,7 @@ const LoginScreen = () => {
   };
   
   const redirectToForgotPassword = () => {
-    navigation.navigate('ForgotPasswordScreen');
+    navigation.navigate('');
   };
 
   const redirectToCreateAccount = () => {
