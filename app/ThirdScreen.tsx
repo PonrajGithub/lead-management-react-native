@@ -11,27 +11,27 @@ const ThirdScreen = ({ }: any) => {
     const [fontsLoaded] = useFonts({
       'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
     });
-    useEffect(() => {
-      const checkFirstLaunch = async () => {
-        try {
-          const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
-          if (!isFirstLaunch) {
-            // If this is the first launch, set the flag in AsyncStorage
-            await AsyncStorage.setItem('isFirstLaunch', 'false');
-          } else {
-            // If not the first launch, redirect to WelcomeScreen
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'WelcomeScreen' }],
-            });
-          }
-        } catch (error) {
-          console.log('Error checking first launch:', error);
-        }
-      };
+    // useEffect(() => {
+    //   const checkFirstLaunch = async () => {
+    //     try {
+    //       const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
+    //       if (!isFirstLaunch) {
+    //         // If this is the first launch, set the flag in AsyncStorage
+    //         await AsyncStorage.setItem('isFirstLaunch', 'false');
+    //       } else {
+    //         // If not the first launch, redirect to WelcomeScreen
+    //         navigation.reset({
+    //           index: 0,
+    //           routes: [{ name: 'WelcomeScreen' }],
+    //         });
+    //       }
+    //     } catch (error) {
+    //       console.log('Error checking first launch:', error);
+    //     }
+    //   };
   
-      checkFirstLaunch();
-    }, []);
+    //   checkFirstLaunch();
+    // }, []);
  
     
     if (!fontsLoaded) {
@@ -70,11 +70,13 @@ const ThirdScreen = ({ }: any) => {
       {/* Next button */}
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={() =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'WelcomeScreen' }],
-          })}>
+        onPress={() => navigation.navigate('WelcomeScreen')}
+        // onPress={() =>
+        //   navigation.reset({
+        //     index: 0,
+        //     routes: [{ name: 'WelcomeScreen' }],
+        //   })}
+          >
             <Icon name="chevron-right" size={24} color="#fff" />
       </TouchableOpacity>
     </View>
