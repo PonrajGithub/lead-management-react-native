@@ -14,7 +14,7 @@ const CongratsScreen = () =>  {
     const handleDone = () => {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'Home' }],
+        routes: [{ name: 'DashboardScreen' }],
     });
     };
    
