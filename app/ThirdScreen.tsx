@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity,Image, ImageBackground } from 
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const ThirdScreen = ({ }: any) => {
@@ -11,6 +11,27 @@ const ThirdScreen = ({ }: any) => {
     const [fontsLoaded] = useFonts({
       'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
     });
+    useEffect(() => {
+      const checkFirstLaunch = async () => {
+        try {
+          const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
+          if (!isFirstLaunch) {
+            // If this is the first launch, set the flag in AsyncStorage
+            await AsyncStorage.setItem('isFirstLaunch', 'false');
+          } else {
+            // If not the first launch, redirect to WelcomeScreen
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'WelcomeScreen' }],
+            });
+          }
+        } catch (error) {
+          console.log('Error checking first launch:', error);
+        }
+      };
+  
+      checkFirstLaunch();
+    }, []);
  
     
     if (!fontsLoaded) {

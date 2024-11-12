@@ -24,7 +24,7 @@ const Loan: React.FC = () => {
   const [selectedLink, setSelectedLink] = useState('');
 
   const [fontsLoaded] = useFonts({
-    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
     lineHeight:14.4,
     fontWeight:'400',
+    marginTop:15,
   },
   row: {
     flexDirection: 'row',
@@ -117,6 +118,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 15,
+    borderColor: '#E0E0E0', // Light gray border
+    borderWidth: 1,
+    justifyContent: 'center',
+    width: 170,
+    height: 80,
   },
   itemContainerRow2: {
     alignItems: 'center',
@@ -163,14 +171,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     right: 20,
-    backgroundColor: '#4A4A4A',
+    backgroundColor: '#9c9c9c',
     padding: 10,
     borderRadius: 15,
     borderWidth: 1,
     // borderColor: '#FF4C4C',
   },
   closeButtonText: {
-    color: '#FF4C4C',
+    color: '#000',
     fontWeight: 'bold',
     fontSize: 16,
   },

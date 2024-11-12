@@ -6,8 +6,7 @@ import { useFonts } from 'expo-font';
 const TotalMember = () => {
 
     const [fontsLoaded] = useFonts({
-        'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-        'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+       'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
       });
     
       if (!fontsLoaded) {
@@ -29,12 +28,13 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     text:{
-        fontFamily: 'Rubik-Bold',
-        backgroundColor: '#1e3a8a',
-        height: 40,
-        color:'#fff',
-        paddingLeft:10,
-        paddingTop:10,
+        backgroundColor: '#E7F4FF',
+        fontFamily:'Lato',
+        fontSize: 16,
+        fontWeight:'600',
+        lineHeight:16.8,
+        color:"#1E1E1E",
+        padding:10,
         borderBottomLeftRadius: 15,
         borderBottomRightRadius: 15,
     },

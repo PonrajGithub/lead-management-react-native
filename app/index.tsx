@@ -10,7 +10,7 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('FirstScreen');
-    }, 5000); // 5 seconds delay
+    }, 3000); // 5 seconds delay
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, [navigation]);

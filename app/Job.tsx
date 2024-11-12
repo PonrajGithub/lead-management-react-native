@@ -1,60 +1,79 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons'; // Assuming you're using expo for icons, or you can use react-native-vector-icons
+import { FontAwesome5 } from '@expo/vector-icons'; // Using expo for icons
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const Job = () => {
-
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
-        <FontAwesome5 name="chart-bar" size={24} color="white" />
-        <Text style={styles.buttonText}>Job Vacancies</Text>
-      </TouchableOpacity>
+      <Text style={styles.header}>FEATURES</Text>
 
-      <TouchableOpacity style={styles.button}>
-        <FontAwesome5 name="user" size={24} color="white" />
-        <Text style={styles.buttonText}>Women Empowerment</Text>
-      </TouchableOpacity>
+      {/* First Row of Icons */}
+      <View style={styles.row}>
+        <TouchableOpacity style={styles.button}>
+          <FontAwesome5 name="chair" size={28} color="#622CFD" />
+          <Text style={styles.buttonText}>Job{"\n"}Vacancies</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={styles.button}>
-        <FontAwesome5 name="whatsapp" size={24} color="white" />
-        <Text style={styles.buttonText}>What`s app</Text>
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity style={styles.button}>
+          <FontAwesome5 name="balance-scale" size={28} color="#622CFD" />
+          <Text style={styles.buttonText}>Women{"\n"}Empower</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.button}>
+          <FontAwesome5 name="whatsapp" size={28} color="#622CFD" />
+          <Text style={styles.buttonText}>Whatsapp</Text>
+        </TouchableOpacity>
+      </View>
+      </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
+    flex:1
+  },
+  header: {
+    fontFamily: 'Lato',
+    fontSize: 18,
+    marginBottom: 20,
+    color: '#1E1E1E',
+    fontWeight: '600',
+    textAlign: 'left',
+  },
+  row: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginVertical: 10,
-    // paddingHorizontal: 10,
+    justifyContent: 'space-between',
+    marginBottom: 20,
   },
   button: {
-    backgroundColor: '#1e3a8a',
-    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    borderColor: '#E0E0E0',
+    borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 120,
-    height: 100,
+    width: 98,
+    height: 110,
   },
   buttonText: {
-    color: 'white',
-    fontSize: 15,
-    textAlign: 'center',
-    marginTop: 8,
-    fontFamily:'heading'
+    fontFamily: 'Lato',
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'left',
+    fontWeight: '600',
+    lineHeight: 16,
+    color: "#1E1E1E",
   },
 });
 

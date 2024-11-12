@@ -16,34 +16,34 @@ const FirstScreen = () => {
   useEffect(() => {
     const checkAppState = async () => {
       try {
+        // Check if it's the first launch
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
         if (isFirstLaunch === null) {
-          await AsyncStorage.setItem('isFirstLaunch', 'true');
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'WelcomeScreen' }],
-      });
-      return;
+          // First launch, proceed through First, Second, Third Screens
+          return;
         }
 
+        // Check if user data exists (not first launch)
         const storedData = await AsyncStorage.getItem('@storage_user_data');
         if (storedData !== null) {
           const parsedData = JSON.parse(storedData);
-          const token = parsedData?.data?.token;
-
+          const token = parsedData?.data?.token; // Assuming you are storing a token
+          
           if (token) {
-            navigation.reset({
+            // Token exists, navigate to DashboardScreen
+            return navigation.reset({
               index: 0,
               routes: [{ name: 'DashboardScreen' }],
             });
-            return;
           }
         }
 
+        // No token found or no user data, navigate to WelcomeScreen
         navigation.reset({
           index: 0,
           routes: [{ name: 'WelcomeScreen' }],
         });
+
       } catch (error) {
         console.error('Error checking app state:', error);
       }
@@ -51,7 +51,6 @@ const FirstScreen = () => {
 
     checkAppState();
   }, [navigation]);
-
   // Render loading state if fonts are not loaded
   if (!fontsLoaded) {
     return (

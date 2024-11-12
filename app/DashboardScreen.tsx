@@ -88,7 +88,16 @@ const handleSettings = () => {
         </TouchableOpacity>
       </View>
        {/* Dropdown Menu */}
-       {dropdownVisible && (
+      
+      
+      {/* Banner */}
+      <View style={styles.bannerContainer}>
+        <Image
+          source={require('../assets/images/Group.png')} // Replace with your banner image URI
+          style={styles.bannerImage}
+        />
+      </View>
+      {dropdownVisible && (
                 <View style={styles.dropdown}>
                     <TouchableOpacity style={styles.dropdownItem} onPress={handleSettings}>
                         <Text style={styles.dropdownText}>Settings</Text>
@@ -99,22 +108,15 @@ const handleSettings = () => {
                 </View>
             )}
       </View>
-      {/* Banner */}
-      <View style={styles.bannerContainer}>
-        <Image
-          source={require('../assets/images/Group.png')} // Replace with your banner image URI
-          style={styles.bannerImage}
-        />
-      </View>
       <View style={styles.stepOneContainer}>   
-      <View style={styles.section}>
+      
                 <First/>
-                <QuickLink />
                 <TotalMember />
+                <QuickLink />
                 <Job />
                 <About />
         </View>
-        </View>
+       
       </ImageBackground>
     </ScrollView>
   );
@@ -125,7 +127,7 @@ const handleSettings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#f5f5f5',
+    
   },
   background: {
     flex: 1,
@@ -158,21 +160,16 @@ const styles = StyleSheet.create({
   bannerImage: {
     width: '100%',
     height: 150,
-    marginTop:'10%'
+    marginTop:'-15%'
   },
   stepOneContainer: {
     flex: 1,
-    marginBottom:'-100%',
+    // marginBottom:'100%',
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
-    padding: 20,
+    padding: 10,
     marginTop:'5%',
-  },
-  section: {
-  //   flex: 1,
-  //       backgroundColor: '#FFFFFF',
-  //       // paddingHorizontal: 10,
   },
   dropdown: {
     position: 'absolute',
