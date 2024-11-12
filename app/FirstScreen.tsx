@@ -18,7 +18,12 @@ const FirstScreen = () => {
       try {
         const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
         if (isFirstLaunch === null) {
-          return;
+          await AsyncStorage.setItem('isFirstLaunch', 'true');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'WelcomeScreen' }],
+      });
+      return;
         }
 
         const storedData = await AsyncStorage.getItem('@storage_user_data');

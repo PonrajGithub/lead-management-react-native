@@ -3,16 +3,21 @@ import { View, Text, StyleSheet, TouchableOpacity,Image, ImageBackground } from 
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const ThirdScreen = ({ }: any) => {
     const navigation: any = useNavigation();
     const [fontsLoaded] = useFonts({
       'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
     });
-
+ 
+    
     if (!fontsLoaded) {
       return null; 
     }
+
+    
 
   return (
     <View style={styles.container}>

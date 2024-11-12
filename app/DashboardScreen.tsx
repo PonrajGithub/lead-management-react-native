@@ -1,7 +1,69 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TouchableOpacity, ImageBackground } from 'react-native';
+import React,{ useState, useEffect } from 'react';
+import { Alert, View, Text, StyleSheet, ScrollView, Image, ImageBackground,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import First from './Loan';
+import QuickLink from './QuickLink';
+import About from './About';
+import TotalMember from './TotalMember';
+import Job from './Job';
 
 const DashboardScreen = () => {
+  const navigation = useNavigation();
+  const [dropdownVisible, setDropdownVisible] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    const fetchTokenAndUserName = async () => {
+        try {
+            const storedToken = await AsyncStorage.getItem('@storage_user_token');
+            if (storedToken) {
+                setToken(storedToken);
+                const config = {
+                    method: 'get',
+                    url: 'https://loanguru.in/loan_guru_app/api/userinfo',
+                    headers: { 'Authorization': `Bearer ${storedToken}` },
+                };
+                const response = await axios.request(config);
+                const name = response.data?.name || 'User';
+                setUserName(name);
+            } else {
+                console.error('Token not found');
+            }
+        } catch (error) {
+            console.error('Error fetching user info:', error);
+            Alert.alert('Error', 'Failed to fetch user details. Please try again.');
+        }
+    };
+    fetchTokenAndUserName();
+}, []);
+
+const handleLogout = async () => {
+    try {
+        const config = {
+            method: 'get',
+            url: 'https://loanguru.in/loan_guru_app/api/logout',
+            headers: { 'Authorization': `Bearer ${token}` },
+        };
+        await axios.request(config);
+
+        await AsyncStorage.clear();
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'WelcomeScreen' }],
+        });
+    } catch (error) {
+        console.error('Error during logout:', error);
+        Alert.alert('Error', 'An error occurred while logging out. Please try again.');
+    }
+};
+
+const handleSettings = () => {
+    setDropdownVisible(false);
+    navigation.navigate('');
+};
   return (
     <ScrollView style={styles.container}>
       {/* Header */}
@@ -10,18 +72,33 @@ const DashboardScreen = () => {
         style={styles.background}
         resizeMode="cover"
       >
+        <View>
       <View style={styles.header}>
       <Image
-          source={require('../assets/images/loan.png')} // Replace with your banner image URI
+          source={require('../assets/images/loan.png')} 
           style={styles.image}
            resizeMode="contain"
         />
-        <View style={styles.profileIcon}>
-          <Text style={styles.profileText}>A</Text>
-        </View>
-       
+        <TouchableOpacity style={styles.profileIcon} onPress={() => setDropdownVisible(!dropdownVisible)}>
+        <Image
+          source={require('../assets/images/A.png')} 
+          style={styles.profileIcon}
+           resizeMode="contain"
+        />
+        </TouchableOpacity>
       </View>
-
+       {/* Dropdown Menu */}
+       {dropdownVisible && (
+                <View style={styles.dropdown}>
+                    <TouchableOpacity style={styles.dropdownItem} onPress={handleSettings}>
+                        <Text style={styles.dropdownText}>Settings</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.dropdownItem} onPress={handleLogout}>
+                        <Text style={styles.dropdownText}>Logout</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
+      </View>
       {/* Banner */}
       <View style={styles.bannerContainer}>
         <Image
@@ -29,72 +106,21 @@ const DashboardScreen = () => {
           style={styles.bannerImage}
         />
       </View>
-
-      {/* Loan Section */}
-      <View style={styles.sectionContainer}>
+      <View style={styles.stepOneContainer}>   
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Loan</Text>
-        <View style={styles.row}>
-          <Button label="Unsecured Loan" />
-          <Button label="Secured Loan" />
+                <First/>
+                <QuickLink />
+                <TotalMember />
+                <Job />
+                <About />
         </View>
-        <View style={styles.row}>
-          <Button label="SME's" />
-          <Button label="OD/CC" />
-          <Button label="Project" />
-          <Button label="Education" />
         </View>
-        <Text style={styles.totalMembers}>Total Members: 5327</Text>
-      </View>
-
-      {/* Quick Links Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Quick Links</Text>
-        <View style={styles.row}>
-          <Button label="Insurance" />
-          <Button label="Job" />
-          <Button label="EMI Calculator" />
-          <Button label="Query" />
-        </View>
-      </View>
-
-      {/* Features Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Features</Text>
-        <View style={styles.row}>
-          <Button label="Job Vacancies" />
-          <Button label="Women Empower" />
-          <Button label="Whatsapp" />
-        </View>
-      </View>
-
-      {/* About Us Section */}
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Know More About Us</Text>
-        <View style={styles.row}>
-          <Button label="Intro" />
-          <Button label="Team" />
-          <Button label="Media" />
-          <Button label="Email" />
-        </View>
-        <View style={styles.row}>
-          <Button label="DGNMS" />
-          <Button label="Privacy Policy" />
-          <Button label="T&C" />
-          <Button label="List" />
-        </View>
-      </View>
-      </View>
       </ImageBackground>
     </ScrollView>
   );
 };
 
-const Button = ({ label } : any ) => (
-  <TouchableOpacity style={styles.button}>
-    <Text style={styles.buttonText}>{label}</Text>
-  </TouchableOpacity>
-);
+
 
 const styles = StyleSheet.create({
   container: {
@@ -110,13 +136,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
-    marginTop:'8%',
+    padding: 20,
+    marginTop:'-8%',
   },
- image:{
-height:100,
-width:100,
- },
+  image:{
+    height:150,
+    width:150,
+  },
   profileIcon: {
     width: 40,
     height: 40,
@@ -125,11 +151,6 @@ width:100,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  profileText: {
-    fontSize: 18,
-    color: '#6200EE',
-    fontWeight: 'bold',
-  },
   bannerContainer: {
     marginTop: 16,
     paddingHorizontal: 16,
@@ -137,11 +158,11 @@ width:100,
   bannerImage: {
     width: '100%',
     height: 150,
-    borderRadius: 10,
+    marginTop:'10%'
   },
-  sectionContainer: {
+  stepOneContainer: {
     flex: 1,
-    // marginBottom:'-100%',
+    marginBottom:'-100%',
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
@@ -149,42 +170,31 @@ width:100,
     marginTop:'5%',
   },
   section: {
-    marginTop: 16,
-    paddingHorizontal: 16,
+  //   flex: 1,
+  //       backgroundColor: '#FFFFFF',
+  //       // paddingHorizontal: 10,
   },
-  sectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
-  },
-  button: {
-    width: '48%',
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 8,
-    marginBottom: 10,
-    alignItems: 'center',
+  dropdown: {
+    position: 'absolute',
+    top: 110,
+    right: 20,
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    elevation: 5,
     shadowColor: '#000',
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
-    elevation: 2,
-  },
-  buttonText: {
-    fontSize: 14,
-    color: '#6200EE',
-    fontWeight: 'bold',
-  },
-  totalMembers: {
-    marginTop: 8,
-    fontSize: 14,
+    shadowOffset: { width: 0, height: 2 },
+},
+dropdownItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE',
+},
+dropdownText: {
+    fontSize: 16,
     color: '#333',
-  },
+},
 });
 
 export default DashboardScreen;

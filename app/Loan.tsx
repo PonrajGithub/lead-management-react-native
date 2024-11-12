@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import UnsecuredIcon from '../assets/images/icon/unsecurity.png';
+import SecuredIcon from '../assets/images/icon/security.png';
+import SMEIcon from '../assets/images/icon/sme.png';
+import ODCCIcon from '../assets/images/icon/odcc.png';
+import ProjectIcon from '../assets/images/icon/project.png';
+import EducationIcon from '../assets/images/icon/education.png';
 
 const data = [
-  { id: '1', title: 'Unsecured', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/', icon: 'lock-open-variant-outline' },
-  { id: '2', title: 'Secured', link: 'https://loanguru.in/delhis-best-secured-loan-provider-company-for-business-home-and-personal-loans/', icon: 'lock-outline' },
-  { id: '3', title: 'SME`s', link: 'https://loanguru.in/best-msme-loan-provider-company-in-delhi-for-new-business/', icon: 'factory' },
-  { id: '4', title: 'OD/CC', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/', icon: 'credit-card-outline' },
-  { id: '5', title: 'Project', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/', icon: 'projector-screen-outline' },
-  { id: '6', title: 'Education', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/', icon: 'school-outline' }
+  { id: '1', title: 'Unsecured\nLoan', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/', icon: UnsecuredIcon },
+  { id: '2', title: 'Secured\nLoan', link: 'https://loanguru.in/delhis-best-secured-loan-provider-company-for-business-home-and-personal-loans/', icon: SecuredIcon },
+  { id: '3', title: 'SME`s', link: 'https://loanguru.in/best-msme-loan-provider-company-in-delhi-for-new-business/', icon: SMEIcon },
+  { id: '4', title: 'OD/CC', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/', icon: ODCCIcon },
+  { id: '5', title: 'Project', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/', icon: ProjectIcon },
+  { id: '6', title: 'Education', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/', icon: EducationIcon }
 ];
 
 const Loan: React.FC = () => {
@@ -19,8 +24,7 @@ const Loan: React.FC = () => {
   const [selectedLink, setSelectedLink] = useState('');
 
   const [fontsLoaded] = useFonts({
-    'Rubik-Regular': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'Rubik-Bold': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -41,23 +45,36 @@ const Loan: React.FC = () => {
     document.querySelector('.cnb-action.cnb-icon-type-font').style.display = 'none';
   `;
 
-  const renderItem = ({ item }: { item: { id: string; title: string; link: string, icon: string } }) => (
-    <TouchableOpacity style={styles.item} onPress={() => handlePress(item.link)}>
-      <View style={styles.iconContainer}>
-        <Icon name={item.icon} size={28} color="#0096FF" />
+  const renderItemRow1 = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
+    <TouchableOpacity key={item.id} onPress={() => handlePress(item.link)}>
+      <View style={styles.itemContainerRow1}>
+      <View style={styles.iconContainer1}>
+          <Image source={item.icon} style={styles.icon} />
+        </View>
+        <Text style={styles.titleRow1}>{item.title}</Text>
       </View>
-      <Text style={styles.itemText}>{item.title}</Text>
+    </TouchableOpacity>
+  );
+
+  const renderItemRow2 = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
+    <TouchableOpacity key={item.id} onPress={() => handlePress(item.link)}>
+      <View style={styles.itemContainerRow2}>
+      <View style={styles.iconContainer}>
+          <Image source={item.icon} style={styles.icon} />
+        </View>
+        <Text style={styles.titleRow2}>{item.title}</Text>
+      </View>
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Loan Options</Text>
+      <Text style={styles.heading}>Loan</Text>
       <View style={styles.row}>
-        {data.slice(0, 3).map(item => renderItem({ item }))}
+        {data.slice(0, 2).map(item => renderItemRow1({ item }))}
       </View>
       <View style={styles.row}>
-        {data.slice(3, 6).map(item => renderItem({ item }))}
+        {data.slice(2, 6).map(item => renderItemRow2({ item }))}
       </View>
       <Modal visible={modalVisible} animationType="slide">
         <WebView
@@ -80,56 +97,80 @@ const Loan: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 15,
-    paddingTop: 40,
-    backgroundColor: '#CECECE', // Dark grey background for the container
+    backgroundColor: '#FFFFFF',
   },
   heading: {
-    fontFamily: 'Rubik-Bold',
+    fontFamily: 'Lato',
     fontSize: 20,
     marginLeft: 20,
     marginBottom: 10,
-    color: '#333333', // Red color for heading text
+    color: '#1E1E1E',
+    lineHeight:14.4,
+    fontWeight:'400',
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginBottom: 15,
   },
-  item: {
+  itemContainerRow1: {
+    flexDirection: 'row',
     alignItems: 'center',
-    width: '30%',
-    // backgroundColor: '#4A4A4A', // Dark grey background for each item
+    margin: 10,
+  },
+  itemContainerRow2: {
+    alignItems: 'center',
+    margin: 10,
+  },
+  iconContainer1: {
+    backgroundColor: '#E7F4FF',
     padding: 10,
-    borderRadius: 15, // Rounded corners for item boxes
+    borderRadius: 50, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 5,
   },
   iconContainer: {
-    backgroundColor: '#fff', // Red color for the icon container
-    borderRadius: 30, // Circle for the icon container
-    width: 60,
-    height: 60,
-    alignItems: 'center',
+    backgroundColor: '#E7F4FF',
+    padding: 10,
+    borderRadius: 20, 
     justifyContent: 'center',
-    marginBottom: 8,
+    alignItems: 'center',
+    marginBottom: 5,
   },
-  itemText: {
-    fontSize: 14,
-    fontFamily: 'Rubik-Bold',
+  icon: {
+    width: 40,
+    height: 40,
+    marginBottom: 5,
+  },
+  titleRow1: {
+    fontFamily:'Lato',
+    fontSize: 16,
+    marginLeft: 10,
+    fontWeight:'600',
+    lineHeight:16.8,
+    color:"#1E1E1E",
+  },
+  titleRow2: {
+    fontFamily:'Lato',
+    fontSize: 16,
     textAlign: 'center',
-    color: '#333333', // White color for text to stand out on dark grey
+    fontWeight:'600',
+    lineHeight:16.8,
+    color:"#1E1E1E",
   },
   closeButton: {
     position: 'absolute',
     top: 40,
     right: 20,
-    backgroundColor: '#4A4A4A', // Dark grey color for close button
+    backgroundColor: '#4A4A4A',
     padding: 10,
     borderRadius: 15,
     borderWidth: 1,
-    borderColor: '#FF4C4C', // Red border for close button
+    // borderColor: '#FF4C4C',
   },
   closeButtonText: {
-    color: '#FF4C4C', // Red color for close button text
+    color: '#FF4C4C',
     fontWeight: 'bold',
     fontSize: 16,
   },

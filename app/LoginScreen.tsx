@@ -20,7 +20,7 @@ const LoginScreen = () => {
   const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
-    'Lato': require('../assets/fonts/static/Rubik-Regular.ttf'), 
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
   });
 
   if (!fontsLoaded) {
@@ -78,7 +78,7 @@ const LoginScreen = () => {
 
           navigation.reset({
             index: 0,
-            routes: [{ name: 'Home' }],  
+            routes: [{ name: 'DashboardScreen' }],  
         });
         } else {
           ToastAndroid.show('Login Failed', response.data.message || 'Invalid credentials');
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   title: {
     color: '#1E1E1E',
     fontSize: 36,
-    fontWeight: '700',
+    fontWeight: '600',
     lineHeight:43.2,
     fontFamily: 'Lato',
   },
