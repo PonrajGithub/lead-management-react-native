@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList,TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Using MaterialCommunityIcons
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
@@ -25,10 +25,12 @@ const About = () => {
   }
 
   const renderItem = ({ item }: { item: { id: string; name: string; icon: string } }) => (
-    <View style={styles.gridItem}>
-      <Icon name={item.icon} size={30} color="#622CFD" />
+    <TouchableOpacity style={styles.gridItem}>
+      <View style={styles.iconContainer}>
+      <Icon name={item.icon} size={24} color="#622CFD" />
+      </View>
       <Text style={styles.itemText}>{item.name}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -38,7 +40,7 @@ const About = () => {
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        numColumns={4} // 4 columns
+        numColumns={4} 
         contentContainerStyle={styles.grid}
       />
     </View>
@@ -48,39 +50,44 @@ const About = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 20,
   },
   header: {
     fontFamily: 'Lato',
-    fontSize: 18,
+    fontSize: 12,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'left',
+    lineHeight:14.4,
+    letterSpacing:2
   },
   grid: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   gridItem: {
+    alignItems: 'center',
+    marginBottom: 20,
+    width: '24%',
+  },
+  iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E0E0E0', // Light gray border
+    borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 70,
-    height: 70,
+    width: 44,
+    height: 44,
     margin: 10,
   },
   itemText: {
-    fontFamily: 'Lato',
-    fontSize: 12,
-    marginTop: 8,
-    textAlign: 'center',
-    fontWeight: '600',
-    color: "#1E1E1E",
+    fontFamily:'Lato',
+    fontSize: 16,
+    marginLeft: 10,
+    fontWeight:'600',
+    lineHeight:16.8,
+    color:"#1E1E1E",
   },
 });
 

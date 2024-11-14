@@ -36,7 +36,7 @@ const QuickLink = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Quick Links</Text>
+      <Text style={styles.heading}>QUICK LINKS</Text>
       <View style={styles.row}>
         {data.map((item) => renderItem({ item }))}
       </View>
@@ -53,10 +53,13 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'Lato',
-    fontSize: 18,
+    fontSize: 12,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '600',
+    fontWeight: '700',
+    textAlign: 'left',
+    lineHeight:14.4,
+    letterSpacing:2
   },
   row: {
     flexDirection: 'row',
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E0E0E0', // Light gray border
+    borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -80,8 +83,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 24,
+    height: 24,
   },
   itemText: {
     fontFamily: 'Lato',

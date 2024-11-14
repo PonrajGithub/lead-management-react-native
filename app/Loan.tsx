@@ -69,7 +69,7 @@ const Loan: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Loan</Text>
+      <Text style={styles.heading}>LOAN</Text>
       <View style={styles.row}>
         {data.slice(0, 2).map(item => renderItemRow1({ item }))}
       </View>
@@ -97,16 +97,17 @@ const Loan: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    // backgroundColor: '#FFFFFF',
   },
   heading: {
     fontFamily: 'Lato',
-    fontSize: 20,
-    marginLeft: 20,
-    marginBottom: 10,
+    fontSize: 12,
+    marginBottom: 20,
     color: '#1E1E1E',
+    fontWeight: '700',
+    marginLeft:15,
     lineHeight:14.4,
-    fontWeight:'400',
+    letterSpacing:2,
     marginTop:15,
   },
   row: {
@@ -120,11 +121,11 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E0E0E0', // Light gray border
+    borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
     justifyContent: 'center',
-    width: 170,
-    height: 80,
+    width: 180,
+    height: 60,
   },
   itemContainerRow2: {
     alignItems: 'center',
@@ -133,27 +134,31 @@ const styles = StyleSheet.create({
   iconContainer1: {
     backgroundColor: '#E7F4FF',
     padding: 10,
-    borderRadius: 50, 
+    borderRadius: 15,
+    height:44,
+    width:44, 
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 5,
+    
   },
   iconContainer: {
     backgroundColor: '#E7F4FF',
     padding: 10,
-    borderRadius: 20, 
+    borderRadius: 15,
+    height:44,
+    width:44,  
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom:5,
   },
   icon: {
-    width: 40,
-    height: 40,
+    width: 24,
+    height: 24,
     marginBottom: 5,
   },
   titleRow1: {
     fontFamily:'Lato',
-    fontSize: 16,
+    fontSize: 18,
     marginLeft: 10,
     fontWeight:'600',
     lineHeight:16.8,
@@ -178,7 +183,7 @@ const styles = StyleSheet.create({
     // borderColor: '#FF4C4C',
   },
   closeButtonText: {
-    color: '#000',
+    color: '#1E1E1E',
     fontWeight: 'bold',
     fontSize: 16,
   },

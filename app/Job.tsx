@@ -20,7 +20,7 @@ const Job = () => {
       {/* First Row of Icons */}
       <View style={styles.row}>
         <TouchableOpacity style={styles.button}>
-          <FontAwesome5 name="chair" size={28} color="#622CFD" />
+          <FontAwesome5 name="chair" size={24} color="#622CFD" />
           <Text style={styles.buttonText}>Job{"\n"}Vacancies</Text>
         </TouchableOpacity>
 
@@ -45,11 +45,13 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: 'Lato',
-    fontSize: 18,
+    fontSize: 12,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '600',
+    fontWeight: '700',
     textAlign: 'left',
+    lineHeight:14.4,
+    letterSpacing:2
   },
   row: {
     flexDirection: 'row',
@@ -59,20 +61,20 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    borderColor: '#E0E0E0',
+    borderColor: '#E3E2E2',
     borderWidth: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    width: 98,
-    height: 110,
+    justifyContent:'center',
+    width: 110,
+    height: 120,
   },
   buttonText: {
     fontFamily: 'Lato',
     fontSize: 14,
-    marginTop: 10,
+    marginTop: 20,
     textAlign: 'left',
     fontWeight: '600',
-    lineHeight: 16,
+    lineHeight: 16.8,
     color: "#1E1E1E",
   },
 });
