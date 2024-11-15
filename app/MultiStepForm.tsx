@@ -14,6 +14,8 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
 
 
 const MultiStepForm = ({ }: any) => {
@@ -43,6 +45,10 @@ const MultiStepForm = ({ }: any) => {
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
+  const [showPicker, setShowPicker] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const isIOS = Platform.OS === 'ios';
+  const isAndroid = Platform.OS === 'android';
 
   // Validation function
   const validateStep = () => {
@@ -52,9 +58,7 @@ const MultiStepForm = ({ }: any) => {
         if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required.';
         break;
       case 3: // Validate DOB
-        const dobRegex = /^\d{2}-\d{2}-\d{4}$/;
         if (!formData.dob) newErrors.dob = 'Date of birth is required.';
-        else if (!dobRegex.test(formData.dob)) newErrors.dob = 'Invalid DOB format. Use DD-MM-YYYY.';
         break;
       case 4: // Validate contact details
         if (!formData.contactNumber.trim()) newErrors.contactNumber = 'Mobile number is required.';
@@ -108,6 +112,13 @@ const MultiStepForm = ({ }: any) => {
       } else {
         setStep((prev) => prev + 1); // Proceed to next step
       }
+    }
+  };
+  const handleDateChange = (event, selectedDate) => {
+    setShowPicker(false);
+    if (selectedDate) {
+      const formattedDate = selectedDate.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
+      handleChange('dob', formattedDate);
     }
   };
   const handleBack = () => {
@@ -167,16 +178,27 @@ const MultiStepForm = ({ }: any) => {
       case 3:
         return (
           <View style={styles.stepOneContainer}>
-            <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="dd/mm/yyyy"
-              value={formData.dob}
-              onChangeText={(text) => handleChange('dob', text)}
-            />
-                        {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
+      <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
+      <TouchableOpacity onPress={() => setShowPicker(true)}>
+        <TextInput
+          style={styles.input}
+          placeholder="dd/mm/yyyy"
+          value={formData.dob}
+          editable={false} // Disable direct editing
+        />
+      </TouchableOpacity>
+      {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
 
-          </View>
+      {showPicker && (
+        <DateTimePicker
+          value={date}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={handleDateChange}
+          maximumDate={new Date()} // Optional: Restrict to past dates
+        />
+      )}
+    </View>
         );
       case 4:
         return (
@@ -185,6 +207,7 @@ const MultiStepForm = ({ }: any) => {
             <TextInput
               style={styles.input}
               placeholder="Mobile number"
+              keyboardType="phone-pad"
               value={formData.contactNumber}
               onChangeText={(text) => handleChange('contactNumber', text)}
             />
@@ -349,6 +372,24 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
     textAlign: 'center',
     marginBottom: 30,
+  },
+  stepContainer: {
+    marginTop: '40%',
+    padding: 20,
+    backgroundColor: '#FFF',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+  },
+  datePickerButton: {
+    borderWidth: 2,
+    borderColor: '#9C9C9C',
+    borderRadius: 10,
+    padding: 15,
+    alignItems: 'center',
+  },
+  datePickerText: {
+    fontSize: 18,
+    color: '#1E1E1E',
   },
   userTypeButton: {
     borderWidth: 2,

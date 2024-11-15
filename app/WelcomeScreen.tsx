@@ -17,7 +17,6 @@ import { useFonts } from 'expo-font';
 const WelcomeScreen = ({ }: any) => {
   const navigation: any = useNavigation();
   const [isHoveredCreate, setIsHoveredCreate] = useState(false);
-  const [isHoveredLogin, setIsHoveredLogin] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -124,7 +123,7 @@ const styles = StyleSheet.create({
   image: {
     width:250,
     height:250,
-    alignSelf:'center',
+    marginLeft:40
   },
   title: {
     fontSize: 40,
@@ -145,8 +144,7 @@ const styles = StyleSheet.create({
   },
   body: {
     flex: 3,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal:40
   },
   footer: {
     flex: 1,

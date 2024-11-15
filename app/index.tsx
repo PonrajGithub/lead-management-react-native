@@ -1,10 +1,15 @@
 import { useNavigation } from 'expo-router';
 import React, { useEffect } from 'react';
-import {Image, StyleSheet, ImageBackground } from 'react-native';
+import {Image, StyleSheet, ImageBackground, Text } from 'react-native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 
 const Index = () => {
-  const navigation: any = useNavigation();  
+  const navigation: any = useNavigation(); 
+  const [fontsLoaded] = useFonts({
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
+  }); 
 
   // Second useEffect for delayed navigation
   useEffect(() => {
@@ -14,7 +19,11 @@ const Index = () => {
 
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, [navigation]);
+ 
 
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  }
 
   return (
     <ImageBackground 
@@ -27,6 +36,8 @@ const Index = () => {
        style={styles.image}
       //  resizeMode="contain"
        />
+
+       <Text style={styles.text}>Active User: 25000</Text>
     </ImageBackground>
   );
 };
@@ -44,7 +55,18 @@ const styles = StyleSheet.create({
   },
   image:{
     alignSelf:'center',
-    marginVertical:'auto'
+    marginVertical:'auto',
+    height:127,
+    width:191,
+  },
+  text:{
+    fontSize: 15,
+    fontWeight: '300',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    lineHeight:22.59,
+    fontFamily: 'Lato',
+    marginBottom:10,
   },
 });
 
