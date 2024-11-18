@@ -20,8 +20,7 @@ const CreateAccountScreen = () => {
   const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'), 
   });
 
   if (!fontsLoaded) {
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
     marginTop: '20%',
     textAlign: 'center',
     color: '#1e3a8a', // Darker blue for contrast
-    fontFamily: 'heading',
+    fontFamily: 'Lato',
   },
   content: {
     fontSize: 16,

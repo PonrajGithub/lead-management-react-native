@@ -28,8 +28,7 @@ const CorporateScreen = () => {
   const[loading, setLoading] = useState(false);
   const navigation: any = useNavigation();
   const [fontsLoaded] = useFonts({
-    'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-    'heading': require('../assets/fonts/static/Rubik-Bold.ttf'), 
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
   text: {
     textAlign: 'left',
     marginBottom: 5,
-    fontFamily: 'text',
+    fontFamily: 'Lato',
     color: '#1e40af', // Adjust text color to a darker tone for better readability
     fontSize: 14, // Consistent font size for labels
   },
@@ -239,7 +238,7 @@ const styles = StyleSheet.create({
     borderRadius: 10, // More rounded input fields
     marginBottom: 15,
     backgroundColor: '#fff', // White background for inputs
-    fontFamily: 'text',
+    fontFamily: 'Lato',
     shadowColor: '#000', // Soft shadow for depth
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.2,
@@ -258,7 +257,7 @@ const styles = StyleSheet.create({
   },
   passwordInput: {
     flex: 1,
-    fontFamily: 'text',
+    fontFamily: 'Lato',
   },
   button: {
     backgroundColor: '#1e3a8a', // Primary blue button color
@@ -276,7 +275,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    fontFamily: 'heading',
+    fontFamily: 'Lato',
   },
   singin: {
     fontSize: 15,
@@ -284,20 +283,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 15,
     color: '#64748b', // Subtle blue for the text below the button
-    fontFamily: 'text',
+    fontFamily: 'Lato',
   },
   link: {
     color: '#0066cc', // Matching link color with the forgot password text
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    fontFamily: 'text',
+    fontFamily: 'Lato',
   },
   errorText: {
     color: 'red',
     textAlign: 'right',
     // marginBottom: 5,
     fontSize: 10,
-    fontFamily: 'text',
+    fontFamily: 'Lato',
   },
 });
 

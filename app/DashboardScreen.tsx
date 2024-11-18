@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, Text, StyleSheet, ScrollView, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { Alert, View, Text, Modal, StyleSheet, ScrollView, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import First from './Loan';
 import QuickLink from './QuickLink';
 import About from './About';
-import TotalMember from './TotalMember';
 import Job from './Job';
-import LinearGradient from 'react-native-linear-gradient';
-
+import Services from './Services';
+import Help from './Help';
+import Footer from './Footer';
 
 const DashboardScreen = () => {
     const navigation = useNavigation();
-    const [dropdownVisible, setDropdownVisible] = useState(false);
     const [userName, setUserName] = useState('');
     const [token, setToken] = useState('');
+    const [currentImage, setCurrentImage] = useState(require('../assets/images/slider1.png'));
+
 
     useEffect(() => {
         const fetchTokenAndUserName = async () => {
@@ -54,7 +56,7 @@ const DashboardScreen = () => {
             await AsyncStorage.clear();
             navigation.reset({
                 index: 0,
-                routes: [{ name: 'WelcomeScreen' }],
+                routes: [{ name : 'WelcomeScreen' }],
             });
         } catch (error) {
             console.error('Error during logout:', error);
@@ -62,145 +64,141 @@ const DashboardScreen = () => {
         }
     };
 
-    const handleSettings = () => {
-        setDropdownVisible(false);
-        navigation.navigate('');
-    };
+    useEffect(() => {
+        const images = [
+            require('../assets/images/slider1.png'),
+            require('../assets/images/slider2.png'),
+        ];
+        let currentIndex = 0;
+
+        const interval = setInterval(() => {
+            currentIndex = (currentIndex + 1) % images.length;
+            setCurrentImage(images[currentIndex]);
+        }, 5000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+    
 
     return (
-        <ScrollView style={styles.container}>
-            <ImageBackground
-                source={require('../assets/images/dashboard.jpg')}
-                style={styles.background}
-                resizeMode="cover"
-            >
-                <View>
-                    <View style={styles.header}>
-                        <Image
-                            source={require('../assets/images/loan.png')}
-                            style={styles.image}
-                            resizeMode="contain"
-                        />
-                        <TouchableOpacity
-                            style={styles.profileIconContainer}
-                            onPress={() => setDropdownVisible(!dropdownVisible)}
-                        >
-                            <View style={styles.profileIcon}>
-                                <Text style={styles.profileInitial}>
-                                    {userName.charAt(0).toUpperCase()}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.bannerContainer}>
-                        <Image
-                            source={require('../assets/images/Group.png')}
-                            style={styles.bannerImage}
-                        />
-                    </View>
-                    {dropdownVisible && (
-                        <View style={styles.dropdown}>
-                            <TouchableOpacity style={styles.dropdownItem}>
-                                <Text style={styles.dropdownText}>{userName}</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.dropdownItem} onPress={handleSettings}>
-                                <Text style={styles.dropdownText}>Settings</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.dropdownItem} onPress={handleLogout}>
-                                <Text style={styles.dropdownText}>Logout</Text>
-                            </TouchableOpacity>
-                        </View>
-                    )}
-                </View>
-                <View style={styles.stepOneContainer}>
-                    <First />
-                    <TotalMember />
-                    <QuickLink />
-                    <Job />
-                    <About />
-                </View>
-            </ImageBackground>
+        <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+  <ImageBackground
+    source={require('../assets/images/dashboard.jpg')}
+    style={styles.headerBackground}
+    resizeMode="cover"
+  >
+    <View style={styles.headerContent}>
+      <Image
+        source={require('../assets/images/loan.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <TouchableOpacity
+        style={styles.profileIconContainer}
+        onPress={handleLogout}
+      >
+        <View style={styles.profileIcon}>
+        <Icon name="power" size={30} color="#FFFFFF" />
+        </View>
+      </TouchableOpacity>
+    </View>
+  </ImageBackground>
+</View>
+  
+        {/* Content */}
+        <ScrollView style={styles.content}>
+          <ImageBackground
+            source={require('../assets/images/dashboard.jpg')}
+            style={styles.background}
+            resizeMode="cover"
+          >
+            <View style={styles.bannerContainer}>
+                <Image source={currentImage} style={styles.bannerImage} />
+            </View>
+            <View style={styles.stepOneContainer}>
+              <First />
+              <QuickLink />
+              <Job />
+              <About />
+              <Services />
+              <Help />
+            </View>
+          </ImageBackground>
         </ScrollView>
+  
+        {/* Footer */}
+        <Footer />
+      </View>
     );
-};
-
-const styles = StyleSheet.create({
+  };
+  
+  const styles = StyleSheet.create({
     container: {
         flex: 1,
-    },
-    background: {
+        backgroundColor: '#FFFFFF',
+      },
+      headerContainer: {
+        height: 80,
+        // marginTop: '5%',
+        zIndex: 2,
+      },
+      headerBackground: {
         flex: 1,
-        width: '100%',
-        height: '100%',
-    },
-    header: {
+      },
+      headerContent: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 20,
-        marginTop: '-8%',
-    },
-    image: {
-        height: 150,
-        width: 150,
-    },
-    profileIconContainer: {
+        paddingHorizontal: 20,
+        marginTop:'8%',
+      },
+      image:{
+        height:100,
+        width:150,
+      },
+      profileIconContainer: {
         justifyContent: 'center',
         alignItems: 'center',
     },
     profileIcon: {
-      width: 50,
-      height: 50,
-      borderRadius: 50,
-      backgroundColor: '#8e44ad',
-      justifyContent: 'center',
-      alignItems: 'center',
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    profileInitial: {
-        fontSize: 20,
-        fontWeight: '700',
-        color: '#fff',
-        fontFamily:'Lato'
+    content: {
+      flex: 1,
+    //   zIndex: 1, 
+    },
+    background: {
+      flex: 1,
+      width: '100%',
+      height: '100%',
+      zIndex: 0, // Ensure background is at the lowest level
     },
     bannerContainer: {
-        marginTop: 16,
-        paddingHorizontal: 16,
+    //   marginTop: 16,
+    //   paddingHorizontal: 5,
     },
     bannerImage: {
-        width: '100%',
-        height: 150,
-        marginTop: '-15%',
+      width:'100%',
+      height: 200,
     },
     stepOneContainer: {
-        flex: 1,
-        backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        padding: 10,
-        marginTop: '5%',
+      flex: 1,
+      backgroundColor: '#FFFFFF',
+      borderTopLeftRadius: 50,
+      borderTopRightRadius: 50,
+      padding: 10,
+      marginTop: '2%',
+      overflow: 'visible', 
     },
-    dropdown: {
-        position: 'absolute',
-        top: 110,
-        right: 20,
-        backgroundColor: '#FFF',
-        borderRadius: 5,
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
-    },
-    dropdownItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
-    },
-    dropdownText: {
-        fontSize: 16,
-        color: '#333',
-    },
-});
+  });
+  
 
 export default DashboardScreen;

@@ -9,7 +9,7 @@ const CongratsScreen = () =>  {
     const navigation: any = useNavigation();
 
     const [fontsLoaded] = useFonts({
-      'Lato': require('../assets/fonts/static/Rubik-Regular.ttf'),
+      Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
     });
     const handleDone = () => {
       navigation.reset({

@@ -14,8 +14,7 @@ const Header = () => {
     const navigation = useNavigation();
 
     const [fontsLoaded] = useFonts({
-        'text': require('../assets/fonts/static/Rubik-Regular.ttf'),
-        'heading': require('../assets/fonts/static/Rubik-Bold.ttf'),
+        Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
     });
 
     if (!fontsLoaded) {
