@@ -5,9 +5,11 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ScrollView,
   ImageBackground,
   ToastAndroid,
+  ScrollView,
+  Button,
+  Modal,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -16,22 +18,29 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
+
+
 
 
 const MultiStepForm = ({ }: any) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    userType: '',
-    fullName: '',
+    user_type: '',
+    name: '',
     dob: '',
-    contactNumber: '',
+    mobile_number: '',
     email: '',
-    institutionName: '',
+    institution_name: '',
     occupation: '',
+    company_name: '',
+    designation: '',
     password: '',
+    agreedToTerms: 'false',
   });
 
   
+  const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
 
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -54,22 +63,29 @@ const MultiStepForm = ({ }: any) => {
   const validateStep = () => {
     const newErrors: { [key: string]: string } = {};
     switch (step) {
-      case 2: // Validate name
-        if (!formData.fullName.trim()) newErrors.fullName = 'Full name is required.';
-        break;
+      case 2:
+      if (!formData.name.trim()) newErrors.name = 'Name is required.';
+      break;
       case 3: // Validate DOB
         if (!formData.dob) newErrors.dob = 'Date of birth is required.';
         break;
-      case 4: // Validate contact details
-        if (!formData.contactNumber.trim()) newErrors.contactNumber = 'Mobile number is required.';
-        if (!formData.email.trim()) newErrors.email = 'Email is required.';
-        else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Invalid email address.';
-        break;
+        case 4:
+          if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
+            newErrors.mobile_number = 'Valid mobile number is required.';
+          }
+          if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+            newErrors.email = 'Valid email is required.';
+          }
+          break;
       case 5: // Validate institution and occupation
-        if (!formData.institutionName.trim()) newErrors.institutionName = 'Institution name is required.';
+        if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
         if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.';
         break;
-      case 6: // Validate password
+      case 6: // Validate company and designation
+        if (!formData.company_name.trim()) newErrors.company_name = 'company name is required.';
+        if (!formData.designation.trim()) newErrors.designation = 'designation is required.';
+      break; 
+      case 7: // Validate password
         if (!formData.password.trim()) newErrors.password = 'Password is required.';
         break;
       default:
@@ -84,21 +100,15 @@ const MultiStepForm = ({ }: any) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', formData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
-      console.log(response.data);
+      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', formData);
       if (response.data.success) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'CongratsScreen' }],
-        });
+        ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
+        navigation.reset({ index: 0, routes: [{ name: 'CongratsScreen' }] });
       } else {
-        alert(response.data.message || 'An error occurred. Please try again.');
+        throw new Error(response.data.message || 'Unknown error occurred.');
       }
     } catch (error) {
-      console.error('API error:', error);
-      alert('Failed to create an account. Please try again.');
+      ToastAndroid.show(error.message, ToastAndroid.LONG);
     } finally {
       setLoading(false);
     }
@@ -107,14 +117,14 @@ const MultiStepForm = ({ }: any) => {
 
   const handleNext = () => {
     if (validateStep()) {
-      if (step === 7) {
+      if (step === 8) {
         handleSubmit(); // Final step, submit data
       } else {
         setStep((prev) => prev + 1); // Proceed to next step
       }
     }
   };
-  const handleDateChange = (event, selectedDate) => {
+  const handleDateChange = (event:any, selectedDate :any) => {
     setShowPicker(false);
     if (selectedDate) {
       const formattedDate = selectedDate.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
@@ -125,7 +135,7 @@ const MultiStepForm = ({ }: any) => {
     setStep((prev) => (prev > 1 ? prev - 1 : prev));
   };
 
-  const handleChange = (key: any, value: any )=> {
+  const handleChange = (key: string, value: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -142,17 +152,17 @@ const MultiStepForm = ({ }: any) => {
           key={type}
           style={[
             styles.userTypeButton,
-            formData.userType === type && styles.selectedUserTypeButton,
+            formData.user_type === type && styles.selectedUserTypeButton,
           ]}
           onPress={() => {
-            handleChange('userType', type); // Set the user type
+            handleChange('user_type', type); // Set the user type
             handleNext(); // Move to the next step
           }}
         >
           <Text
             style={[
               styles.userTypeButtonText,
-              formData.userType === type && styles.selectedUserTypeButtonText,
+              formData.user_type === type && styles.selectedUserTypeButtonText,
             ]}
           >
             {type}
@@ -167,13 +177,21 @@ const MultiStepForm = ({ }: any) => {
             <Text style={styles.label}>What is your name?</Text>
             <TextInput
               style={styles.input}
-              placeholder="Full name"
-              value={formData.fullName}
-              onChangeText={(text) => handleChange('fullName', text)}
+              placeholder="Name"
+              value={formData.name}
+              onChangeText={(text) => handleChange('name', text)}
             />
-                        {errors.fullName && <Text style={styles.errorText}>{errors.fullName}</Text>}
-
-          </View>
+            {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
+            <View style={styles.navigationOne}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
+        </View>
+    
         );
       case 3:
         return (
@@ -198,7 +216,16 @@ const MultiStepForm = ({ }: any) => {
           maximumDate={new Date()} // Optional: Restrict to past dates
         />
       )}
+       <View style={styles.navigationTwo}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
     </View>
+   
         );
       case 4:
         return (
@@ -208,10 +235,10 @@ const MultiStepForm = ({ }: any) => {
               style={styles.input}
               placeholder="Mobile number"
               keyboardType="phone-pad"
-              value={formData.contactNumber}
-              onChangeText={(text) => handleChange('contactNumber', text)}
+              value={formData.mobile_number}
+              onChangeText={(text) => handleChange('mobile_number', text)}
             />
-                        {errors.contactNumber && <Text style={styles.errorText}>{errors.contactNumber}</Text>}
+              {errors.mobile_number && <Text style={styles.errorText}>{errors.mobile_number}</Text>}
 
             <TextInput
               style={styles.input}
@@ -219,32 +246,75 @@ const MultiStepForm = ({ }: any) => {
               value={formData.email}
               onChangeText={(text) => handleChange('email', text)}
             />
-                        {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-
+              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
+              <View style={styles.navigation}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
           </View>
         );
       case 5:
         return (
           <View style={styles.stepOneContainer}>
-            <Text style={styles.label}>More details</Text>
+            <Text style={styles.label}>Institute details</Text>
             <TextInput
               style={styles.input}
               placeholder="Institution name"
-              value={formData.institutionName}
-              onChangeText={(text) => handleChange('institutionName', text)}
+              value={formData.institution_name}
+              onChangeText={(text) => handleChange('institution_name', text)}
             />
-                        {errors.institutionName && <Text style={styles.errorText}>{errors.institutionName}</Text>}
-
             <TextInput
               style={styles.input}
               placeholder="Occupation"
               value={formData.occupation}
               onChangeText={(text) => handleChange('occupation', text)}
             />
-            {errors.occupation && <Text style={styles.errorText}>{errors.occupation}</Text>}
+             <View style={styles.navigation}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
           </View>
         );
-      case 6:
+      case 6: // New Case for Company Name and Designation
+        return (
+          
+          <View style={styles.stepOneContainer}>
+            <Text style={styles.label}>Company details</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Company Name"
+              value={formData.company_name}
+              onChangeText={(text) => handleChange('company_name', text)}
+            />
+            {errors.company_name && <Text style={styles.errorText}>{errors.company_name}</Text>}
+            <TextInput
+              style={styles.input}
+              placeholder="Designation"
+              value={formData.designation}
+              onChangeText={(text) => handleChange('designation', text)}
+            />
+            {errors.designation && <Text style={styles.errorText}>{errors.designation}</Text>}
+            <View style={styles.navigation}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
+          </View>
+          
+  
+        );  
+      case 7:
         return (
           <View style={styles.stepOneContainer}>
             <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
@@ -255,25 +325,177 @@ const MultiStepForm = ({ }: any) => {
               value={formData.password}
               onChangeText={(text) => handleChange('password', text)}
             />
-             {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
+            <View style={styles.navigation}>
+            <TouchableOpacity  onPress={handleBack}>
+              <Text style={styles.back}>Back</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+            <Icon name="chevron-right" size={30} color="#F5F5F5" />
+          </TouchableOpacity>
+             </View>
+    
 
           </View>
+          
         );
-      case 7:
-        return (
-          <View style={styles.stepTwoContainer}>
+        case 8:
+          return (
             
-            {Object.entries(formData).map(([key, value]) => (
-               <View key={key} style={styles.reviewRow}>
-               <Text style={styles.reviewKey}>{key}:</Text>
-               <Text style={styles.reviewValue}>{value}</Text>
-             </View>
-            ))}
-            <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-              <Text style={styles.submitButtonText}>Create an Account</Text>
-            </TouchableOpacity>
+            <View style={styles.stepTwoContainer}>
+              <Text style={styles.text}>Review</Text>
+              <Text style={styles.description}>Check your details are correct</Text>
+              
+              
+        <ScrollView  contentContainerStyle={styles.contentContainer} >
+      {/* Account Type */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Account Type</Text>
+        <View style={styles.accountTypeContainer}>
+          <Text style={styles.accountTypeText}>{formData.user_type}</Text>
+          <TouchableOpacity
+            onPress={() => setStep(1)} // Navigate back to step 1 for changes
+            style={styles.changeButton}
+          >
+            <Text style={styles.changeButtonText}>Change</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      {/* Name */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Name</Text>
+        <TextInput
+          style={styles.inputreview}
+          value={formData.name}
+          onChangeText={(value) => handleChange('name', value)}
+        />
+      </View>
+
+      {/* Date of Birth */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Date of Birth</Text>
+        <TextInput
+          style={styles.inputreview}
+          value={formData.dob}
+          onChangeText={(value) => handleChange('dob', value)}
+        />
+      </View>
+
+      {/* Mobile Number */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Mobile Number</Text>
+        <TextInput
+          style={styles.inputreview}
+          keyboardType="phone-pad"
+          value={formData.mobile_number}
+          onChangeText={(value) => handleChange('mobile_number', value)}
+        />
+      </View>
+
+      {/* Mail ID */}
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Mail Id</Text>
+        <TextInput
+          style={styles.inputreview}
+          keyboardType="email-address"
+          value={formData.email}
+          onChangeText={(value) => handleChange('email', value)}
+        />
+      </View>
+
+      {/* Institution Name */}
+      {formData.user_type === 'Institute' && (
+        <View style={styles.inputGroup}>
+          <Text style={styles.labelreview}>Institution Name</Text>
+          <TextInput
+            style={styles.inputreview}
+            value={formData.institution_name}
+            onChangeText={(value) => handleChange('institution_name', value)}
+          />
+        </View>
+      )}
+
+      {/* Occupation */}
+      {/* <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Occupation</Text>
+        <TextInput
+          style={styles.inputreview}
+          value={formData.occupation}
+          onChangeText={(value) => handleChange('occupation', value)}
+        />
+      </View> */}
+        {/* company name */}
+        
+      <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Company Name</Text>
+        <TextInput
+          style={styles.inputreview}
+          value={formData.company_name}
+          onChangeText={(value) => handleChange('company_name', value)}
+        />
+      </View>
+      {/* designation */}
+      {/* <View style={styles.inputGroup}>
+        <Text style={styles.labelreview}>Designation</Text>
+        <TextInput
+          style={styles.inputreview}
+          value={formData.designation}
+          onChangeText={(value) => handleChange('designation', value)}
+        />
+      </View> */}
+    
+      {/* Terms & Conditions */}
+      {/* <View style={styles.termsContainer}>
+        <CheckBox
+          // value={formData.agreedToTerms}
+          onValueChange={(value) => handleChange('agreedToTerms', value)}
+        />
+        <Text style={styles.termsText}>
+          I agree to{' '}
+          <Text
+            style={styles.termsLink}
+            onPress={() => setIsTermsModalVisible(true)}
+          >
+            Terms and Conditions
+          </Text>
+        </Text>
+      </View> */}
+
+      {/* Modal for Terms and Conditions */}
+      {/* <Modal
+        visible={isTermsModalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setIsTermsModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalHeader}>Terms and Conditions</Text>
+            <Text style={styles.modalText}>
+              {/* Add your terms and conditions content here */}
+              {/* Welcome to our app! By using this app, you agree to the following
+              terms and conditions...
+            </Text>
+            <Button
+              title="Close"
+              onPress={() => setIsTermsModalVisible(false)}
+            />
           </View>
-        );
+        </View> */}
+      {/* </Modal>  */}
+
+      {/* Create Account Button */}
+      <TouchableOpacity
+        style={styles.createAccountButton}
+        onPress={() => handleSubmit()}
+      >
+        <Text style={styles.createAccountButtonText}>Create an Account</Text>
+      </TouchableOpacity>
+    </ScrollView>
+    </View> 
+          );
+        
       default:
         return null;
     }
@@ -284,9 +506,6 @@ const MultiStepForm = ({ }: any) => {
       source={require('../assets/images/index.jpg')}
       resizeMode="cover"
       >
-    
-   
-      
       {step === 1 && ( // Only render the icon in case 1
   <View>
   <View style={styles.row}>
@@ -300,8 +519,8 @@ const MultiStepForm = ({ }: any) => {
   <Text style={styles.description}>Register with a few details</Text>
 </View>
 )}
- <ScrollView contentContainerStyle={styles.container}>
-{step >= 2 && step <= 6 && ( // Only render the icon in case 1
+
+{step >= 2 && step <= 7 && ( // Only render the icon in case 1
   <View>
     <View style={styles.rowone}>
         <Text style={styles.textone}>Sign up</Text>
@@ -310,7 +529,7 @@ const MultiStepForm = ({ }: any) => {
   </View>
 )}
 
-{step === 7 && ( // Only render the icon in case 1
+{step === 8 && ( // Only render the icon in case 1
   <View>
   <View style={styles.row}>
     <TouchableOpacity
@@ -323,46 +542,61 @@ const MultiStepForm = ({ }: any) => {
   <Text style={styles.description}>check your details are correct</Text>
 </View>
 )}
+
       
       
       {renderStep()}
       
-      <View style={styles.navigation}>
-  {step > 1 &&  (
-    <TouchableOpacity  onPress={handleBack}>
-      <Text style={styles.back}>Back</Text>
-      
-    </TouchableOpacity>
-  )}
-  {step < 7 && step !== 1 && (
-    <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-      <Icon name="chevron-right" size={30} color="#F5F5F5" />
-    </TouchableOpacity>
-  )}
-</View>
-
-    </ScrollView>
-    </ImageBackground>
+  </ImageBackground>
+   
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    // flex:1,
-    // justifyContent: 'center',
-    height:'100%',
-    width:'100%',
-  },
+  
   stepOneContainer: {
-    // flex: 1,
-    marginBottom:'-100%',
+    // marginBottom:'20%',
+    // flex:1,
+    display:"flex",
     height:'100%',
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
     padding: 20,
     marginTop:'40%',
+  },
+  navigationOne: {
+    marginTop:'70%',
+    flexDirection: 'row',
+    padding: 40,
+    justifyContent: 'space-between',
+  },
+  navigationTwo:{
+    marginTop:'60%',
+    flexDirection: 'row',
+    padding: 40,
+    justifyContent: 'space-between',
+  },
+  navigation: {
+    marginTop:'45%',
+    flexDirection: 'row',
+    padding: 40,
+    justifyContent: 'space-between',
+  },
+  navButton: {
+    padding: 10,
+    backgroundColor: '#622CFD',
+    borderRadius: 40,
+    height:50,
+    width:50,
+  },
+  back: {
+    fontFamily: 'Lato',
+    color: '#1E1E1E',
+    marginTop: '30%',
+    fontWeight: '400',
+    fontSize: 17,
+    lineHeight: 25.5,
   },
   stepOneLabel: {
     fontSize: 32,
@@ -372,13 +606,6 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
     textAlign: 'center',
     marginBottom: 30,
-  },
-  stepContainer: {
-    marginTop: '40%',
-    padding: 20,
-    backgroundColor: '#FFF',
-    borderTopLeftRadius: 50,
-    borderTopRightRadius: 50,
   },
   datePickerButton: {
     borderWidth: 2,
@@ -412,7 +639,7 @@ const styles = StyleSheet.create({
     lineHeight:28.8,
   },
   selectedUserTypeButtonText: {
-    color: '#1E1E1E', // Change text color when selected
+    color: '#1E1E1E', 
   },
   row: {
     flexDirection: 'row',
@@ -475,7 +702,7 @@ const styles = StyleSheet.create({
     fontWeight:'600',
     lineHeight:28.8,
     padding: 10,
-    marginBottom:30,
+    marginBottom:20,
   },
   button: {
     padding: 10,
@@ -484,37 +711,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: 'center',
   },
-  back:{
-  fontFamily:'Lato',
-  color:'#1E1E1E',
-  marginTop:'30%',
-  fontWeight:'400',
-  fontSize:17,
-  lineHeight:25.5,
-  },
-  selectedButton: {
-    backgroundColor: '#6200ea',
-  },
   buttonText: {
     color: '#000',
-  },
-  navigation: {
-    flexDirection: 'row',
-    padding:30,
-    justifyContent: 'space-between',
-    width:'100%',
-    marginBottom:'10%',
-  },
-  navButton: {
-    padding: 10,
-    backgroundColor: '#622CFD',
-    borderRadius: 40,
   },
   errorText: {
     color: 'red',
     textAlign: 'right',
-    // marginBottom: 5,
-    fontSize: 10,
+    marginBottom:10,
+    fontSize: 16,
     fontFamily: 'Lato',
   },
   stepTwoContainer:{
@@ -524,40 +728,107 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
-    padding: 50,
-    marginTop:'20%',
+    padding: 40,
+    marginTop:'5%',
   },
-  reviewText: {
+  contentContainer: {
+    flexGrow:1,
+   
+  },
+  inputGroup: {
+    marginBottom: 20,
+  },
+  labelreview: {
     fontSize: 16,
-    marginVertical: 5,
-  },
-  reviewRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginVertical: 10,
-  },
-  reviewKey: {
-    fontSize: 16,
-    fontWeight: '700',
+    fontFamily:'Lato',
+    fontWeight: '300',
+    lineHeight:18.4,
     color: '#1E1E1E',
   },
-  reviewValue: {
-    fontSize: 16,
-    color: '#555555',
-    textAlign: 'right',
-    // flex: 1,
+  inputreview: {
+    borderWidth: 1,
+    borderColor: '#9C9C9C',
+    color:'#1E1E1E',
+    borderRadius: 10,
+    fontFamily:'Lato',
+    fontSize:20,
+    fontWeight:'300',
+    lineHeight:20.8,
+    padding: 7,
   },
-  submitButton: {
-    marginTop: 20,
-    backgroundColor: '#6200ea',
+  accountTypeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#CCCCCC',
+    borderRadius: 8,
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+  },
+  accountTypeText: {
+    fontSize: 14,
+    color: '#333',
+  },
+  changeButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: '#6A0DAD',
+    borderRadius: 5,
+  },
+  changeButtonText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  termsText: {
+    fontSize: 14,
+    color: '#333',
+    marginLeft: 8,
+  },
+  termsLink: {
+    color: '#007BFF',
+    textDecorationLine: 'underline',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 16,
+    alignItems: 'center',
+  },
+  modalHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  modalText: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 16,
+  },
+  createAccountButton: {
+    backgroundColor: '#622CFD',
     padding: 15,
     borderRadius: 8,
     alignItems: 'center',
+    marginTop: 20,
   },
-  submitButtonText: {
-    color: '#fff',
+  createAccountButtonText: {
+    color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });
 
