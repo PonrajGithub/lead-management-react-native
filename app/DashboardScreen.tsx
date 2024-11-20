@@ -33,9 +33,7 @@ const DashboardScreen = () => {
                     const response = await axios.request(config);
                     const name = response.data?.name || 'User';
                     setUserName(name);
-                } else {
-                    console.error('Token not found');
-                }
+                } 
             } catch (error) {
                 console.error('Error fetching user info:', error);
                 Alert.alert('Error', 'Failed to fetch user details. Please try again.');
@@ -68,6 +66,7 @@ const DashboardScreen = () => {
         const images = [
             require('../assets/images/slider1.png'),
             require('../assets/images/slider2.png'),
+            require('../assets/images/slider3.png'),
         ];
         let currentIndex = 0;
 
@@ -187,7 +186,8 @@ const DashboardScreen = () => {
     },
     bannerImage: {
       width:'100%',
-      height: 200,
+      height: 150,
+      borderRadius:20
     },
     stepOneContainer: {
       flex: 1,

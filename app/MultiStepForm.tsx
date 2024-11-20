@@ -527,7 +527,8 @@ const styles = StyleSheet.create({
   },
  
   navigation: {
-    top:100,
+    top:'50%',
+    // bottom:'20%',
     flexDirection: 'row',
     padding: 40,
     justifyContent: 'space-between',

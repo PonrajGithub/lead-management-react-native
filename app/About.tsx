@@ -9,7 +9,7 @@ const data = [
   { id: '2', name: 'Team', icon: 'account-group-outline' },
   { id: '3', name: 'Media', icon: 'image-outline' },
   { id: '4', name: 'Email', icon: 'email-outline' },
-  { id: '5', name: 'DGNMS', icon: 'cube-outline' },
+  { id: '5', name: 'DGNMES', icon: 'cube-outline' },
   { id: '6', name: 'Privacy Policy', icon: 'shield-lock-outline' },
   { id: '7', name: 'T&C', icon: 'file-document-outline' },
   { id: '8', name: 'List', icon: 'format-list-bulleted' },
