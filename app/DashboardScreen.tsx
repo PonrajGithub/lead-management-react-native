@@ -182,8 +182,8 @@ const DashboardScreen = () => {
       zIndex: 0, // Ensure background is at the lowest level
     },
     bannerContainer: {
-    //   marginTop: 16,
-    //   paddingHorizontal: 5,
+      // marginTop: 10,
+      padding: 10,
     },
     bannerImage: {
       width:'100%',

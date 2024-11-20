@@ -8,8 +8,6 @@ import {
   ImageBackground,
   ToastAndroid,
   ScrollView,
-  Button,
-  Modal,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -18,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 
 
 
@@ -40,7 +38,7 @@ const MultiStepForm = ({ }: any) => {
   });
 
   
-  const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
+ 
 
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -144,36 +142,36 @@ const MultiStepForm = ({ }: any) => {
     switch (step) {
       case 1:
         return (
-          <View style={styles.stepOneContainer}>
-            
-      <Text style={styles.stepOneLabel}>Select what kind {"\n"}of user you're</Text>
-      {['Institute', 'Corporate', 'Others'].map((type) => (
-        <TouchableOpacity
-          key={type}
-          style={[
-            styles.userTypeButton,
-            formData.user_type === type && styles.selectedUserTypeButton,
-          ]}
-          onPress={() => {
-            handleChange('user_type', type); // Set the user type
-            handleNext(); // Move to the next step
-          }}
-        >
-          <Text
-            style={[
-              styles.userTypeButtonText,
-              formData.user_type === type && styles.selectedUserTypeButtonText,
-            ]}
-          >
-            {type}
-          </Text>
-        </TouchableOpacity>
-      ))}
-    </View>
+          <View style={styles.stepContainer}>
+          <Text style={styles.label}>Select your user type</Text>
+          {['Institute', 'Corporate', 'Others'].map((type) => (
+            <TouchableOpacity
+              key={type}
+              style={[
+                styles.userTypeButton,
+                formData.user_type === type && styles.selectedUserTypeButton,
+              ]}
+              onPress={() => {
+                handleChange('user_type', type);
+                handleNext();
+              }}
+            >
+              <Text
+                style={[
+                  styles.userTypeButtonText,
+                  formData.user_type === type && styles.selectedUserTypeButtonText,
+                ]}
+              >
+                {type}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
         );
       case 2:
         return (
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
             <Text style={styles.label}>What is your name?</Text>
             <TextInput
               style={styles.input}
@@ -182,7 +180,7 @@ const MultiStepForm = ({ }: any) => {
               onChangeText={(text) => handleChange('name', text)}
             />
             {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
-            <View style={styles.navigationOne}>
+            <View style={styles.navigation}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -191,11 +189,12 @@ const MultiStepForm = ({ }: any) => {
           </TouchableOpacity>
              </View>
         </View>
-    
+        </ScrollView>
         );
       case 3:
         return (
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
       <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
       <TouchableOpacity onPress={() => setShowPicker(true)}>
         <TextInput
@@ -216,7 +215,7 @@ const MultiStepForm = ({ }: any) => {
           maximumDate={new Date()} // Optional: Restrict to past dates
         />
       )}
-       <View style={styles.navigationTwo}>
+       <View style={styles.navigation}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -225,11 +224,12 @@ const MultiStepForm = ({ }: any) => {
           </TouchableOpacity>
              </View>
     </View>
-   
+    </ScrollView>
         );
       case 4:
         return (
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
             <Text style={styles.label}>Contact details</Text>
             <TextInput
               style={styles.input}
@@ -256,10 +256,12 @@ const MultiStepForm = ({ }: any) => {
           </TouchableOpacity>
              </View>
           </View>
+          </ScrollView>
         );
       case 5:
         return (
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+            <View style={styles.stepContainer}>
             <Text style={styles.label}>Institute details</Text>
             <TextInput
               style={styles.input}
@@ -282,11 +284,12 @@ const MultiStepForm = ({ }: any) => {
           </TouchableOpacity>
              </View>
           </View>
+          </ScrollView>
         );
       case 6: // New Case for Company Name and Designation
         return (
-          
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
             <Text style={styles.label}>Company details</Text>
             <TextInput
               style={styles.input}
@@ -311,12 +314,12 @@ const MultiStepForm = ({ }: any) => {
           </TouchableOpacity>
              </View>
           </View>
-          
-  
+          </ScrollView>
         );  
       case 7:
         return (
-          <View style={styles.stepOneContainer}>
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
             <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
             <TextInput
               style={styles.input}
@@ -334,10 +337,8 @@ const MultiStepForm = ({ }: any) => {
             <Icon name="chevron-right" size={30} color="#F5F5F5" />
           </TouchableOpacity>
              </View>
-    
-
           </View>
-          
+          </ScrollView>
         );
         case 8:
           return (
@@ -346,15 +347,15 @@ const MultiStepForm = ({ }: any) => {
               <Text style={styles.text}>Review</Text>
               <Text style={styles.description}>Check your details are correct</Text>
               
-              
-        <ScrollView  contentContainerStyle={styles.contentContainer} >
+            
+              <ScrollView style={styles.contentOne} contentContainerStyle={styles.scrollContentOne}>
       {/* Account Type */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Account Type</Text>
+        <Text style={styles.labelReview}>Account Type</Text>
         <View style={styles.accountTypeContainer}>
           <Text style={styles.accountTypeText}>{formData.user_type}</Text>
           <TouchableOpacity
-            onPress={() => setStep(1)} // Navigate back to step 1 for changes
+            onPress={() => console.log('Change Account Type')}
             style={styles.changeButton}
           >
             <Text style={styles.changeButtonText}>Change</Text>
@@ -364,9 +365,9 @@ const MultiStepForm = ({ }: any) => {
 
       {/* Name */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Name</Text>
+        <Text style={styles.labelReview}>Name</Text>
         <TextInput
-          style={styles.inputreview}
+          style={styles.inputReview}
           value={formData.name}
           onChangeText={(value) => handleChange('name', value)}
         />
@@ -374,9 +375,9 @@ const MultiStepForm = ({ }: any) => {
 
       {/* Date of Birth */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Date of Birth</Text>
+        <Text style={styles.labelReview}>Date of Birth</Text>
         <TextInput
-          style={styles.inputreview}
+          style={styles.inputReview}
           value={formData.dob}
           onChangeText={(value) => handleChange('dob', value)}
         />
@@ -384,9 +385,9 @@ const MultiStepForm = ({ }: any) => {
 
       {/* Mobile Number */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Mobile Number</Text>
+        <Text style={styles.labelReview}>Mobile Number</Text>
         <TextInput
-          style={styles.inputreview}
+          style={styles.inputReview}
           keyboardType="phone-pad"
           value={formData.mobile_number}
           onChangeText={(value) => handleChange('mobile_number', value)}
@@ -395,9 +396,9 @@ const MultiStepForm = ({ }: any) => {
 
       {/* Mail ID */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Mail Id</Text>
+        <Text style={styles.labelReview}>Mail ID</Text>
         <TextInput
-          style={styles.inputreview}
+          style={styles.inputReview}
           keyboardType="email-address"
           value={formData.email}
           onChangeText={(value) => handleChange('email', value)}
@@ -407,88 +408,43 @@ const MultiStepForm = ({ }: any) => {
       {/* Institution Name */}
       {formData.user_type === 'Institute' && (
         <View style={styles.inputGroup}>
-          <Text style={styles.labelreview}>Institution Name</Text>
+          <Text style={styles.labelReview}>Institution Name</Text>
           <TextInput
-            style={styles.inputreview}
+            style={styles.inputReview}
             value={formData.institution_name}
             onChangeText={(value) => handleChange('institution_name', value)}
           />
         </View>
       )}
 
-      {/* Occupation */}
-      {/* <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Occupation</Text>
-        <TextInput
-          style={styles.inputreview}
-          value={formData.occupation}
-          onChangeText={(value) => handleChange('occupation', value)}
-        />
-      </View> */}
-        {/* company name */}
-        
+      {/* Company Name */}
       <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Company Name</Text>
+        <Text style={styles.labelReview}>Company Name</Text>
         <TextInput
-          style={styles.inputreview}
+          style={styles.inputReview}
           value={formData.company_name}
           onChangeText={(value) => handleChange('company_name', value)}
         />
       </View>
-      {/* designation */}
-      {/* <View style={styles.inputGroup}>
-        <Text style={styles.labelreview}>Designation</Text>
-        <TextInput
-          style={styles.inputreview}
-          value={formData.designation}
-          onChangeText={(value) => handleChange('designation', value)}
-        />
-      </View> */}
-    
+
       {/* Terms & Conditions */}
-      {/* <View style={styles.termsContainer}>
-        <CheckBox
-          // value={formData.agreedToTerms}
+      <View style={styles.termsContainer}>
+         <Checkbox
+          value={formData.agreedToTerms}
           onValueChange={(value) => handleChange('agreedToTerms', value)}
         />
         <Text style={styles.termsText}>
           I agree to{' '}
-          <Text
-            style={styles.termsLink}
-            onPress={() => setIsTermsModalVisible(true)}
-          >
+          <Text style={styles.termsLink} onPress={() => alert('Show Terms')}>
             Terms and Conditions
           </Text>
         </Text>
-      </View> */}
-
-      {/* Modal for Terms and Conditions */}
-      {/* <Modal
-        visible={isTermsModalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setIsTermsModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalHeader}>Terms and Conditions</Text>
-            <Text style={styles.modalText}>
-              {/* Add your terms and conditions content here */}
-              {/* Welcome to our app! By using this app, you agree to the following
-              terms and conditions...
-            </Text>
-            <Button
-              title="Close"
-              onPress={() => setIsTermsModalVisible(false)}
-            />
-          </View>
-        </View> */}
-      {/* </Modal>  */}
+      </View>
 
       {/* Create Account Button */}
       <TouchableOpacity
         style={styles.createAccountButton}
-        onPress={() => handleSubmit()}
+        onPress={handleSubmit}
       >
         <Text style={styles.createAccountButtonText}>Create an Account</Text>
       </TouchableOpacity>
@@ -504,6 +460,7 @@ const MultiStepForm = ({ }: any) => {
   return (
     <ImageBackground
       source={require('../assets/images/index.jpg')}
+      style={styles.container}
       resizeMode="cover"
       >
       {step === 1 && ( // Only render the icon in case 1
@@ -522,10 +479,10 @@ const MultiStepForm = ({ }: any) => {
 
 {step >= 2 && step <= 7 && ( // Only render the icon in case 1
   <View>
-    <View style={styles.rowone}>
-        <Text style={styles.textone}>Sign up</Text>
+    <View style={styles.rowOne}>
+        <Text style={styles.textOne}>Sign up</Text>
     </View>
-    <Text style={styles.descriptionone}>Register with a few details</Text>
+    <Text style={styles.descriptionOne}>Register with a few details</Text>
   </View>
 )}
 
@@ -553,32 +510,24 @@ const MultiStepForm = ({ }: any) => {
 };
 
 const styles = StyleSheet.create({
-  
-  stepOneContainer: {
-    // marginBottom:'20%',
-    // flex:1,
-    display:"flex",
-    height:'100%',
+  container: {
+    flex: 1,
+    // padding: 20,
+    // justifyContent: 'center',
+    // backgroundColor: '#F5F5F5',
+  },
+  stepContainer: {
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
     padding: 20,
     marginTop:'40%',
+    flex:1,
+    display:"flex",
   },
-  navigationOne: {
-    marginTop:'70%',
-    flexDirection: 'row',
-    padding: 40,
-    justifyContent: 'space-between',
-  },
-  navigationTwo:{
-    marginTop:'60%',
-    flexDirection: 'row',
-    padding: 40,
-    justifyContent: 'space-between',
-  },
+ 
   navigation: {
-    marginTop:'45%',
+    top:100,
     flexDirection: 'row',
     padding: 40,
     justifyContent: 'space-between',
@@ -662,18 +611,18 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Lato',
   },
-  rowone: {
+  rowOne: {
     alignItems: 'flex-start',
     marginTop: '10%',
     paddingHorizontal: '5%',
   },
-  textone: {
+  textOne: {
     color: '#FFFFFF',
     fontSize: 36,
     fontWeight: '600',
     fontFamily: 'Lato', 
   },
-  descriptionone: {
+  descriptionOne: {
     color: '#FFFFFF',
     fontWeight: '300',
     fontSize: 20,
@@ -722,38 +671,50 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
   },
   stepTwoContainer:{
-    // flex: 1,
-    // marginBottom:'-100%',
-    height:'100%',
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
-    padding: 40,
-    marginTop:'5%',
+    padding: 20,
+    // marginTop:'40%',
+    flex:1,
+    display:"flex",
   },
-  contentContainer: {
-    flexGrow:1,
-   
+  contentOne: {
+    flex: 1,
+    padding: 20,
+  },
+  scrollContentOne: {
+    flexGrow: 1, 
+   justifyContent: 'center', 
+},
+  content: {
+    flex: 1,
+    // padding: 20,
+  },
+  scrollContent: {
+      flexGrow: 1, 
+    //  justifyContent: 'center', 
   },
   inputGroup: {
+    // flex:1,
     marginBottom: 20,
   },
-  labelreview: {
+  labelReview: {
     fontSize: 16,
-    fontFamily:'Lato',
+    fontFamily: 'Lato',
     fontWeight: '300',
-    lineHeight:18.4,
+    lineHeight: 18.4,
     color: '#1E1E1E',
   },
-  inputreview: {
+  inputReview: {
     borderWidth: 1,
     borderColor: '#9C9C9C',
-    color:'#1E1E1E',
+    color: '#1E1E1E',
     borderRadius: 10,
-    fontFamily:'Lato',
-    fontSize:20,
-    fontWeight:'300',
-    lineHeight:20.8,
+    fontFamily: 'Lato',
+    fontSize: 20,
+    fontWeight: '300',
+    lineHeight: 20.8,
     padding: 7,
   },
   accountTypeContainer: {
@@ -794,29 +755,6 @@ const styles = StyleSheet.create({
   termsLink: {
     color: '#007BFF',
     textDecorationLine: 'underline',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: '80%',
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 16,
-    alignItems: 'center',
-  },
-  modalHeader: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  modalText: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
   },
   createAccountButton: {
     backgroundColor: '#622CFD',
