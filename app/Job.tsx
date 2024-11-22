@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontFamily: 'Lato',
-    fontSize: 14,
+    fontSize: 16,
     marginTop: 20,
     textAlign: 'left',
     fontWeight: '600',

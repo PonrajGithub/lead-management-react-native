@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, FlatList,TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // Using MaterialCommunityIcons
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
@@ -17,7 +17,7 @@ const data = [
 
 const About = () => {
   const [fontsLoaded] = useFonts({
-    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -27,7 +27,7 @@ const About = () => {
   const renderItem = ({ item }: { item: { id: string; name: string; icon: string } }) => (
     <TouchableOpacity style={styles.gridItem}>
       <View style={styles.iconContainer}>
-      <Icon name={item.icon} size={24} color="#622CFD" />
+        <Icon name={item.icon} size={24} color="#622CFD" />
       </View>
       <Text style={styles.itemText}>{item.name}</Text>
     </TouchableOpacity>
@@ -40,8 +40,9 @@ const About = () => {
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        numColumns={4} 
+        numColumns={4}
         contentContainerStyle={styles.grid}
+        keyboardShouldPersistTaps="handled" // Ensures taps work properly
       />
     </View>
   );
@@ -54,16 +55,17 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: 'Lato',
     fontSize: 14,
-    marginBottom: 20,
+    margin: 20,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
-    lineHeight:14.4,
-    letterSpacing:2
+    lineHeight: 14.4,
+    letterSpacing: 2,
   },
   grid: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 10,
   },
   gridItem: {
     alignItems: 'center',
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2', // Light gray border
+    borderColor: '#E3E2E2',
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -82,12 +84,11 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   itemText: {
-    fontFamily:'Lato',
+    fontFamily: 'Lato',
     fontSize: 16,
-    marginLeft: 10,
-    fontWeight:'600',
-    lineHeight:16.8,
-    color:"#1E1E1E",
+    textAlign: 'center',
+    fontWeight: '600',
+    color: '#1E1E1E',
   },
 });
 

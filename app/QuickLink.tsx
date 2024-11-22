@@ -26,7 +26,7 @@ const QuickLink = () => {
   }
 
   const renderItem = ({ item }: { item: { id: string; title: string; icon: any } }) => (
-    <TouchableOpacity style={styles.itemContainer}>
+    <TouchableOpacity style={styles.itemContainer} key={item.id}>
       <View style={styles.iconContainer}>
         <Image source={item.icon} style={styles.icon} />
       </View>
@@ -38,12 +38,13 @@ const QuickLink = () => {
     <View style={styles.container}>
       <Text style={styles.heading}>QUICK LINKS</Text>
       <View style={styles.row}>
-        {data.map((item) => renderItem({ item }))}
+        {data.map((item) => (
+          renderItem({ item })
+        ))}
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontFamily: 'Lato',
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: '600',
     color: '#1E1E1E',

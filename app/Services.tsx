@@ -34,7 +34,9 @@ const Services = () => {
     <View style={styles.container}>
       <Text style={styles.heading}>SERVICES</Text>
       <View style={styles.row}>
-        {data.map((item) => renderItem({ item }))}
+        {data.map((item) => (
+          renderItem({ item })
+        ))}
       </View>
     </View>
   );
@@ -84,7 +86,7 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontFamily: 'Lato',
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     fontWeight: '600',
     color: '#1E1E1E',
