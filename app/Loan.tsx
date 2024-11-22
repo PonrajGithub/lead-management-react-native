@@ -11,6 +11,8 @@ import SMEIcon from '../assets/images/icon/sme.png';
 import ODCCIcon from '../assets/images/icon/odcc.png';
 import ProjectIcon from '../assets/images/icon/project.png';
 import EducationIcon from '../assets/images/icon/education.png';
+import WebViewComponent from '@/components/webView';
+import { useNavigation } from 'expo-router';
 
 const data = [
   { id: '1', title: 'Unsecured\nLoan', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/', icon: UnsecuredIcon },
@@ -24,6 +26,7 @@ const data = [
 const Loan: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedLink, setSelectedLink] = useState('');
+  const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -54,7 +57,7 @@ const Loan: React.FC = () => {
 `;
 
   const renderItemRow1 = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
-    <TouchableOpacity key={item.id} onPress={() => handlePress(item.link)}>
+    <TouchableOpacity key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.itemContainerRow1}>
       <View style={styles.iconContainer1}>
           <Image source={item.icon} style={styles.icon} />
@@ -65,7 +68,7 @@ const Loan: React.FC = () => {
   );
 
   const renderItemRow2 = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
-    <TouchableOpacity key={item.id} onPress={() => handlePress(item.link)}>
+    <TouchableOpacity key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.itemContainerRow2}>
       <View style={styles.iconContainer}>
           <Image source={item.icon} style={styles.icon} />
@@ -84,9 +87,7 @@ const Loan: React.FC = () => {
       <View style={styles.row}>
         {data.slice(2, 6).map(item => renderItemRow2({ item }))}
       </View>
-      <View style={styles.contain}>
-        <Header/>
-      <WebView
+      {/* <WebView
           source={{ uri: selectedLink }}
           style={styles.webView}
           injectedJavaScript={hideHeaderFooter}
@@ -95,9 +96,8 @@ const Loan: React.FC = () => {
               setModalVisible(false);
             }
           }}
-        />
-        <Footer/>
-        </View>
+        /> */}
+        {/* <WebViewComponent uri={selectedLink}/> */}
     </View>
   );
 };

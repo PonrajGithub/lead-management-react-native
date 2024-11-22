@@ -1,14 +1,10 @@
+import Footer from '@/app/Footer';
+import Header from '@/app/Header';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
-import Footer from './Footer';
-import Header from './Header';
-import { useLocalSearchParams } from 'expo-router';
 
-const WebViewScreen = () => {
-  const { uri } = useLocalSearchParams(); 
-
-  console.log(uri, "URL")
+const WebViewComponent = ({uri}: any) => {
 
     const hideHeaderFooterScript = `
     const hideElement = (selector) => {
@@ -26,14 +22,13 @@ const WebViewScreen = () => {
   `;
   return (
     <View style={styles.container}>
-      <Header/>
+      {/* <Header/> */}
     <WebView
-      // source={{ uri: '' }}
       source={{ uri: uri }}
       style={styles.webView}
       injectedJavaScript={hideHeaderFooterScript}
     />
-     <Footer/>
+     {/* <Footer/> */}
     </View>
   );
 };
@@ -47,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WebViewScreen;
+export default WebViewComponent;

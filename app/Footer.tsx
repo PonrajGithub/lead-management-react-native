@@ -60,7 +60,7 @@ const Footer = () => {
 
       {/* Education Icon */}
       <TouchableOpacity style={styles.iconContainer}
-      onPress={() => navigation.navigate('WebViewScreen')}>
+        onPress={() => navigation.navigate('WebViewScreen', { uri: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' })}>
         <Image source={EducationIcon} style={styles.customIcon} />
       </TouchableOpacity>
 
