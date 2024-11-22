@@ -70,37 +70,37 @@ const Header = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    headerBackground: {
-      flex: 1,
-      height:80,
-    },
-    headerContent: {
-      // flex: 1,
+  container: {
+      height: 80, 
+  },
+  headerBackground: {
+      height: 100, 
+      width: '100%',
+  },
+  headerContent: {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       paddingHorizontal: 20,
       // marginTop:'5%',
-    },
-    image:{
-      height:100,
-      width:150,
-    },
-    profileIconContainer: {
+  },
+  image: {
+      height: 100, // Adjust to fit inside the header
+      width: 150,
+  },
+  profileIconContainer: {
       justifyContent: 'center',
       alignItems: 'center',
   },
   profileIcon: {
-      width: 50,
-      height: 50,
-      borderRadius: 50,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
       justifyContent: 'center',
-      alignItems: 'center',
-  },
+      alignItems: 'center',  
+    },
 });
+
 
 
 export default Header;

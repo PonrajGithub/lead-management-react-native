@@ -101,7 +101,7 @@ const LoginScreen = () => {
   };
   
   const redirectToForgotPassword = () => {
-    navigation.navigate('');
+    navigation.navigate('ForgotPasswordScreen');
   };
 
   const redirectToCreateAccount = () => {

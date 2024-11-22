@@ -1,12 +1,13 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
-import AppLoading from 'expo-app-loading';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
+import { FontAwesome } from '@expo/vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ForgotPasswordScreen = () => {
-  const [mobilenumber, setMobileNumber] = useState('');
-  const [mobilenumberError, setMobileNumberError] = useState('');
+  const [password, setPassword] = useState(''); // Define password state
+  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const navigation: any = useNavigation();
 
   const redirectToLogin = () => {
@@ -18,36 +19,48 @@ const ForgotPasswordScreen = () => {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return null; // Render nothing while fonts load (AppLoading deprecated)
   }
- 
 
   return (
     <View style={styles.container}>
-       <StatusBar backgroundColor="#1e3a8a" barStyle="light-content" />
-      <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.content}>please Enter your phone number  to reset your password</Text>
-      
-      <Text style={styles.text}>Mobile Number</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Mobile Number"
-        value={mobilenumber}
-        keyboardType="phone-pad"
-        onChangeText={setMobileNumber}
-      />
-      {mobilenumberError ? <Text style={styles.errorText}>{mobilenumberError}</Text> : null}
+      {/* Header Section */}
+     
+        <View style={styles.row}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('LoginScreen')}
+          >
+            <Icon name="chevron-left" size={36} color="#000" />
+          </TouchableOpacity>
+          <Text style={styles.title}>ForgotPassword</Text>
+         </View>
 
-      <TouchableOpacity style={styles.button} >
-        <Text style={styles.buttonText}>Reset Password</Text>
-      </TouchableOpacity>
+      {/* Form Section */}
+      <View style={styles.stepOneContainer}>
+        <Text style={styles.text}>Password</Text>
+        <View style={styles.passwordContainer}>
+          <TextInput
+            style={styles.passwordInput}
+            placeholder="Password"
+            value={password}
+            secureTextEntry={!showPassword} // Toggle password visibility
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <FontAwesome
+              name={showPassword ? 'eye' : 'eye-slash'} // Icon toggles based on state
+              size={20}
+              color="#000"
+            />
+          </TouchableOpacity>
+        </View>
 
-      <Text style={styles.singin}>
-        Do you already have an account?{' '}
-        <Text style={styles.link} onPress={redirectToLogin}>
-          Sign in here
-        </Text>
-        </Text>
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Reset Password</Text>
+        </TouchableOpacity>
+
+  
+      </View>
     </View>
   );
 };
@@ -55,83 +68,78 @@ const ForgotPasswordScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  stepOneContainer: {
+    alignSelf: 'center',
+    width: '85%',
+    marginTop: '50%',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: '8%',
+    paddingHorizontal: '5%',
   },
   title: {
-    fontSize: 28, // Slightly larger title
-    marginBottom: 20,
-    marginTop: '30%',
-    textAlign: 'center',
-    color: '#1e3a8a', // Darker blue for contrast
+    color: '#1E1E1E',
+    fontSize: 30,
+    fontWeight: '600',
+    lineHeight: 43.2,
     fontFamily: 'Lato',
   },
-  text:{
-    textAlign: 'left',
+  description: {
+    color: '#1E1E1E',
+    fontWeight: '300',
+    fontSize: 20,
+    marginLeft: '15%',
+    fontFamily: 'Lato',
+  },
+  text: {
+    marginLeft: '5%',
     marginBottom: 8,
-    color: '#1e40af', // Darker blue for input labels
-    fontFamily: 'Lato',
-  },
-  content: {
     fontSize: 16,
-    marginBottom: '20%',
-    textAlign: 'center',
-    color: '#64748b', // Lighter gray-blue for subheading
+    lineHeight: 19.2,
+    color: '#9C9C9C',
     fontFamily: 'Lato',
   },
-  input: {
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 12,
-    borderRadius: 10, // More rounded input fields
-    marginBottom: 15,
-    backgroundColor: '#fff', // White background for inputs
+    borderColor: '#000',
+    borderRadius: 8,
+    padding: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    color: '#1E1E1E',
+    borderRadius: 8,
     fontFamily: 'Lato',
-    shadowColor: '#000', // Soft shadow for depth
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 3,
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 28.8,
   },
   button: {
-    backgroundColor: '#1e3a8a', // Primary blue button color
+    backgroundColor: '#622CFD',
     paddingVertical: 15,
-    borderRadius: 10, // Rounded button for a modern look
+    borderRadius: 10,
     alignItems: 'center',
     marginTop: '20%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 5, // Shadow to elevate the button
+    elevation: 5,
   },
   buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: '#FFFFFF',
+    fontSize: 20,
+    fontWeight: '600',
     fontFamily: 'Lato',
+    lineHeight: 24,
   },
-  singin: {
-    fontSize: 15,
-    fontWeight: '500',
-    textAlign: 'center',
-    marginTop: 15,
-    color: '#64748b', // Subtle blue for the text below the button
-    fontFamily: 'Lato',
-  },
-  link: {
-    color: '#0066cc', // Matching link color with the forgot password text
-    fontWeight: 'bold',
-    textDecorationLine: 'underline',
-    fontFamily: 'Lato',
-  },
-  errorText: {
-    color: 'red',
-    textAlign: 'right',
-    marginBottom: 5,
-    fontSize: 13,
-    fontFamily: 'Lato',
-  },
+ 
 });
 
 export default ForgotPasswordScreen;

@@ -51,6 +51,7 @@ const About = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5', // Add background color for better aesthetics
   },
   header: {
     fontFamily: 'Lato',
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   grid: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 16,
   },
   gridItem: {
     alignItems: 'center',
@@ -86,8 +87,9 @@ const styles = StyleSheet.create({
   itemText: {
     fontFamily: 'Lato',
     fontSize: 16,
-    textAlign: 'center',
+    marginLeft: 10,
     fontWeight: '600',
+    lineHeight: 16.8,
     color: '#1E1E1E',
   },
 });
