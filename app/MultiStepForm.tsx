@@ -14,6 +14,7 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Platform } from 'react-native';
 import Checkbox from 'expo-checkbox';
@@ -98,14 +99,27 @@ const MultiStepForm = ({ }: any) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://loanguru.in/loan_guru_app/api/register', formData);
+      const response = await axios.post(
+        'https://loanguru.in/loan_guru_app/api/register',
+        formData,
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+  
       if (response.data.success) {
+        // Show success message
         ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
+  
+        // Save the token to AsyncStorage
+        const token = response.data.token; // Assuming token is returned in the response
+        await AsyncStorage.setItem('@storage_user_token', token);
+  
+        // Navigate to the Congrats screen
         navigation.reset({ index: 0, routes: [{ name: 'CongratsScreen' }] });
       } else {
         throw new Error(response.data.message || 'Unknown error occurred.');
       }
-    } catch (error) {
+    } catch (error:any) {
+      // Show error message
       ToastAndroid.show(error.message, ToastAndroid.LONG);
     } finally {
       setLoading(false);

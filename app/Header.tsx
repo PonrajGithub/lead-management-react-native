@@ -8,10 +8,10 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const Header = () => {
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-    const [userName, setUserName] = useState('');
     const [token, setToken] = useState('');
     const navigation = useNavigation();
+
+   
 
     const [fontsLoaded] = useFonts({
         Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -21,31 +21,6 @@ const Header = () => {
         return <AppLoading />;
     }
 
-    useEffect(() => {
-        const fetchTokenAndUserName = async () => {
-            try {
-                const storedToken = await AsyncStorage.getItem('@storage_user_token');
-                if (storedToken) {
-                    setToken(storedToken);
-                    const config = {
-                        method: 'get',
-                        url: 'https://loanguru.in/loan_guru_app/api/userinfo',
-                        headers: { 'Authorization': `Bearer ${storedToken}` },
-                    };
-                    const response = await axios.request(config);
-                    const name = response.data?.name || 'User';
-                    setUserName(name);
-                } else {
-                    console.error('Token not found');
-                }
-            } catch (error) {
-                console.error('Error fetching user info:', error);
-                Alert.alert('Error', 'Failed to fetch user details. Please try again.');
-            }
-        };
-        fetchTokenAndUserName();
-    }, []);
-
     const handleLogout = async () => {
         try {
             const config = {
@@ -54,7 +29,6 @@ const Header = () => {
                 headers: { 'Authorization': `Bearer ${token}` },
             };
             await axios.request(config);
-
             await AsyncStorage.clear();
             navigation.reset({
                 index: 0,
@@ -66,90 +40,67 @@ const Header = () => {
         }
     };
 
-    const handleSettings = () => {
-        setDropdownVisible(false);
-        navigation.navigate('');
-    };
 
     return (
-        <View>
-            <View style={styles.header}>
-                <ImageBackground
-                    source={require('../assets/images/index.jpg')}
-                    style={styles.background}
-                    resizeMode="cover"
-                >
-                    <Image
-                        source={require('../assets/images/loan.png')}
-                        style={styles.image}
-                        resizeMode="contain"
-                    />
-                    <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
-                        <Icon name="menu" size={30} color="#FFFF" style={styles.icon} />
-                    </TouchableOpacity>
-                </ImageBackground>
-            </View>
-
-            {/* Dropdown Menu */}
-            {dropdownVisible && (
-                <View style={styles.dropdown}>
-                    <TouchableOpacity style={styles.dropdownItem} onPress={handleSettings}>
-                        <Text style={styles.dropdownText}>Settings</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.dropdownItem} onPress={handleLogout}>
-                        <Text style={styles.dropdownText}>Logout</Text>
-                    </TouchableOpacity>
-                </View>
-            )}
+        <View style={styles.container}>
+  <ImageBackground
+    source={require('../assets/images/dashboard.jpg')}
+    style={styles.headerBackground}
+    resizeMode="cover"
+  >
+    <View style={styles.headerContent}>
+      <Image
+        source={require('../assets/images/loan.png')}
+        style={styles.image}
+        resizeMode="contain"
+      />
+      <TouchableOpacity
+        style={styles.profileIconContainer}
+        onPress={handleLogout}
+      >
+        <View style={styles.profileIcon}>
+        <Icon name="power" size={23} color="#FFFFFF" />
         </View>
+      </TouchableOpacity>
+    </View>
+  </ImageBackground>
+
+</View>
     );
 };
 
 const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        position: 'relative',
+    container: {
+        flex: 1
     },
-    background: {
-        width: '100%',
-        height: 200,
+    headerBackground: {
+      flex: 1,
+      height:80,
     },
-    image: {
-        width: 200,
-        height: 200,
-        position: 'absolute',
-        marginLeft: '5%',
-        marginTop: '-7%',
+    headerContent: {
+      // flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingHorizontal: 20,
+      // marginTop:'5%',
     },
-    icon: {
-        position: 'absolute',
-        top: 50,
-        right: 20,
-        zIndex: 10,
+    image:{
+      height:100,
+      width:150,
     },
-    dropdown: {
-        position: 'absolute',
-        top: 110,
-        right: 20,
-        backgroundColor: '#FFF',
-        borderRadius: 5,
-        elevation: 5,
-        shadowColor: '#000',
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        shadowOffset: { width: 0, height: 2 },
-    },
-    dropdownItem: {
-        padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE',
-    },
-    dropdownText: {
-        fontSize: 16,
-        color: '#333',
-    },
+    profileIconContainer: {
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
+  profileIcon: {
+      width: 50,
+      height: 50,
+      borderRadius: 50,
+      justifyContent: 'center',
+      alignItems: 'center',
+  },
 });
+
 
 export default Header;

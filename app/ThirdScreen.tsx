@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   backgroundWrapper: {
-    height: '60%',
+    height: '55%',
     width:'100%',
     overflow: 'hidden',
   },
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 25,
-    fontWeight:'700',
+    fontWeight:'900',
     fontFamily: 'Lato',
     textAlign: 'center',
     lineHeight: 35.25,

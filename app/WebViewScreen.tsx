@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
+import Footer from './Footer';
+import Header from './Header';
 
 const WebViewScreen = () => {
 
@@ -19,15 +21,22 @@ const WebViewScreen = () => {
     hideElement('.cnb-action.cnb-icon-type-font');
   `;
   return (
+    <View style={styles.container}>
+      <Header/>
     <WebView
       source={{ uri: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/' }}
       style={styles.webView}
       injectedJavaScript={hideHeaderFooterScript}
     />
+     <Footer/>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1
+  },
   webView: {
     flex: 1,
   },

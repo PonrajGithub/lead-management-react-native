@@ -3,6 +3,8 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from 'react-na
 import { WebView } from 'react-native-webview';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import Header from './Header';
+import Footer from './Footer';
 import UnsecuredIcon from '../assets/images/icon/unsecurity.png';
 import SecuredIcon from '../assets/images/icon/security.png';
 import SMEIcon from '../assets/images/icon/sme.png';
@@ -13,10 +15,10 @@ import EducationIcon from '../assets/images/icon/education.png';
 const data = [
   { id: '1', title: 'Unsecured\nLoan', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/', icon: UnsecuredIcon },
   { id: '2', title: 'Secured\nLoan', link: 'https://loanguru.in/delhis-best-secured-loan-provider-company-for-business-home-and-personal-loans/', icon: SecuredIcon },
-  { id: '3', title: 'SMEs', link: 'https://loanguru.in/best-msme-loan-provider-company-in-delhi-for-new-business/', icon: SMEIcon },
-  { id: '4', title: 'OD/CC', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/', icon: ODCCIcon },
-  { id: '5', title: 'Project', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/', icon: ProjectIcon },
-  { id: '6', title: 'Education', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/', icon: EducationIcon }
+  { id: '3', title: 'SMEs/MSMEs\nLoan', link: 'https://loanguru.in/best-msme-loan-provider-company-in-delhi-for-new-business/', icon: SMEIcon },
+  { id: '4', title: 'OD/CC\nLimit', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/', icon: ODCCIcon },
+  { id: '5', title: 'Project\nLoan', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/', icon: ProjectIcon },
+  { id: '6', title: 'Education\nLoan', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/', icon: EducationIcon }
 ];
 
 const Loan: React.FC = () => {
@@ -82,9 +84,11 @@ const Loan: React.FC = () => {
       <View style={styles.row}>
         {data.slice(2, 6).map(item => renderItemRow2({ item }))}
       </View>
-      <Modal visible={modalVisible} animationType="slide">
+      <View style={styles.contain}>
+        <Header/>
       <WebView
           source={{ uri: selectedLink }}
+          style={styles.webView}
           injectedJavaScript={hideHeaderFooter}
           onNavigationStateChange={(navState) => {
             if (!navState.loading && !navState.url.startsWith('https://loanguru.in')) {
@@ -92,10 +96,8 @@ const Loan: React.FC = () => {
             }
           }}
         />
-        <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-          <Text style={styles.closeButtonText}>X</Text>
-        </TouchableOpacity>
-      </Modal>
+        <Footer/>
+        </View>
     </View>
   );
 };
@@ -103,14 +105,19 @@ const Loan: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#FFFFFF',
+  },
+  contain:{
+    flex:1
+  },
+  webView:{
+    flex:1
   },
   heading: {
     fontFamily: 'Lato',
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '700',
+    fontWeight: '900',
     marginLeft:15,
     lineHeight:14.4,
     letterSpacing:2,
@@ -127,7 +134,7 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2', // Light gray border
+    borderColor: '#E3E2E2', 
     borderWidth: 1,
     justifyContent: 'center',
     width: 180,
@@ -178,21 +185,7 @@ const styles = StyleSheet.create({
     lineHeight:16.8,
     color:"#1E1E1E",
   },
-  closeButton: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    backgroundColor: '#9c9c9c',
-    padding: 10,
-    borderRadius: 15,
-    borderWidth: 1,
-    // borderColor: '#FF4C4C',
-  },
-  closeButtonText: {
-    color: '#1E1E1E',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
+ 
 });
 
 export default Loan;

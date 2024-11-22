@@ -49,10 +49,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'Lato',
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '700',
+    fontWeight: '900',
     textAlign: 'left',
     lineHeight:14.4,
     letterSpacing:2

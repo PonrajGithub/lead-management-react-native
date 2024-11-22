@@ -28,7 +28,7 @@ const WelcomeScreen = ({ }: any) => {
 
   
   const redirectToLogin = () => {
-    navigation.navigate('LoginScreen', {Index:0});
+    navigation.navigate('MultiStepForm', {Index:0});
   };
 
 
@@ -57,7 +57,7 @@ const WelcomeScreen = ({ }: any) => {
             style={[styles.createAccountButton]}
             onPressIn={() => setIsHoveredCreate(true)}
             onPressOut={() => setIsHoveredCreate(false)}
-            onPress={() => navigation.navigate('MultiStepForm')}
+            onPress={() => navigation.navigate('LoginScreen')}
           >
             <Text style={[styles.createAccountText]}>Get Started</Text>
           </TouchableOpacity>
@@ -65,7 +65,7 @@ const WelcomeScreen = ({ }: any) => {
           <Text style={styles.singin}>
          Already have an account?{' '}
         <Text style={styles.link} onPress={redirectToLogin }>
-          Sign in here
+          Sign up here
           </Text>
           </Text>
 

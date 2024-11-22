@@ -32,7 +32,7 @@ const Index = () => {
       resizeMode="cover"
     >
       <Image
-       source={require('../assets/images/c.png')}
+       source={require('../assets/images/newlogo.png')}
        style={styles.image}
       //  resizeMode="contain"
        />

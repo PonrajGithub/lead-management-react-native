@@ -5,9 +5,9 @@ import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const data = [
-  { id: '1', title: 'Applying issues', icon: 'account-check-outline' },
-  { id: '2', title: 'Closer issue', icon: 'lock-check-outline' },
-  { id: '3', title: 'Loan issue', icon: 'currency-usd' }
+  
+  { id: '1', title: 'Closer issue', icon: 'lock-check-outline' },
+  { id: '2', title: 'Loan issue', icon: 'currency-usd' }
 ];
 
 const Help = () => {
@@ -47,41 +47,47 @@ const styles = StyleSheet.create({
   },
   heading: {
     fontFamily: 'Lato',
-    fontSize: 12,
+    fontSize: 14,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '700',
+    fontWeight: '900',
     textAlign: 'left',
     lineHeight: 14.4,
     letterSpacing: 2,
   },
   row: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    marginBottom: 15,
   },
   itemContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
-    width: '33%', // Ensure proper spacing and alignment
-  },
-  iconContainer: {
+    margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2',
+    borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
-    margin: 10,
+    width: 170,
+    height: 60,
+  },
+  iconContainer: {
+    // backgroundColor: '#E7F4FF',
+    padding: 10,
+    borderRadius: 15,
+    height:44,
+    width:44, 
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   itemText: {
-    fontFamily: 'Lato',
-    fontSize: 14,
-    textAlign: 'center',
-    fontWeight: '600',
-    color: '#1E1E1E',
+    fontFamily:'Lato',
+    fontSize: 18,
+    marginLeft: 10,
+    fontWeight:'600',
+    lineHeight:16.8,
+    color:"#1E1E1E",
   },
 });
 
