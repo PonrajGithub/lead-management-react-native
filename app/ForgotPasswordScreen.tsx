@@ -1,65 +1,140 @@
 import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
 import { useFonts } from 'expo-font';
-import { FontAwesome } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const ForgotPasswordScreen = () => {
-  const [password, setPassword] = useState(''); // Define password state
-  const [showPassword, setShowPassword] = useState(false); // Toggle password visibility
   const navigation: any = useNavigation();
-
-  const redirectToLogin = () => {
-    navigation.navigate('LoginScreen');
-  };
+  const [email, setEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [step, setStep] = useState(1); // Step to handle process flow
 
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
-    return null; // Render nothing while fonts load (AppLoading deprecated)
+    return null;
   }
+
+  // Function to request OTP
+  const requestOtp = async () => {
+    if (!email) {
+      Alert.alert('Error', 'Please enter your email.');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://yourapi.com/request-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'OTP sent to your email.');
+        setStep(2);
+      } else {
+        Alert.alert('Error', 'Failed to send OTP. Please try again.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred.');
+    }
+  };
+
+  // Function to reset the password
+  const resetPassword = async () => {
+    if (!otp || !newPassword) {
+      Alert.alert('Error', 'Please fill in all fields.');
+      return;
+    }
+
+    try {
+      const response = await fetch('https://yourapi.com/reset-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp, newPassword }),
+      });
+
+      if (response.ok) {
+        Alert.alert('Success', 'Password reset successful. Please log in.');
+        navigation.navigate('LoginScreen');
+      } else {
+        Alert.alert('Error', 'Invalid OTP or failed to reset password.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'An unexpected error occurred.');
+    }
+  };
 
   return (
     <View style={styles.container}>
-      {/* Header Section */}
-     
-        <View style={styles.row}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('LoginScreen')}
-          >
-            <Icon name="chevron-left" size={36} color="#000" />
-          </TouchableOpacity>
-          <Text style={styles.title}>ForgotPassword</Text>
-         </View>
-
-      {/* Form Section */}
-      <View style={styles.stepOneContainer}>
-        <Text style={styles.text}>Password</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="Password"
-            value={password}
-            secureTextEntry={!showPassword} // Toggle password visibility
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <FontAwesome
-              name={showPassword ? 'eye' : 'eye-slash'} // Icon toggles based on state
-              size={20}
-              color="#000"
-            />
-          </TouchableOpacity>
+      <View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('LoginScreen')}
+              style={styles.iconContainer}
+            >
+              <Icon name="chevron-left" size={30} color="#000" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Sign in</Text>
+          </View>
         </View>
+      <View style={styles.content}>
+        {step === 1 && (
+          <>
+            <Text style={styles.label}>Enter your email</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Email"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+            <TouchableOpacity style={styles.button} onPress={requestOtp}>
+              <Text style={styles.buttonText}>Send OTP</Text>
+            </TouchableOpacity>
+          </>
+        )}
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Reset Password</Text>
-        </TouchableOpacity>
-
-  
+        {step === 2 && (
+          <>
+            <Text style={styles.label}>Enter OTP</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="OTP"
+              value={otp}
+              onChangeText={setOtp}
+              keyboardType="numeric"
+            />
+            <Text style={styles.label}>New Password</Text>
+            <View style={styles.passwordContainer}>
+              <TextInput
+                style={styles.passwordInput}
+                placeholder="New Password"
+                value={newPassword}
+                onChangeText={setNewPassword}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                <Text>{showPassword ? 'Hide' : 'Show'}</Text>
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity style={styles.button} onPress={resetPassword}>
+              <Text style={styles.buttonText}>Reset Password</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </View>
   );
@@ -68,78 +143,66 @@ const ForgotPasswordScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // padding: 20,
     backgroundColor: '#fff',
-  },
-  stepOneContainer: {
-    alignSelf: 'center',
-    width: '85%',
-    marginTop: '50%',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '8%',
-    paddingHorizontal: '5%',
+    paddingHorizontal: '3%',
+  },
+  iconContainer: {
+    // marginRight: 10,
   },
   title: {
     color: '#1E1E1E',
-    fontSize: 30,
+    fontSize: 36,
     fontWeight: '600',
     lineHeight: 43.2,
     fontFamily: 'Lato',
   },
-  description: {
-    color: '#1E1E1E',
-    fontWeight: '300',
-    fontSize: 20,
-    marginLeft: '15%',
-    fontFamily: 'Lato',
+  content: {
+    marginTop: 40,
+    padding:30
   },
-  text: {
-    marginLeft: '5%',
-    marginBottom: 8,
+  label: {
     fontSize: 16,
-    lineHeight: 19.2,
-    color: '#9C9C9C',
-    fontFamily: 'Lato',
+    marginBottom: 8,
   },
-  passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  input: {
     borderWidth: 1,
     borderColor: '#000',
-    borderRadius: 8,
-    padding: 10,
-  },
-  passwordInput: {
-    flex: 1,
     color: '#1E1E1E',
     borderRadius: 8,
     fontFamily: 'Lato',
     fontSize: 24,
     fontWeight: '600',
     lineHeight: 28.8,
+    padding: 10,
+    marginBottom: 20,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingHorizontal: 12,
+  },
+  passwordInput: {
+    flex: 1,
   },
   button: {
     backgroundColor: '#622CFD',
-    paddingVertical: 15,
-    borderRadius: 10,
+    paddingVertical: 12,
+    borderRadius: 8,
     alignItems: 'center',
-    marginTop: '20%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    elevation: 5,
   },
   buttonText: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '600',
-    fontFamily: 'Lato',
-    lineHeight: 24,
+    color: '#fff',
+    fontSize: 16,
   },
- 
 });
 
 export default ForgotPasswordScreen;

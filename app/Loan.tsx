@@ -1,31 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal, Image } from 'react-native';
-import { WebView } from 'react-native-webview';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
-import Header from './Header';
-import Footer from './Footer';
+import { useNavigation } from 'expo-router';
+
 import UnsecuredIcon from '../assets/images/icon/unsecurity.png';
 import SecuredIcon from '../assets/images/icon/security.png';
 import SMEIcon from '../assets/images/icon/sme.png';
 import ODCCIcon from '../assets/images/icon/odcc.png';
 import ProjectIcon from '../assets/images/icon/project.png';
 import EducationIcon from '../assets/images/icon/education.png';
-import WebViewComponent from '@/components/webView';
-import { useNavigation } from 'expo-router';
+
 
 const data = [
-  { id: '1', title: 'Unsecured\nLoan', link: 'https://loanguru.in/best-unsecured-business-and-personal-loan-company-in-delhi-ncr/', icon: UnsecuredIcon },
-  { id: '2', title: 'Secured\nLoan', link: 'https://loanguru.in/delhis-best-secured-loan-provider-company-for-business-home-and-personal-loans/', icon: SecuredIcon },
-  { id: '3', title: 'SMEs/MSMEs\nLoan', link: 'https://loanguru.in/best-msme-loan-provider-company-in-delhi-for-new-business/', icon: SMEIcon },
-  { id: '4', title: 'OD/CC\nLimit', link: 'https://loanguru.in/get-an-instant-overdraft-loan-from-delhis-best-od-loan-provider-company/', icon: ODCCIcon },
-  { id: '5', title: 'Project\nLoan', link: 'https://loanguru.in/the-best-project-loan-service-provider-company-in-delhi-and-ncr/', icon: ProjectIcon },
-  { id: '6', title: 'Education\nLoan', link: 'https://loanguru.in/delhis-best-student-loan-service-provider-company/', icon: EducationIcon }
+  { id: '1', title: 'Unsecured\nLoan', link: 'https://loanguru.in/?page_id=462', icon: UnsecuredIcon },
+  { id: '2', title: 'Secured\nLoan', link: 'https://loanguru.in/?page_id=492', icon: SecuredIcon },
+  { id: '3', title: 'SMEs/MSMEs\nLoan', link: 'https://loanguru.in/?page_id=507', icon: SMEIcon },
+  { id: '4', title: 'OD/CC\nLimit', link: 'https://loanguru.in/?page_id=520', icon: ODCCIcon },
+  { id: '5', title: 'Project\nLoan', link: 'https://loanguru.in/?page_id=537', icon: ProjectIcon },
+  { id: '6', title: 'Education\nLoan', link: 'https://loanguru.in/?page_id=540', icon: EducationIcon }
 ];
 
 const Loan: React.FC = () => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [selectedLink, setSelectedLink] = useState('');
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [selectedLink, setSelectedLink] = useState('');
   const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
@@ -36,25 +34,25 @@ const Loan: React.FC = () => {
     return <AppLoading />;
   }
 
-  const handlePress = (link: string) => {
-    setSelectedLink(link);
-    setModalVisible(true);
-  };
+  // const handlePress = (link: string) => {
+  //   setSelectedLink(link);
+  //   setModalVisible(true);
+  // };
 
-  const hideHeaderFooter = `
-  const hideElement = (selector) => {
-    const element = document.querySelector(selector);
-    if (element) {
-      element.style.display = 'none';
-    }
-  };
-  hideElement('header');
-  hideElement('footer');
-  hideElement('.mobile-app-call-to-action');
-  hideElement('.mobile-app-types-of-loan');
-  hideElement('#weglot-switcher-1');
-  hideElement('.cnb-action.cnb-icon-type-font');
-`;
+//   const hideHeaderFooter = `
+//   const hideElement = (selector) => {
+//     const element = document.querySelector(selector);
+//     if (element) {
+//       element.style.display = 'none';
+//     }
+//   };
+//   hideElement('header');
+//   hideElement('footer');
+//   hideElement('.mobile-app-call-to-action');
+//   hideElement('.mobile-app-types-of-loan');
+//   hideElement('#weglot-switcher-1');
+//   hideElement('.cnb-action.cnb-icon-type-font');
+// `;
 
   const renderItemRow1 = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
     <TouchableOpacity key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
@@ -137,7 +135,7 @@ const styles = StyleSheet.create({
     borderColor: '#E3E2E2', 
     borderWidth: 1,
     justifyContent: 'center',
-    width: 180,
+    width: 170,
     height: 60,
   },
   itemContainerRow2: {

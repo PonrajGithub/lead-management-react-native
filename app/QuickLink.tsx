@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import { useNavigation } from 'expo-router';
 
 // Icon imports
 import Insurance from '../assets/images/icon/insurance.png';
@@ -10,13 +11,14 @@ import Calculator from '../assets/images/icon/calculator.png';
 import Query from '../assets/images/icon/query.png';
 
 const data = [
-  { id: '1', title: 'Insurance', icon: Insurance },
-  { id: '2', title: 'Job', icon: Job },
-  { id: '3', title: 'EMI Calculator', icon: Calculator },
-  { id: '4', title: 'Query', icon: Query },
+  { id: '1', title: 'Insurance',link: 'https://loanguru.in/?page_id=2034', icon: Insurance },
+  { id: '2', title: 'Job',link: 'https://loanguru.in/?page_id=2039', icon: Job },
+  { id: '3', title: 'EMI/Calculator',link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
+  { id: '4', title: 'Query',link: 'https://loanguru.in/?page_id=73', icon: Query },
 ];
 
 const QuickLink = () => {
+  const navigation: any = useNavigation();
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -25,8 +27,8 @@ const QuickLink = () => {
     return <AppLoading />;
   }
 
-  const renderItem = ({ item }: { item: { id: string; title: string; icon: any } }) => (
-    <TouchableOpacity style={styles.itemContainer} key={item.id}>
+  const renderItem = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
+    <TouchableOpacity style={styles.itemContainer} key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.iconContainer}>
         <Image source={item.icon} style={styles.icon} />
       </View>

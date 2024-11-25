@@ -95,12 +95,51 @@ const WelcomeScreen = ({ }: any) => {
                 style={styles.closeButton}
                
               >
-                <Text style={styles.closeButtonText}  onPress={() => setIsModalVisible(false)}>×</Text>
+                <Text style={styles.closeButtonText}  onPress={() => setIsModalVisible(false)}>X</Text>
               </TouchableOpacity>
               <Text style={styles.modalTitle}>Privacy Policy</Text>
               <ScrollView>
                 <Text style={styles.modalText}>
                   Your privacy policy content goes here...
+                  Data Collection: We collect personal information such as name, contact details, and financial data to assess your loan application and provide services.
+
+Purpose: Your information is used to evaluate loan eligibility, process applications, and improve service quality.
+
+Data Sharing: We may share your data with credit bureaus, financial institutions, or regulatory authorities, as required by law.
+
+Consent: By applying for a loan, you consent to the collection and use of your data as outlined in this policy.
+
+Security: We implement stringent security measures to protect your data from unauthorized access and breaches.
+
+Third-Party Services: Some services may involve trusted third-party providers, who are contractually obligated to safeguard your data.
+
+Cookies and Tracking: Our website or app may use cookies to enhance your user experience.
+
+Marketing Communications: We may contact you with promotional offers. You can opt-out at any time.
+
+Retention: Your data is retained only as long as necessary for legal, regulatory, or business purposes.
+
+Access and Correction: You can request access to your personal data and correct any inaccuracies.
+
+Data Collection: We collect personal information such as name, contact details, and financial data to assess your loan application and provide services.
+
+Purpose: Your information is used to evaluate loan eligibility, process applications, and improve service quality.
+
+Data Sharing: We may share your data with credit bureaus, financial institutions, or regulatory authorities, as required by law.
+
+Consent: By applying for a loan, you consent to the collection and use of your data as outlined in this policy.
+
+Security: We implement stringent security measures to protect your data from unauthorized access and breaches.
+
+Third-Party Services: Some services may involve trusted third-party providers, who are contractually obligated to safeguard your data.
+
+Cookies and Tracking: Our website or app may use cookies to enhance your user experience.
+
+Marketing Communications: We may contact you with promotional offers. You can opt-out at any time.
+
+Retention: Your data is retained only as long as necessary for legal, regulatory, or business purposes.
+
+Access and Correction: You can request access to your personal data and correct any inaccuracies.
                 </Text>
               </ScrollView>
             </View>
@@ -219,7 +258,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 10,
     marginTop:-17,
-    fontSize:28,
+    fontSize:30,
     cursor: 'pointer',
   },
   modalTitle: {

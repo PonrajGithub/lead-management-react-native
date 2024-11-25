@@ -1,10 +1,32 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { FontAwesome5 } from '@expo/vector-icons'; // Using expo for icons
+import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, Linking } from 'react-native';
+import { useNavigation } from 'expo-router';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
+// Icon imports
+import Vacancies from '../assets/images/icon/Vacancies.png';
+import Women from '../assets/images/icon/Women.png';
+import Whatsapp from '../assets/images/icon/WhatsApp.png';
+
+const data = [
+  { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2034', icon: Vacancies },
+  { id: '2', title: 'Women\nEmpower', link: 'https://loanguru.in/?page_id=2039', icon: Women },
+  { id: '3', title: 'WhatsApp', icon: Whatsapp },
+];
+
+const openWhatsApp = () => {
+  const whatsappNumber = "+917838375738"; // Replace with the owner's WhatsApp number (include country code)
+  const message = "Hello! I want to know more about your services."; // Default message
+
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  Linking.openURL(url).catch(() => {
+    Alert.alert("Error", "Unable to open WhatsApp. Please make sure it is installed.");
+  });
+};
+
 const Job = () => {
+  const navigation: any = useNavigation();
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -13,35 +35,41 @@ const Job = () => {
     return <AppLoading />;
   }
 
+  const renderItem = ({ item }: { item: { id: string; title: string; link?: string; icon: any } }) => (
+    <TouchableOpacity
+      style={styles.itemContainer}
+      key={item.id}
+      onPress={() => {
+        if (item.title === 'WhatsApp') {
+          openWhatsApp();
+        } else {
+          navigation.navigate('WebViewScreen', { uri: item.link });
+        }
+      }}
+    >
+      <View style={styles.iconContainer}>
+        <Image source={item.icon} style={styles.icon} />
+        <Text style={styles.itemText}>{item.title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>FEATURES</Text>
-
-      {/* First Row of Icons */}
       <View style={styles.row}>
-        <TouchableOpacity style={styles.button}>
-          <FontAwesome5 name="chair" size={24} color="#622CFD" />
-          <Text style={styles.buttonText}>Job{"\n"}Vacancies</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <FontAwesome5 name="balance-scale" size={28} color="#622CFD" />
-          <Text style={styles.buttonText}>Women{"\n"}Empower</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <FontAwesome5 name="whatsapp" size={28} color="#622CFD" />
-          <Text style={styles.buttonText}>Whatsapp</Text>
-        </TouchableOpacity>
+        {data.map((item) => (
+          renderItem({ item })
+        ))}
       </View>
-      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-    flex:1
+    flex: 1,
   },
   header: {
     fontFamily: 'Lato',
@@ -50,25 +78,34 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
-    lineHeight:14.4,
-    letterSpacing:2
+    lineHeight: 14.4,
+    letterSpacing: 2,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
   },
-  button: {
+  itemContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+    width: '33%',
+  },
+  iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     borderColor: '#E3E2E2',
     borderWidth: 1,
     alignItems: 'center',
-    justifyContent:'center',
+    justifyContent: 'center',
     width: 110,
     height: 120,
   },
-  buttonText: {
+  icon: {
+    height: 40,
+    width: 32,
+  },
+  itemText: {
     fontFamily: 'Lato',
     fontSize: 16,
     marginTop: 20,

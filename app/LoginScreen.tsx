@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import { ScrollView,ToastAndroid, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native';
+import { ScrollView, ToastAndroid, Text, TextInput, TouchableOpacity, SafeAreaView, StyleSheet, View } from 'react-native';
 import { useNavigation } from 'expo-router';
 import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { FontAwesome } from '@expo/vector-icons';  // Import FontAwesome or another icon set
+import { FontAwesome } from '@expo/vector-icons';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [emailError, setEmailError] = useState(false); // Changed to boolean
+  const [passwordError, setPasswordError] = useState(false); // Changed to boolean
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigation: any = useNavigation();
 
   const [fontsLoaded] = useFonts({
-    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'), 
+    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -34,72 +34,59 @@ const LoginScreen = () => {
 
   const handleLogin = async () => {
     let valid = true;
-    
+
     // Email validation
     if (email === '') {
-      setEmailError('Email is required.');
+      setEmailError(true);
       valid = false;
     } else if (!validateEmail(email)) {
-      setEmailError('Please enter a valid email.');
+      setEmailError(true);
       valid = false;
     } else {
-      setEmailError('');
+      setEmailError(false);
     }
 
     // Password validation
     if (password === '') {
-      setPasswordError('Password is required.');
+      setPasswordError(true);
       valid = false;
     } else {
-      setPasswordError('');
+      setPasswordError(false);
     }
-
-    
 
     if (valid) {
       setLoading(true); // Show loading state
       try {
         const response = await axios.post('https://loanguru.in/loan_guru_app/api/login', {
           email,
-          password
+          password,
         });
-        
-        // console.log('Login Response:', response.data); // Log the response to check its structure
-    
+
         if (response.data.success) {
           const { token } = response.data.data;
-          setIsLoggedIn(true);          await AsyncStorage.setItem('@storage_user_token', token); 
-          // console.log('Token stored successfully:', token);
+          setIsLoggedIn(true);
+          await AsyncStorage.setItem('@storage_user_token', token);
           await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data)); // Store user data
           await AsyncStorage.setItem('isLoggedIn', 'true');
-          
-          ToastAndroid.show('Login successfully!', ToastAndroid.SHORT);
 
+          ToastAndroid.show('Login successfully!', ToastAndroid.SHORT);
 
           navigation.reset({
             index: 0,
-            routes: [{ name: 'DashboardScreen' }],  
-        });
+            routes: [{ name: 'DashboardScreen' }],
+          });
         } else {
-          ToastAndroid.show('Login Failed', response.data.message || 'Invalid credentials');
+          ToastAndroid.show('Login Failed', ToastAndroid.SHORT);
         }
       } catch (error) {
         console.error('Login Error:', error);
-        ToastAndroid.show('An error occurred during login. Please try again.',ToastAndroid.LONG);
-      }finally {
+        ToastAndroid.show('An error occurred during login. Please try again.', ToastAndroid.LONG);
+      } finally {
         setLoading(false); // Hide loading state
       }
-
-
-      const checkStorage = async () => {
-        const token = await AsyncStorage.getItem('@storage_user_token');
-        // console.log('Debug: Token from AsyncStorage:', token);
-      };
-      
-      checkStorage();
     }
   };
-  
+
   const redirectToForgotPassword = () => {
     navigation.navigate('ForgotPasswordScreen');
   };
@@ -110,80 +97,83 @@ const LoginScreen = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <SafeAreaView >        
-      <View>
-  <View style={styles.row}>
-    <TouchableOpacity
-      onPress={() => navigation.navigate('WelcomeScreen')}
-      style={styles.iconContainer}
-    >
-      <Icon name="chevron-left" size={30} color="#000" />
-    </TouchableOpacity>
-    <Text style={styles.title}>Sign in</Text>
-  </View>
-  <Text style={styles.description}>Login with your details</Text>
-</View>
-        <View style={styles.stepOneContainer}>
-        <Text style={styles.text}>Email ID</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-          keyboardType="email-address"
-          onChangeText={setEmail}
-        />
-        {emailError ? <Text style={styles.errorText}>{emailError}</Text> : null}
-        
-        <Text style={styles.text}>Password</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={styles.passwordInput}
-            placeholder="Password"
-            value={password}
-            secureTextEntry={!showPassword}  // Toggle password visibility
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-            <FontAwesome
-              name={showPassword ? 'eye' : 'eye-slash'}  // Icon toggles based on state
-              size={20}
-              color="#000"
-            />
-          </TouchableOpacity>
+      <SafeAreaView>
+        <View>
+          <View style={styles.row}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('WelcomeScreen')}
+              style={styles.iconContainer}
+            >
+              <Icon name="chevron-left" size={30} color="#000" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Sign in</Text>
+          </View>
+          <Text style={styles.description}>Login with your details</Text>
         </View>
-        {passwordError ? <Text style={styles.errorText}>{passwordError}</Text> : null}
+        <View style={styles.stepOneContainer}>
+          <Text style={styles.text}>Email ID</Text>
+          <TextInput
+            style={[styles.input, emailError && styles.inputError]}
+            placeholder="Email"
+            value={email}
+            keyboardType="email-address"
+            onChangeText={(text) => {
+              setEmail(text);
+              setEmailError(false);
+            }}
+          />
 
-        <TouchableOpacity onPress={redirectToForgotPassword}>
-          <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-          <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Sign in'}</Text>
-        </TouchableOpacity>
+          <Text style={styles.text}>Password</Text>
+          <View style={[styles.passwordContainer, passwordError && styles.inputError]}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="Password"
+              value={password}
+              secureTextEntry={!showPassword} // Toggle password visibility
+              onChangeText={(text) => {
+                setPassword(text);
+                setPasswordError(false);
+              }}
+            />
+            <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+              <FontAwesome
+                name={showPassword ? 'eye' : 'eye-slash'} // Icon toggles based on state
+                size={20}
+                color="#000"
+              />
+            </TouchableOpacity>
+          </View>
 
-        <Text style={styles.singin}>
-          If you don't have an account?{' '}
-          <Text style={styles.link} onPress={redirectToCreateAccount}>
-            Register
+          <TouchableOpacity onPress={redirectToForgotPassword}>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
+            <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Sign in'}</Text>
+          </TouchableOpacity>
+
+          <Text style={styles.singin}>
+            If you don't have an account?{' '}
+            <Text style={styles.link} onPress={redirectToCreateAccount}>
+              Register
+            </Text>
           </Text>
-        </Text>
         </View>
       </SafeAreaView>
     </ScrollView>
   );
 };
 
-// styles...
 const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
-    backgroundColor:'#fff',
+    backgroundColor: '#fff',
   },
   stepOneContainer: {
     flex: 1,
-    alignSelf:'center',
-    width:'85%',
-    marginTop:'50%'
+    alignSelf: 'center',
+    width: '85%',
+    marginTop: '50%',
   },
   row: {
     flexDirection: 'row',
@@ -192,71 +182,69 @@ const styles = StyleSheet.create({
     paddingHorizontal: '5%',
   },
   iconContainer: {
-    marginRight: 10,
+    // marginRight: 10,
   },
   title: {
     color: '#1E1E1E',
     fontSize: 36,
     fontWeight: '600',
-    lineHeight:43.2,
+    lineHeight: 43.2,
     fontFamily: 'Lato',
   },
   description: {
     color: '#1E1E1E',
     fontWeight: '300',
     fontSize: 20,
-    marginLeft: '15%',
+    marginLeft: '13%',
     fontFamily: 'Lato',
   },
   text: {
-    marginLeft:'5%',
+    marginLeft: '5%',
     marginBottom: 8,
-    fontSize:16,
-    lineHeight:19.2,
-    color:'#9C9C9C',
+    fontSize: 16,
+    lineHeight: 19.2,
+    color: '#9C9C9C',
     fontFamily: 'Lato',
   },
   input: {
-      borderWidth: 1,
-      borderColor: '#000',
-      color:'#1E1E1E',
-      borderRadius: 8,
-      fontFamily:'Lato',
-      fontSize:24,
-      fontWeight:'600',
-      lineHeight:28.8,
-      padding: 10,
-      marginBottom:20,
-    },
+    borderWidth: 1,
+    borderColor: '#000',
+    color: '#1E1E1E',
+    borderRadius: 8,
+    fontFamily: 'Lato',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 28.8,
+    padding: 10,
+    marginBottom: 20,
+  },
+  inputError: {
+    borderColor: 'red', // Highlight error field with red border
+  },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-     borderWidth: 1,
-      borderColor: '#000',
-      color:'#1E1E1E',
-      borderRadius: 8,
-      fontFamily:'Lato',
-      fontSize:15,
-      fontWeight:'ultralight',
-      padding: 10,
-      // marginBottom:30,
+    borderWidth: 1,
+    borderColor: '#000',
+    borderRadius: 8,
+    padding: 10,
   },
   passwordInput: {
     flex: 1,
-    color:'#1E1E1E',
+    color: '#1E1E1E',
     borderRadius: 8,
-    fontFamily:'Lato',
-    fontSize:24,
-    fontWeight:'600',
-    lineHeight:28.8,
+    fontFamily: 'Lato',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 28.8,
   },
   forgotPasswordText: {
     color: '#622CFD',
     marginTop: 20,
     textAlign: 'right',
     fontFamily: 'Lato',
-    fontSize:16,
-    lineHeight:19.2,
+    fontSize: 16,
+    lineHeight: 19.2,
   },
   button: {
     backgroundColor: '#622CFD',
@@ -268,37 +256,30 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 5, 
+    elevation: 5,
   },
   buttonText: {
     color: '#FFFFFF',
     fontSize: 20,
     fontWeight: '600',
     fontFamily: 'Lato',
-    lineHeight:24,
+    lineHeight: 24,
   },
   singin: {
     fontSize: 15,
     fontWeight: '300',
     textAlign: 'center',
     marginTop: 15,
-    lineHeight:22.59,
-    color: '#1E1E1E', 
+    lineHeight: 22.59,
+    color: '#1E1E1E',
     fontFamily: 'Lato',
   },
   link: {
     color: '#622CFD',
     fontWeight: '300',
-    lineHeight:22.59,
+    lineHeight: 22.59,
     textDecorationLine: 'underline',
     fontFamily: 'Lato',
-  },
-  errorText: {
-    textAlign: 'right',
-    fontFamily: 'Lato',
-    fontSize:16,
-    lineHeight:19.2,
-    color:'red',
   },
 });
 

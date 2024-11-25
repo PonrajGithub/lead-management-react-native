@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from 'expo-router';
+// Icon imports
+import Closer from '../assets/images/icon/Closer.png';
+import Loan from '../assets/images/icon/Loan.png';
 
 const data = [
-  
-  { id: '1', title: 'Closer issue', icon: 'lock-check-outline' },
-  { id: '2', title: 'Loan issue', icon: 'currency-usd' }
+  { id: '1', title: 'Closer issue', link:'https://loanguru.in/?page_id=2058', icon: Closer },
+  { id: '2', title: 'Loan issue', link:'https://loanguru.in/?page_id=2060', icon:Loan  }
 ];
 
 const Help = () => {
+  const navigation:any = useNavigation();
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -19,10 +22,10 @@ const Help = () => {
     return <AppLoading />;
   }
 
-  const renderItem = ({ item }: { item: { id: string; title: string; icon: string } }) => (
-    <TouchableOpacity style={styles.itemContainer} key={item.id}>
+  const renderItem = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
+    <TouchableOpacity style={styles.itemContainer} key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.iconContainer}>
-        <Icon name={item.icon} size={24} color="#622CFD" />
+       <Image source={item.icon} style={styles.icon} />
       </View>
       <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
@@ -69,7 +72,7 @@ const styles = StyleSheet.create({
     borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
     justifyContent: 'center',
-    width: 170,
+    width: 160,
     height: 60,
   },
   iconContainer: {
@@ -80,6 +83,10 @@ const styles = StyleSheet.create({
     width:44, 
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  icon: {
+    width: 24,
+    height: 24,
   },
   itemText: {
     fontFamily:'Lato',

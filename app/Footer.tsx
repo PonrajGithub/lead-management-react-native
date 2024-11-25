@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 
 // Import custom education icon
 import EducationIcon from '../assets/images/icon/education.png';
+import Home from '../assets/images/icon/Home.png';
 
 
 const Footer = () => {
@@ -55,7 +56,7 @@ const Footer = () => {
       <TouchableOpacity 
       style={styles.iconContainer}  
       onPress={() => navigation.navigate('DashboardScreen')}  >
-         <Icon name="home-outline" size={28} color="#622CFD" />
+         <Image source={Home} style={styles.customIcon} />
       </TouchableOpacity>
 
       {/* Education Icon */}
@@ -100,9 +101,12 @@ const styles = StyleSheet.create({
   },
   userName: {
     fontSize: 16,
-    color: '#622CFD',
     marginTop: 5,
     fontFamily: 'Lato',
+    color: '#1E1E1E',
+    fontWeight: '900',
+    lineHeight: 14.4,
+    letterSpacing: 1,
   },
 });
 

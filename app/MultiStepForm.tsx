@@ -106,12 +106,12 @@ const MultiStepForm = ({ }: any) => {
       );
   
       if (response.data.success) {
+        const { token } = response.data.data;
+        await AsyncStorage.setItem('@storage_user_token', token);
+
         // Show success message
         ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
   
-        // Save the token to AsyncStorage
-        const token = response.data.token; // Assuming token is returned in the response
-        await AsyncStorage.setItem('@storage_user_token', token);
   
         // Navigate to the Congrats screen
         navigation.reset({ index: 0, routes: [{ name: 'CongratsScreen' }] });
@@ -188,12 +188,11 @@ const MultiStepForm = ({ }: any) => {
           <View style={styles.stepContainer}>
             <Text style={styles.label}>What is your name?</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.name&& styles.errorInput]}
               placeholder="Name"
               value={formData.name}
               onChangeText={(text) => handleChange('name', text)}
             />
-            {errors.name && <Text style={styles.errorText}>{errors.name}</Text>}
             <View style={styles.navigation}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
@@ -212,14 +211,12 @@ const MultiStepForm = ({ }: any) => {
       <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
       <TouchableOpacity onPress={() => setShowPicker(true)}>
         <TextInput
-          style={styles.input}
+          style={[styles.input,errors.dob && styles.errorInput]}
           placeholder="dd/mm/yyyy"
           value={formData.dob}
           editable={false} // Disable direct editing
         />
       </TouchableOpacity>
-      {errors.dob && <Text style={styles.errorText}>{errors.dob}</Text>}
-
       {showPicker && (
         <DateTimePicker
           value={date}
@@ -229,7 +226,7 @@ const MultiStepForm = ({ }: any) => {
           maximumDate={new Date()} // Optional: Restrict to past dates
         />
       )}
-       <View style={styles.navigation}>
+       <View style={styles.navigationDob}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -246,22 +243,19 @@ const MultiStepForm = ({ }: any) => {
           <View style={styles.stepContainer}>
             <Text style={styles.label}>Contact details</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.mobile_number && styles.errorInput]}
               placeholder="Mobile number"
               keyboardType="phone-pad"
               value={formData.mobile_number}
               onChangeText={(text) => handleChange('mobile_number', text)}
             />
-              {errors.mobile_number && <Text style={styles.errorText}>{errors.mobile_number}</Text>}
-
             <TextInput
-              style={styles.input}
+              style={[styles.input,errors.email && styles.errorInput]}
               placeholder="Email"
               value={formData.email}
               onChangeText={(text) => handleChange('email', text)}
             />
-              {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-              <View style={styles.navigation}>
+              <View style={styles.navigationCom}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -278,18 +272,18 @@ const MultiStepForm = ({ }: any) => {
             <View style={styles.stepContainer}>
             <Text style={styles.label}>Institute details</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.institution_name && styles.errorInput]}
               placeholder="Institution name"
               value={formData.institution_name}
               onChangeText={(text) => handleChange('institution_name', text)}
             />
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.occupation && styles.errorInput]}
               placeholder="Occupation"
               value={formData.occupation}
               onChangeText={(text) => handleChange('occupation', text)}
             />
-             <View style={styles.navigation}>
+             <View style={styles.navigationCom}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -306,20 +300,18 @@ const MultiStepForm = ({ }: any) => {
           <View style={styles.stepContainer}>
             <Text style={styles.label}>Company details</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.company_name && styles.errorInput]}
               placeholder="Company Name"
               value={formData.company_name}
               onChangeText={(text) => handleChange('company_name', text)}
             />
-            {errors.company_name && <Text style={styles.errorText}>{errors.company_name}</Text>}
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.designation && styles.errorInput]}
               placeholder="Designation"
               value={formData.designation}
               onChangeText={(text) => handleChange('designation', text)}
             />
-            {errors.designation && <Text style={styles.errorText}>{errors.designation}</Text>}
-            <View style={styles.navigation}>
+            <View style={styles.navigationCom}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -336,14 +328,13 @@ const MultiStepForm = ({ }: any) => {
           <View style={styles.stepContainer}>
             <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, errors.password && styles.errorInput]}
               placeholder="Create Password"
               secureTextEntry
               value={formData.password}
               onChangeText={(text) => handleChange('password', text)}
             />
-            {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
-            <View style={styles.navigation}>
+            <View style={styles.navigationPass}>
             <TouchableOpacity  onPress={handleBack}>
               <Text style={styles.back}>Back</Text>
               </TouchableOpacity>
@@ -534,17 +525,37 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
-    padding: 20,
+    padding: 30,
     marginTop:'40%',
     flex:1,
     display:"flex",
   },
- 
   navigation: {
+    top:'60%',
+    // bottom:'20%',
+    flexDirection: 'row',
+    padding: 30,
+    justifyContent: 'space-between',
+  },
+  navigationDob: {
     top:'50%',
     // bottom:'20%',
     flexDirection: 'row',
-    padding: 40,
+    padding: 30,
+    justifyContent: 'space-between',
+  },
+  navigationCom: {
+    top:'40%',
+    // bottom:'20%',
+    flexDirection: 'row',
+    padding: 30,
+    justifyContent: 'space-between',
+  },
+  navigationPass: {
+    top:'30%',
+    // bottom:'20%',
+    flexDirection: 'row',
+    padding: 30,
     justifyContent: 'space-between',
   },
   navButton: {
@@ -668,6 +679,9 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom:20,
   },
+  errorInput: {
+    borderColor: 'red', 
+  },
   button: {
     padding: 10,
     backgroundColor: '#eee',
@@ -689,14 +703,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderTopLeftRadius: 50, 
     borderTopRightRadius: 50,
-    padding: 20,
-    // marginTop:'40%',
+    padding: 30,
     flex:1,
     display:"flex",
   },
   contentOne: {
     flex: 1,
-    padding: 20,
+    // padding: 20,
   },
   scrollContentOne: {
     flexGrow: 1, 

@@ -70,12 +70,12 @@ const ThirdScreen = ({ }: any) => {
       {/* Next button */}
       <TouchableOpacity
         style={styles.nextButton}
-        onPress={() => navigation.navigate('WelcomeScreen')}
-        // onPress={() =>
-        //   navigation.reset({
-        //     index: 0,
-        //     routes: [{ name: 'WelcomeScreen' }],
-        //   })}
+        // onPress={() => navigation.navigate('WelcomeScreen')}
+        onPress={() =>
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'WelcomeScreen' }],
+          })}
           >
             <Icon name="chevron-right" size={24} color="#fff" />
       </TouchableOpacity>
