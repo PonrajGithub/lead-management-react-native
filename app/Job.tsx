@@ -6,8 +6,8 @@ import { useFonts } from 'expo-font';
 
 // Icon imports
 import Vacancies from '../assets/images/icon/Vacancies.png';
-import Women from '../assets/images/icon/Women.png';
-import Whatsapp from '../assets/images/icon/WhatsApp.png';
+import Women from '../assets/images/icon/women.png';
+import Whatsapp from '../assets/images/icon/whatsapp.png';
 
 const data = [
   { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2034', icon: Vacancies },

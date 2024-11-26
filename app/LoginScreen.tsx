@@ -144,7 +144,9 @@ const LoginScreen = () => {
             </TouchableOpacity>
           </View>
 
-          <TouchableOpacity onPress={redirectToForgotPassword}>
+          <TouchableOpacity 
+          // onPress={redirectToForgotPassword}
+          >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
 
