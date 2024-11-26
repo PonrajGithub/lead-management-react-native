@@ -111,7 +111,6 @@ const DashboardScreen = () => {
   const styles = StyleSheet.create({
     container: {
         flex: 1,
-        
       },
     content: {
       flex: 1,
@@ -123,7 +122,6 @@ const DashboardScreen = () => {
       zIndex: 0, 
     },
     bannerContainer: {
-      
       padding: 10,
     },
     bannerImage: {

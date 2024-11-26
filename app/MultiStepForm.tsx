@@ -393,12 +393,6 @@ const MultiStepForm = ({ }: any) => {
                 <Text style={styles.labelReview}>Account Type</Text>
                 <View style={styles.accountTypeContainer}>
                   <Text style={styles.accountTypeText}>{formData.user_type}</Text>
-                  <TouchableOpacity
-                    onPress={() => console.log('Change Account Type')}
-                    style={styles.changeButton}
-                  >
-                    <Text style={styles.changeButtonText}>Change</Text>
-                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -446,6 +440,7 @@ const MultiStepForm = ({ }: any) => {
 
               {/* Institution Name */}
               {formData?.user_type === 'Institute' && (
+                <View>
                 <View style={styles.inputGroup}>
                   <Text style={styles.labelReview}>Institution Name</Text>
                   <TextInput
@@ -454,17 +449,39 @@ const MultiStepForm = ({ }: any) => {
                     onChangeText={(value) => handleChange('institution_name', value)}
                   />
                 </View>
+                
+                <View style={styles.inputGroup}>
+                <Text style={styles.labelReview}>Occupation</Text>
+                <TextInput
+                  style={styles.inputReview}
+                  value={formData.occupation}
+                  onChangeText={(value) => handleChange('occupation', value)}
+                />
+              </View>
+              </View>
               )}
 
               {/* Company Name */}
-              {formData?.user_type !== 'Institute' && <View style={styles.inputGroup}>
+              {formData?.user_type !== 'Institute' && 
+              <View>
+              <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Company Name</Text>
                 <TextInput
                   style={styles.inputReview}
                   value={formData.company_name}
                   onChangeText={(value) => handleChange('company_name', value)}
                 />
-              </View>}
+              </View>
+              <View style={styles.inputGroup}>
+                <Text style={styles.labelReview}>Designation</Text>
+                <TextInput
+                  style={styles.inputReview}
+                  value={formData.designation}
+                  onChangeText={(value) => handleChange('designation', value)}
+                />
+              </View>
+              </View>
+              }
 
               {/* Terms & Conditions */}
               <View style={styles.termsContainer}>
@@ -790,19 +807,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   accountTypeText: {
-    fontSize: 14,
+    fontSize: 18,
+    fontFamily: 'Lato',
     color: '#333',
-  },
-  changeButton: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    backgroundColor: '#6A0DAD',
-    borderRadius: 5,
-  },
-  changeButtonText: {
-    color: '#FFFFFF',
-    fontSize: 12,
-    fontWeight: '600',
   },
   termsContainer: {
     flexDirection: 'row',

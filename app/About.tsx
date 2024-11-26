@@ -61,6 +61,7 @@ const About = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   header: {
     fontFamily: 'Lato',
@@ -75,7 +76,7 @@ const styles = StyleSheet.create({
   grid: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 16,
+    // paddingHorizontal:10,
   },
   gridItem: {
     alignItems: 'center',
