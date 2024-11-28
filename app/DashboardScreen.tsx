@@ -134,8 +134,6 @@ const DashboardScreen = () => {
       backgroundColor: '#FFFFFF',
       borderTopLeftRadius: 50,
       borderTopRightRadius: 50,
-      padding: 10,
-      // marginTop: '2%',
       overflow: 'visible', 
     },
   });

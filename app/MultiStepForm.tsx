@@ -87,6 +87,11 @@ const MultiStepForm = ({ }: any) => {
       case 7: // Validate password
         if (!formData.password.trim()) newErrors.password = 'Password is required.';
         break;
+        case 8: // Validate terms and conditions
+        if (!formData.agreedToTerms) {
+          newErrors.agreedToTerms = 'You must agree to the Terms and Conditions.';
+        }
+        break;  
       default:
         break;
     }
@@ -97,6 +102,12 @@ const MultiStepForm = ({ }: any) => {
 
   // Submit function
   const handleSubmit = async () => {
+
+    if (!validateStep()) {
+      ToastAndroid.show('You must agree to the Terms and Conditions.', ToastAndroid.LONG);
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await axios.post(

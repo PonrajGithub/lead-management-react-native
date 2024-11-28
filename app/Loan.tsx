@@ -115,11 +115,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '900',
+    fontWeight:'900',
     marginLeft:15,
     lineHeight:14.4,
     letterSpacing:2,
-    marginTop:15,
+    marginTop:'7%',
   },
   row: {
     flexDirection: 'row',

@@ -80,7 +80,7 @@ const LoginScreen = () => {
         }
       } catch (error) {
         console.error('Login Error:', error);
-        ToastAndroid.show('An error occurred during login. Please try again.', ToastAndroid.LONG);
+        ToastAndroid.show('Ensure your credentials are correct.', ToastAndroid.LONG);
       } finally {
         setLoading(false); // Hide loading state
       }
@@ -145,7 +145,7 @@ const LoginScreen = () => {
           </View>
 
           <TouchableOpacity 
-          // onPress={redirectToForgotPassword}
+          onPress={redirectToForgotPassword}
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>

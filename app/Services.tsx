@@ -51,9 +51,9 @@ const Services = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
-    paddingHorizontal: 16,
-    paddingTop: 20,
+    // backgroundColor: '#FFFFFF',
+    paddingHorizontal: 15,
+    paddingTop: 10,
   },
   heading: {
     fontFamily: 'Lato',
