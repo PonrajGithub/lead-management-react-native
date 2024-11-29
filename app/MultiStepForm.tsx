@@ -87,12 +87,27 @@ const MultiStepForm = ({ }: any) => {
       case 7: // Validate password
         if (!formData.password.trim()) newErrors.password = 'Password is required.';
         break;
-        case 8: // Validate terms and conditions
+      case 8: // Validate terms and conditions
+        if (!formData.name.trim()) newErrors.name = 'Name is required.';
+        if (!formData.dob) newErrors.dob = 'Date of birth is required.';
+        if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
+          newErrors.mobile_number = 'Valid mobile number is required.';
+        }
+        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+          newErrors.email = 'Valid email is required.';
+        }
+        if ( formData?.user_type == 'Institute') {
+          if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
+          if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.';  
+        }
+        else {
+          if ( formData?.user_type !== 'Institute') {
+            if (!formData.company_name.trim()) newErrors.company_name = 'company name is required.';
+            if (!formData.designation.trim()) newErrors.designation = 'designation is required.';
+          }}
         if (!formData.agreedToTerms) {
           newErrors.agreedToTerms = 'You must agree to the Terms and Conditions.';
         }
-        break;  
-      default:
         break;
     }
 
@@ -119,7 +134,7 @@ const MultiStepForm = ({ }: any) => {
       if (response.data.success) {
         const { token } = response.data.data;
         await AsyncStorage.setItem('@storage_user_token', token);
-
+        await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data));
         // Show success message
         ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
 
@@ -411,7 +426,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Name</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.name && styles.errorInput]}
                   value={formData.name}
                   onChangeText={(value) => handleChange('name', value)}
                 />
@@ -421,7 +436,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Date of Birth</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.dob && styles.errorInput]}
                   value={formData.dob}
                   onChangeText={(value) => handleChange('dob', value)}
                 />
@@ -431,7 +446,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Mobile Number</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.mobile_number && styles.errorInput]}
                   keyboardType="phone-pad"
                   value={formData.mobile_number}
                   onChangeText={(value) => handleChange('mobile_number', value)}
@@ -442,7 +457,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Mail ID</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.email && styles.errorInput]}
                   keyboardType="email-address"
                   value={formData.email}
                   onChangeText={(value) => handleChange('email', value)}
@@ -455,7 +470,7 @@ const MultiStepForm = ({ }: any) => {
                 <View style={styles.inputGroup}>
                   <Text style={styles.labelReview}>Institution Name</Text>
                   <TextInput
-                    style={styles.inputReview}
+                    style={[styles.inputReview, errors.institution_name && styles.errorInput]}
                     value={formData.institution_name}
                     onChangeText={(value) => handleChange('institution_name', value)}
                   />
@@ -464,7 +479,7 @@ const MultiStepForm = ({ }: any) => {
                 <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Occupation</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.occupation && styles.errorInput]}
                   value={formData.occupation}
                   onChangeText={(value) => handleChange('occupation', value)}
                 />
@@ -478,7 +493,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Company Name</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.company_name && styles.errorInput]}
                   value={formData.company_name}
                   onChangeText={(value) => handleChange('company_name', value)}
                 />
@@ -486,7 +501,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Designation</Text>
                 <TextInput
-                  style={styles.inputReview}
+                  style={[styles.inputReview, errors.designation && styles.errorInput]}
                   value={formData.designation}
                   onChangeText={(value) => handleChange('designation', value)}
                 />

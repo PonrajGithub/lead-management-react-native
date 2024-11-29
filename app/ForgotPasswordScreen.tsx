@@ -19,9 +19,10 @@ const ForgotPasswordScreen = () => {
   const navigation: any = useNavigation();
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState(false); 
-  const [passwordError, setPasswordError] = useState(false);
+  // const [passwordError, setPasswordError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [otp, setOtp] = useState('');
+  const [receivedOtp, setReceivedOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [step, setStep] = useState(1); // Step to handle process flow
@@ -34,70 +35,105 @@ const ForgotPasswordScreen = () => {
     return null;
   }
 
-  // Function to request OTP
   const requestOtp = async () => {
     if (!email) {
-      ToastAndroid.show('Please enter your email.',ToastAndroid.SHORT);
+      setEmailError(true);
+      ToastAndroid.show('Please enter your email', ToastAndroid.SHORT);
       return;
     }
 
-    let formData = new FormData();
-    formData.append('email', email);
     setLoading(true);
+
     try {
+      const formData = new FormData();
+      formData.append('email', email);
+
       const response = await axios.post(
         'https://loanguru.in/loan_guru_app/api/forget',
         formData,
         {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
       );
-
-      if (response.status === 200) {
-        console.log('OTP:', response.data?.otp || 'No OTP received');
-        ToastAndroid.show('OTP sent to your email.',ToastAndroid.SHORT);
+      console.log(response?.data?.data?.code);
+      // console.log(response.data.success);
+      if (response.data.success) {
+        const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
+        setReceivedOtp(receivedOtp);
+        ToastAndroid.show('OTP sent', ToastAndroid.SHORT);
+        
         setStep(2);
       } else {
-        ToastAndroid.show('Failed to send OTP. Please try again.',ToastAndroid.SHORT);
+        ToastAndroid.show(response.data.message || 'Failed to send OTP', ToastAndroid.SHORT);
       }
     } catch (error) {
-      ToastAndroid.show('Oops! Please enter valid mail.',ToastAndroid.SHORT);
-    }
-    finally {
-      setLoading(false); // Hide loading state
+      console.error(error);
+      ToastAndroid.show('An error occurred. Try again.', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Function to reset the password
+  const verifyOtp = async () => {
+    setLoading(true);
+    if (!otp) {
+      ToastAndroid.show('Please enter the OTP', ToastAndroid.SHORT);
+      return;
+    } 
+
+    console.log(receivedOtp, "RECEIVED OTP")
+    console.log(otp, "OTP")
+
+
+    if(receivedOtp == otp){
+      ToastAndroid.show('OTP Verified', ToastAndroid.SHORT);
+      setStep(3);
+    } else {
+      ToastAndroid.show('Invalid OTP', ToastAndroid.SHORT);
+      return;
+    }
+  };
+
   const resetPassword = async () => {
+    
     if (!otp || !newPassword) {
-      ToastAndroid.show('Please fill in all fields.',ToastAndroid.SHORT);
+      ToastAndroid.show('Please fill all fields', ToastAndroid.SHORT);
       return;
     }
 
-    let formData = new FormData();
-    formData.append('code', otp);
-    formData.append('password', newPassword);
+    setLoading(true);
 
     try {
+      const formData = new FormData();
+      formData.append('code', otp);
+      formData.append('password', newPassword);
+
       const response = await axios.post(
         'https://loanguru.in/loan_guru_app/api/reset',
         formData,
         {
-          headers: { 'Content-Type': 'multipart/form-data' },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         }
       );
 
-      if (response.status === 200) {
-        ToastAndroid.show('Password reset successful.Please log in.',ToastAndroid.SHORT);
+      if (response.data.success) {
+        ToastAndroid.show('Password reset successfully', ToastAndroid.SHORT);
         navigation.navigate('LoginScreen');
       } else {
-        ToastAndroid.show('Invalid OTP or failed to reset password.',ToastAndroid.SHORT);
+        ToastAndroid.show(response.data.message || 'Failed to reset password', ToastAndroid.SHORT);
       }
     } catch (error) {
-      ToastAndroid.show('Oops! Something went wrong. Please retry.',ToastAndroid.SHORT);
+      console.error(error);
+      ToastAndroid.show('An error occurred. Try again.', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
     }
   };
+ 
 
   return (
     <ImageBackground
@@ -148,6 +184,15 @@ const ForgotPasswordScreen = () => {
               onChangeText={setOtp}
               keyboardType="numeric"
             />
+             <TouchableOpacity style={styles.button} onPress={verifyOtp}>
+              <Text style={styles.buttonText}>Verify OPT</Text>
+            </TouchableOpacity>
+            </View>
+            </ScrollView>
+        )}
+             {step === 3 && (
+          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
             <Text style={styles.label}>New Password</Text>
             <View style={styles.passwordContainer}>
               <TextInput
@@ -168,8 +213,8 @@ const ForgotPasswordScreen = () => {
             <TouchableOpacity style={styles.button} onPress={resetPassword}>
               <Text style={styles.buttonText}>Reset Password</Text>
             </TouchableOpacity>
-          </View>
-          </ScrollView>
+            </View>
+            </ScrollView>
         )}
       
     </ImageBackground>
