@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#f2f0ef',
+    backgroundColor: '#C0C0C0',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     paddingVertical: 10,
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   customIcon: {
-    width: 28,
-    height: 28,
+    width: 32,
+    height: 32,
     resizeMode: 'contain',
   },
   profileContainer: {

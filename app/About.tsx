@@ -62,6 +62,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop:'-5%',
+    backgroundColor:'#f2f0ef',
+    // backgroundColor:'#FFF',
   },
   header: {
     fontFamily: 'Lato',
@@ -90,13 +92,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 44,
-    height: 44,
+    width: 50,
+    height: 50,
     margin: 10,
   },
   icon:{
-    height:24,
-    width:24,
+    height:36,
+    width:36,
   },
   itemText: {
     fontFamily: 'Lato',

@@ -103,6 +103,7 @@ const Loan: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    
   },
   contain:{
     flex:1
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
     margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2', 
+    borderColor: '#000', 
     borderWidth: 1,
     justifyContent: 'center',
     width: 170,
@@ -163,9 +164,9 @@ const styles = StyleSheet.create({
     marginBottom:5,
   },
   icon: {
-    width: 24,
-    height: 24,
-    marginBottom: 5,
+    width: 36,
+    height: 36,
+    // marginBottom: 5,
   },
   titleRow1: {
     fontFamily:'Lato',

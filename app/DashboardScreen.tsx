@@ -111,6 +111,7 @@ const DashboardScreen = () => {
   const styles = StyleSheet.create({
     container: {
         flex: 1,
+        
       },
     content: {
       flex: 1,
@@ -132,6 +133,7 @@ const DashboardScreen = () => {
     stepOneContainer: {
       flex: 1,
       backgroundColor: '#FFFFFF',
+      // backgroundColor: '#f2f0ef',
       borderTopLeftRadius: 50,
       borderTopRightRadius: 50,
       overflow: 'visible', 

@@ -50,7 +50,8 @@ const QuickLink = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#FFFFFF',
+    backgroundColor: '#f2f0ef',
+    // backgroundColor:'#FFF',
     paddingHorizontal: 15,
     paddingTop: 10,
   },
@@ -86,8 +87,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
   },
   itemText: {
     fontFamily: 'Lato',

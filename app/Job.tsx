@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    borderColor: '#E3E2E2',
+    borderColor: '#000',
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -102,8 +102,8 @@ const styles = StyleSheet.create({
     height: 120,
   },
   icon: {
-    height: 40,
-    width: 32,
+    height: 50,
+    width: 50,
   },
   itemText: {
     fontFamily: 'Lato',

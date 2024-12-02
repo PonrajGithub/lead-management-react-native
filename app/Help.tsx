@@ -44,7 +44,8 @@ const Help = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: '#FFFFFF',
+    backgroundColor: '#f2f0ef',
+    // backgroundColor:'#FFF',
     paddingHorizontal: 15,
     paddingTop: 10,
   },
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     borderColor: '#E3E2E2', // Light gray border
     borderWidth: 1,
     justifyContent: 'center',
-    width: 160,
+    width: 170,
     height: 60,
   },
   iconContainer: {
@@ -85,8 +86,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: 36,
+    height: 36,
   },
   itemText: {
     fontFamily:'Lato',
