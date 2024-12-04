@@ -9,7 +9,7 @@ import Loan from '../assets/images/icon/Loan.png';
 
 const data = [
   { id: '1', title: 'Sales', link:'https://loanguru.in/?page_id=2277', icon:ODCCIcon},
-  { id: '2', title: 'Purchase', link:'https://loanguru.in/?page_id=229', icon:Loan  }
+  { id: '2', title: 'Purchase', link:'https://loanguru.in/?page_id=2279', icon:Loan  }
 ];
 
 const Sales = () => {
