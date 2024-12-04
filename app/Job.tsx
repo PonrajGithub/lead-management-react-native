@@ -68,13 +68,13 @@ const Job = () => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    // padding: 10,
     flex: 1,
   },
   header: {
     fontFamily: 'Lato',
     fontSize: 14,
-    marginBottom: 20,
+    margin: 20,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',

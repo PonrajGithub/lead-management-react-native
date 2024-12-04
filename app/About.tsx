@@ -36,7 +36,10 @@ const About = () => {
   }
 
   const renderItem = ({ item }: { item: { id: string; name: string; link: string, icon: any} }) => (
-    <TouchableOpacity style={styles.gridItem} key={item.id} onPress={() => navigation.navigate('WebViewScreen',{ uri : item.link })}>
+    <TouchableOpacity 
+      style={styles.gridItem}
+      key={item.id} 
+      onPress={() => navigation.navigate('WebViewScreen',{ uri : item.link })}>
       <View style={styles.iconContainer}>
       <Image source={item.icon} style={styles.icon} />
       </View>
@@ -46,7 +49,7 @@ const About = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>KNOW MORE ABOUT US</Text>
+      <Text style={styles.header}>LIST TO DOCUMENTS</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => renderItem({ item })}
@@ -61,7 +64,7 @@ const About = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop:'-5%',
+    // marginTop:'-5%',
     backgroundColor:'#f2f0ef',
     // backgroundColor:'#FFF',
   },

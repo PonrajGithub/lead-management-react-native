@@ -8,7 +8,10 @@ import About from './About';
 import Job from './Job';
 import Services from './Services';
 import Help from './Help';
+import ChatBot from './ChatBot';
 import Footer from './Footer';
+import SocialMedia from './SocialMedia';
+import Sales from './sales';
 
 const DashboardScreen = () => {
     const navigation = useNavigation();
@@ -98,6 +101,9 @@ const DashboardScreen = () => {
               <About />
               <Services />
               <Help />
+              <Sales/>
+              <SocialMedia/>
+              {/* <ChatBot/> */}
             </View>
           </ImageBackground>
         </ScrollView>

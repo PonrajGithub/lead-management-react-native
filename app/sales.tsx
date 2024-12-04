@@ -4,16 +4,15 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useNavigation } from 'expo-router';
 // Icon imports
-import Closer from '../assets/images/icon/Closer.png';
+import ODCCIcon from '../assets/images/icon/odcc.png';
 import Loan from '../assets/images/icon/Loan.png';
 
 const data = [
-  { id: '1', title: 'Closer issue', link:'https://loanguru.in/?page_id=2058', icon: Closer },
-  { id: '2', title: 'Loan issue', link:'https://loanguru.in/?page_id=2060', icon:Loan  },
-  
+  { id: '1', title: 'Sales', link:'https://loanguru.in/?page_id=2277', icon:ODCCIcon},
+  { id: '2', title: 'Purchase', link:'https://loanguru.in/?page_id=229', icon:Loan  }
 ];
 
-const Help = () => {
+const Sales = () => {
   const navigation:any = useNavigation();
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -34,7 +33,7 @@ const Help = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>HELP</Text>
+      {/* <Text style={styles.heading}>HELP</Text> */}
       <View style={styles.row}>
         {data.map((item) => renderItem({ item }))}
       </View>
@@ -48,18 +47,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f0ef',
     // backgroundColor:'#FFF',
     paddingHorizontal: 15,
-    paddingTop: 10,
+    // paddingTop: 10,
   },
-  heading: {
-    fontFamily: 'Lato',
-    fontSize: 14,
-    margin:10,
-    color: '#1E1E1E',
-    fontWeight: '900',
-    textAlign: 'left',
-    lineHeight: 14.4,
-    letterSpacing: 2,
-  },
+//   heading: {
+//     fontFamily: 'Lato',
+//     fontSize: 14,
+//     margin:10,
+//     color: '#1E1E1E',
+//     fontWeight: '900',
+//     textAlign: 'left',
+//     lineHeight: 14.4,
+//     letterSpacing: 2,
+//   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -68,10 +67,10 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    // margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2', // Light gray border
+    borderColor: '#f2f0ef', 
     borderWidth: 1,
     justifyContent: 'center',
     width: 170,
@@ -100,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Help;
+export default Sales;
