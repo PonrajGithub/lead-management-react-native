@@ -10,8 +10,8 @@ import Women from '../assets/images/icon/women.png';
 import Whatsapp from '../assets/images/icon/whatsapp.png';
 
 const data = [
-  { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2034', icon: Vacancies },
-  { id: '2', title: 'Women\nEmpower', link: 'https://loanguru.in/?page_id=2039', icon: Women },
+  { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2039', icon: Vacancies },
+  { id: '2', title: 'Women\nEmpower', link: 'https://loanguru.in/?page_id=2043', icon: Women },
   { id: '3', title: 'WhatsApp', icon: Whatsapp },
 ];
 
