@@ -37,7 +37,7 @@ const Index = () => {
       //  resizeMode="contain"
        />
 
-       <Text style={styles.text}>Active User: 25000</Text>
+       {/* <Text style={styles.text}>Active User: 25000</Text> */}
     </ImageBackground>
   );
 };
@@ -59,15 +59,15 @@ const styles = StyleSheet.create({
     height:127,
     width:191,
   },
-  text:{
-    fontSize: 15,
-    fontWeight: '300',
-    textAlign: 'center',
-    color: '#FFFFFF',
-    lineHeight:22.59,
-    fontFamily: 'Lato',
-    marginBottom:10,
-  },
+  // text:{
+  //   fontSize: 15,
+  //   fontWeight: '300',
+  //   textAlign: 'center',
+  //   color: '#FFFFFF',
+  //   lineHeight:22.59,
+  //   fontFamily: 'Lato',
+  //   marginBottom:10,
+  // },
 });
 
 export default Index;

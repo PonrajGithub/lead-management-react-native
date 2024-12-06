@@ -173,6 +173,19 @@ const MultiStepForm = ({ }: any) => {
   const handleDateChange = (event: any, selectedDate: any) => {
     setShowPicker(false);
     if (selectedDate) {
+      const today = new Date();
+      const age = today.getFullYear() - selectedDate.getFullYear();
+      const monthDiff = today.getMonth() - selectedDate.getMonth();
+      const dayDiff = today.getDate() - selectedDate.getDate();
+
+      // Adjust age calculation based on the month and day differences
+      const is18OrOlder = age > 18 || (age === 18 && (monthDiff > 0 || (monthDiff === 0 && dayDiff >= 0)));
+
+      if (!is18OrOlder) {
+        ToastAndroid.show('You must be 18 years or older!',ToastAndroid.SHORT);
+        return;
+      }
+
       const formattedDate = selectedDate.toLocaleDateString('en-GB'); // Format: dd/mm/yyyy
       handleChange('dob', formattedDate);
     }
