@@ -18,7 +18,7 @@ const SocialMedia = () => {
     { name: 'Facebook', link: 'https://www.facebook.com/msloanguru', icon: 'facebook', color: '#4267B2' },
     { name: 'X', link: 'https://x.com/msloanguru', icon: 'twitter', color: '#1DA1F2' },
     { name: 'YouTube', link: 'https://www.youtube.com/@loanguru9475', icon: 'youtube', color: '#FF0000' },
-    { name: 'Instagram', link: 'https://www.instagram.com/msloanguru', icon: 'instagram', color:'#E4405F'   },
+    { name: 'Instagram', link: 'https://www.instagram.com/loanguru.in/', icon: 'instagram', color:'#E4405F'   },
   ];
 
   const renderItem = ({ item }) => (
