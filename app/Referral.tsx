@@ -2,10 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
-
+import { useNavigation } from 'expo-router';
 
 
 const Referral = () => {
+
+  const navigation: any = useNavigation();
+
+  const redirectToCreateAccount = () => {
+    navigation.navigate('ReferralPartner');
+  };
 
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -17,11 +23,11 @@ const Referral = () => {
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        <Text style={styles.text}>
-          Referral Partner : <Text style={styles.link}> Activate </Text>
-          {/* <TouchableOpacity onPress={() => console.log('Activate Pressed')}><Text style={styles.link}> Activate </Text>  
-          </TouchableOpacity> */}
-        </Text>
+         <Text style={styles.text}>
+                 Referral Partner : {' '}
+                    <Text style={styles.link} onPress={redirectToCreateAccount}>
+                    Activate
+            </Text></Text>
         <Text style={styles.separator}>|</Text>
         <Text style={styles.text}>
           ID : <Text style={styles.id}>_ _ _ _</Text>
@@ -40,10 +46,10 @@ const styles = StyleSheet.create({
   box: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '##b3e7ff', 
+    backgroundColor: '#b3e7ff', 
     paddingVertical: 10,
     paddingHorizontal: 15,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   text: {
     color: '#000',

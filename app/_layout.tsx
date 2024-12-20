@@ -14,6 +14,9 @@ export default function RootLayout() {
       <Stack.Screen name="DashboardScreen" options={{ headerShown: false }} />
       <Stack.Screen name="ForgotPasswordScreen" options={{ headerShown: false }} />
       <Stack.Screen name="WebViewScreen" options={{ headerShown: false }} />
+      <Stack.Screen name='ReferralPartner' options={{ headerShown: false}} />
+      <Stack.Screen name='AddReferral' options={{ headerShown: false}} />
+      <Stack.Screen name='Profile' options={{ headerShown : false}} />
     </Stack>
   );
 }
