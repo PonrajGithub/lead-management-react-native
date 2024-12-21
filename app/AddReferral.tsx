@@ -9,7 +9,7 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker'; // Install this package using `npm install react-native-dropdown-picker`
+import DropDownPicker from 'react-native-dropdown-picker'; 
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useNavigation } from 'expo-router';
