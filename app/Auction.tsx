@@ -4,14 +4,14 @@ import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useNavigation } from 'expo-router';
 
-const Referral = () => {
+const Auction = () => {
   const navigation: any = useNavigation();
 
   const [modalVisible, setModalVisible] = useState(false);
 
   const redirectToCreateAccount = () => {
     setModalVisible(false); // Close the modal
-    navigation.navigate('ReferralPartner'); // Navigate to the ReferralPartner screen
+    navigation.navigate('AuctionScreen'); // Navigate to the ReferralPartner screen
   };
 
   const [fontsLoaded] = useFonts({
@@ -26,7 +26,7 @@ const Referral = () => {
     <View style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.text}>
-          Referral Partner: {' '}
+           Auction : {' '}
           <Text style={styles.link} onPress={() => setModalVisible(true)}>
             Activate
           </Text>
@@ -46,9 +46,9 @@ const Referral = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Referral Partner</Text>
+            <Text style={styles.modalTitle}>AUCTION PROPERTY</Text>
             <Text style={styles.modalText}>
-              By activating the referral partnership, you agree to the following terms and conditions...
+              By activating the AUCTION PROPERTY, you agree to the following terms and conditions...
             </Text>
             <View style={styles.modalButtons}>
               <Button title="Cancel" onPress={() => setModalVisible(false)} color="#FF6347" />
@@ -129,4 +129,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Referral;
+export default Auction;

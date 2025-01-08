@@ -9,7 +9,7 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker'; 
+import { Dropdown } from 'react-native-element-dropdown';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useNavigation } from 'expo-router';
@@ -28,14 +28,6 @@ const AddReferral = () => {
     note: '',
   });
 
-  const [dropDownOpen, setDropDownOpen] = useState(false);
-  const [loanTypes] = useState([
-    { label: 'Home Loan', value: 'Home Loan' },
-    { label: 'Car Loan', value: 'Car Loan' },
-    { label: 'Personal Loan', value: 'Personal Loan' },
-    { label: 'Education Loan', value: 'Education Loan' },
-  ]);
-
   const [errors, setErrors] = useState({
     name: false,
     contactNumber: false,
@@ -48,6 +40,13 @@ const AddReferral = () => {
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
+
+  const loanTypes = [
+    { label: 'Home Loan', value: 'Home Loan' },
+    { label: 'Car Loan', value: 'Car Loan' },
+    { label: 'Personal Loan', value: 'Personal Loan' },
+    { label: 'Education Loan', value: 'Education Loan' },
+  ];
 
   const handleInputChange = (field: string, value: string) => {
     setFormData({ ...formData, [field]: value });
@@ -82,104 +81,103 @@ const AddReferral = () => {
   }
 
   return (
-     <ImageBackground
-                  source={require('../assets/images/index.jpg')}
-                  style={styles.container}
-                  resizeMode="cover">
-           <View style={styles.row}>
-                                  <TouchableOpacity
-                                    onPress={() => navigation.navigate('ReferralPartner')} >
-                                    <Icon name="chevron-left" size={40} color="#FFF" />
-                                  </TouchableOpacity>
-                                  <Text style={styles.title}> Add Referral</Text>
-                      </View>  
-    <ScrollView contentContainerStyle={styles.StepContainer}>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Name</Text>
-        <TextInput
-          style={[styles.input, errors.name && styles.errorInput]}
-          placeholder="Enter name"
-          value={formData.name}
-          onChangeText={(value) => handleInputChange('name', value)}
-        />
+    <ImageBackground
+      source={require('../assets/images/index.jpg')}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.row}>
+        <TouchableOpacity onPress={() => navigation.navigate('ReferralPartner')}>
+          <Icon name="chevron-left" size={40} color="#FFF" />
+        </TouchableOpacity>
+        <Text style={styles.title}> Add Referral</Text>
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Contact Number</Text>
-        <TextInput
-          style={[styles.input, errors.contactNumber && styles.errorInput]}
-          placeholder="Enter contact number"
-          keyboardType="phone-pad"
-          value={formData.contactNumber}
-          onChangeText={(value) => handleInputChange('contactNumber', value)}
-        />
-      </View>
+      <ScrollView
+        contentContainerStyle={styles.StepContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Name</Text>
+          <TextInput
+            style={[styles.input, errors.name && styles.errorInput]}
+            placeholder="Enter name"
+            value={formData.name}
+            onChangeText={(value) => handleInputChange('name', value)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email</Text>
-        <TextInput
-          style={[styles.input, errors.email && styles.errorInput]}
-          placeholder="Enter email"
-          keyboardType="email-address"
-          value={formData.email}
-          onChangeText={(value) => handleInputChange('email', value)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Contact Number</Text>
+          <TextInput
+            style={[styles.input, errors.contactNumber && styles.errorInput]}
+            placeholder="Enter contact number"
+            keyboardType="phone-pad"
+            value={formData.contactNumber}
+            onChangeText={(value) => handleInputChange('contactNumber', value)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Location</Text>
-        <TextInput
-          style={[styles.input, errors.location && styles.errorInput]}
-          placeholder="Enter location"
-          value={formData.location}
-          onChangeText={(value) => handleInputChange('location', value)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={[styles.input, errors.email && styles.errorInput]}
+            placeholder="Enter email"
+            keyboardType="email-address"
+            value={formData.email}
+            onChangeText={(value) => handleInputChange('email', value)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Loan Type</Text>
-        <DropDownPicker
-          open={dropDownOpen}
-          value={formData.loanType}
-          items={loanTypes}
-          setOpen={setDropDownOpen}
-          setValue={(value : any) => handleInputChange('loanType', value())}
-          placeholder="Select Loan Type"
-          style={[
-            styles.dropdown,
-            errors.loanType && styles.errorInput,
-          ]}
-          dropDownContainerStyle={styles.dropdownContainer}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Location</Text>
+          <TextInput
+            style={[styles.input, errors.location && styles.errorInput]}
+            placeholder="Enter location"
+            value={formData.location}
+            onChangeText={(value) => handleInputChange('location', value)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Loan Amount</Text>
-        <TextInput
-          style={[styles.input, errors.loanAmount && styles.errorInput]}
-          placeholder="Enter loan amount"
-          keyboardType="numeric"
-          value={formData.loanAmount}
-          onChangeText={(value) => handleInputChange('loanAmount', value)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Loan Type</Text>
+          <Dropdown
+            style={[styles.dropdown, errors.loanType && styles.errorInput]}
+            data={loanTypes}
+            labelField="label"
+            valueField="value"
+            placeholder="Select Loan Type"
+            value={formData.loanType}
+            onChange={(item) => handleInputChange('loanType', item.value)}
+          />
+        </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Note</Text>
-        <TextInput
-          style={[styles.input, styles.noteInput]}
-          placeholder="Enter note (optional)"
-          multiline
-          value={formData.note}
-          onChangeText={(value) => handleInputChange('note', value)}
-        />
-      </View>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Loan Amount</Text>
+          <TextInput
+            style={[styles.input, errors.loanAmount && styles.errorInput]}
+            placeholder="Enter loan amount"
+            keyboardType="numeric"
+            value={formData.loanAmount}
+            onChangeText={(value) => handleInputChange('loanAmount', value)}
+          />
+        </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Submit</Text>
-      </TouchableOpacity>
-    </ScrollView>
+        <View style={styles.inputGroup}>
+          <Text style={styles.label}>Note</Text>
+          <TextInput
+            style={[styles.input, styles.noteInput]}
+            placeholder="Enter note (optional)"
+            multiline
+            value={formData.note}
+            onChangeText={(value) => handleInputChange('note', value)}
+          />
+        </View>
+
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}>Submit</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </ImageBackground>
   );
 };
@@ -189,27 +187,27 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    flexGrow: 1, 
+    flexGrow: 1,
   },
   StepContainer: {
-        backgroundColor: '#FFFFFF',
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
-        padding: 30,
-        marginTop:'5%',
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    padding: 30,
+    marginTop: '5%',
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: '10%',
-    marginLeft:'3%',
+    marginLeft: '3%',
   },
   title: {
     color: '#FFF',
     fontSize: 26,
     fontWeight: '700',
     fontFamily: 'Lato',
-    marginLeft:'15%'
+    marginLeft: '15%',
   },
   inputGroup: {
     marginBottom: 15,
@@ -234,12 +232,14 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   dropdown: {
+    borderWidth: 1,
     borderColor: '#CCC',
     borderRadius: 8,
+    paddingHorizontal: 10,
+    fontSize: 16,
+    padding:10,
+    fontFamily: 'Lato',
     backgroundColor: '#F9F9F9',
-  },
-  dropdownContainer: {
-    borderColor: '#CCC',
   },
   errorInput: {
     borderColor: 'red',

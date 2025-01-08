@@ -13,6 +13,7 @@ import Footer from './Footer';
 import SocialMedia from './SocialMedia';
 import Sales from './sales';
 import Referral from './Referral';
+import Auction from './Auction';
 
 const DashboardScreen = () => {
     const navigation = useNavigation();
@@ -98,7 +99,8 @@ const DashboardScreen = () => {
             <View style={styles.stepOneContainer}>
               <Loan />
               <QuickLink />
-              <Referral/>
+              {/* <Referral/> */}
+              {/* <Auction/> */}
               <Job />
               <About />
               <Services />

@@ -9,7 +9,7 @@ import {
   ScrollView,
   ImageBackground,
 } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useNavigation } from 'expo-router';
@@ -100,12 +100,12 @@ const Profile = () => {
       style={styles.container}
       resizeMode="cover">
       <View style={styles.row}>
-                              <TouchableOpacity
-                                onPress={() => navigation.navigate('ReferralPartner')} >
-                                <Icon name="chevron-left" size={40} color="#FFF" />
-                              </TouchableOpacity>
-                              <Text style={styles.title}>Profile</Text>
-                  </View>  
+      <TouchableOpacity
+          onPress={() => navigation.navigate('ReferralPartner')} >
+          <Icon name="chevron-left" size={40} color="#FFF" />
+          </TouchableOpacity>
+          <Text style={styles.title}>Profile</Text>                            
+      </View>  
       <ScrollView contentContainerStyle={styles.StepContainer}>
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Name</Text>
@@ -189,24 +189,21 @@ const Profile = () => {
             onChangeText={(value) => handleInputChange('accountNumber', value)}
           />
         </View>
-
         <View style={styles.inputGroup}>
           <Text style={styles.label}>Reference</Text>
-          <DropDownPicker
-            open={dropDownOpen}
+          <Dropdown
             value={formData.reference}
-            items={references}
-            setOpen={setDropDownOpen}
-            setValue={(callback : any) => handleInputChange('reference', callback())}
+            data={references}
+            labelField="label"
+            valueField="value"
+            onChange={(item) => handleInputChange('reference', item.value)}
             placeholder="Select Reference"
             style={[
               styles.dropdown,
               errors.reference && styles.errorInput,
             ]}
-            dropDownContainerStyle={styles.dropdownContainer}
           />
         </View>
-
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}>Update</Text>
         </TouchableOpacity>
@@ -261,12 +258,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#F9F9F9',
   },
   dropdown: {
+    borderWidth: 1,
     borderColor: '#CCC',
     borderRadius: 8,
+    paddingHorizontal: 10,
+    padding:10,
+    fontSize: 16,
+    fontFamily: 'Lato',
     backgroundColor: '#F9F9F9',
-  },
-  dropdownContainer: {
-    borderColor: '#CCC',
   },
   errorInput: {
     borderColor: 'red',

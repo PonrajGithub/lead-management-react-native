@@ -6,15 +6,15 @@ import { useNavigation } from 'expo-router';
 
 // Icon imports
 import Insurance from '../assets/images/icon/insurance.png';
-import Job from '../assets/images/icon/job.png';
+import Auction from '../assets/images/icon/Intro.png';
 import Calculator from '../assets/images/icon/calculator.png';
 import Query from '../assets/images/icon/query.png';
 
 const data = [
-  { id: '1', title: 'Insurance',link: 'https://loanguru.in/?page_id=2034', icon: Insurance },
-  { id: '2', title: 'Job',link: 'https://loanguru.in/?page_id=2039', icon: Job },
-  { id: '3', title: 'EMI/Calculator',link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
-  { id: '4', title: 'Query',link: 'https://loanguru.in/?page_id=73', icon: Query },
+  { id: '1', title: 'Insurance', link: 'https://loanguru.in/?page_id=2034', icon: Insurance },
+  { id: '2', title: 'Auction', icon: Auction },
+  { id: '3', title: 'EMI/Calculator', link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
+  { id: '4', title: 'Query', link: 'https://loanguru.in/?page_id=73', icon: Query },
 ];
 
 const QuickLink = () => {
@@ -27,8 +27,20 @@ const QuickLink = () => {
     return <AppLoading />;
   }
 
-  const renderItem = ({ item }: { item: { id: string; title: string; link: string; icon: any } }) => (
-    <TouchableOpacity style={styles.itemContainer} key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
+  const handleNavigation = (item: { link?: string }) => {
+    if (item.link) {
+      navigation.navigate('WebViewScreen', { uri: item.link });
+    } else {
+      navigation.navigate('AuctionScreen');
+    }
+  };
+
+  const renderItem = ({ item }: { item: { id: string; title: string; link?: string; icon: any } }) => (
+    <TouchableOpacity
+      style={styles.itemContainer}
+      key={item.id}
+      onPress={() => handleNavigation(item)}
+    >
       <View style={styles.iconContainer}>
         <Image source={item.icon} style={styles.icon} />
       </View>
@@ -40,18 +52,16 @@ const QuickLink = () => {
     <View style={styles.container}>
       <Text style={styles.heading}>QUICK LINKS</Text>
       <View style={styles.row}>
-        {data.map((item) => (
-          renderItem({ item })
-        ))}
+        {data.map((item) => renderItem({ item }))}
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f2f0ef',
-    // backgroundColor:'#FFF',
     paddingHorizontal: 15,
     paddingTop: 10,
   },
@@ -62,8 +72,8 @@ const styles = StyleSheet.create({
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
-    lineHeight:14.4,
-    letterSpacing:2
+    lineHeight: 14.4,
+    letterSpacing: 2,
   },
   row: {
     flexDirection: 'row',
@@ -73,22 +83,22 @@ const styles = StyleSheet.create({
   itemContainer: {
     alignItems: 'center',
     marginBottom: 20,
-    width: '22%', // Ensure proper spacing and alignment
+    width: '22%',
   },
   iconContainer: {
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
-    borderColor: '#E3E2E2', // Light gray border
+    borderColor: '#E3E2E2',
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     margin: 10,
   },
   icon: {
-    width: 36,
-    height: 36,
+    width: 50,
+    height: 50,
   },
   itemText: {
     fontFamily: 'Lato',

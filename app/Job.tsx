@@ -99,11 +99,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: 100,
-    height: 120,
+    height: 130,
   },
   icon: {
-    height: 50,
-    width: 50,
+    height: 60,
+    width: 60,
   },
   itemText: {
     fontFamily: 'Lato',

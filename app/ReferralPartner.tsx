@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
       buttonRow: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginHorizontal:30,
+        marginHorizontal:20,
         marginTop: '5%',
     },
       button: {

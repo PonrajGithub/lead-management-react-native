@@ -27,7 +27,7 @@ const SocialMedia = () => {
       onPress={() => Linking.openURL(item.link)}
     >
       <View style={styles.iconContainer}>
-        <FontAwesome name={item.icon} size={28} color={item.color} />
+        <FontAwesome name={item.icon} size={40} color={item.color} />
       </View>
       <Text style={styles.itemText}>{item.name}</Text>
     </TouchableOpacity>
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
     borderColor: '#f2f0ef',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     margin: 5,
   },
   itemText: {

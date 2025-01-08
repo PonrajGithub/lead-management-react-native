@@ -95,13 +95,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    width: 50,
-    height: 50,
+    width: 60,
+    height: 60,
     margin: 10,
   },
   icon:{
-    height:36,
-    width:36,
+    height:50,
+    width:50,
   },
   itemText: {
     fontFamily: 'Lato',

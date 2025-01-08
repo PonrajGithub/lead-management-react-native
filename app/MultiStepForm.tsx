@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
+  Modal,
   TextInput,
   TouchableOpacity,
   StyleSheet,
   ImageBackground,
   ToastAndroid,
   ScrollView,
+  Button,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -38,7 +40,7 @@ const MultiStepForm = ({ }: any) => {
     agreedToTerms: 'false',
   });
 
-
+  const [modalVisible, setModalVisible] = useState(false);
 
 
   const [fontsLoaded] = useFonts({
@@ -524,17 +526,35 @@ const MultiStepForm = ({ }: any) => {
 
               {/* Terms & Conditions */}
               <View style={styles.termsContainer}>
-                <Checkbox
-                  value={formData.agreedToTerms}
-                  onValueChange={(value) => handleChange('agreedToTerms', value)}
-                />
-                <Text style={styles.termsText}>
-                  I agree to{' '}
-                  <Text style={styles.termsLink} onPress={() => alert('Show Terms')}>
-                    Terms and Conditions
-                  </Text>
-                </Text>
-              </View>
+        <Checkbox
+          value={formData.agreedToTerms}
+          onValueChange={(value) => handleChange('agreedToTerms', value)}
+        />
+        <Text style={styles.termsText}>
+          I agree to{' '}
+          <Text style={styles.termsLink} onPress={() => setModalVisible(true)}>
+            Terms and Conditions
+          </Text>
+        </Text>
+      </View>
+
+      {/* Modal for Terms and Conditions */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)} // Close modal on back press
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Terms and Conditions</Text>
+            <Text style={styles.modalText}>
+              By proceeding, you agree to the loan terms and conditions, including repayment obligations and applicable fees.
+            </Text>
+            <Button title="Close" onPress={() => setModalVisible(false)} color="#4CAF50" />
+          </View>
+        </View>
+      </Modal>
 
               {/* Create Account Button */}
               <TouchableOpacity
@@ -861,8 +881,33 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   termsLink: {
-    color: '#007BFF',
+    color: '#0000FF',
     textDecorationLine: 'underline',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: '80%',
+    padding: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom: 10,
+    textAlign: 'center',
+  },
+  modalText: {
+    fontSize: 20,
+    color: '#333',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   createAccountButton: {
     backgroundColor: '#622CFD',
