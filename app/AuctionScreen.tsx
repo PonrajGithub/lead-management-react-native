@@ -42,7 +42,7 @@ const navigation: any = useNavigation();
         id: '2',
         title: 'Office in Pitam Pura, New Delhi',
         bank: 'Punjab National Bank',
-        price: '₹ 6,24,00,000',
+        price: '₹ 99,24,00,000',
         date: '27 Jan 2025',
         area: '3224.50 Sq Ft',
         possession: 'Physical Possession',
@@ -59,7 +59,7 @@ const navigation: any = useNavigation();
         id: '3',
         title: 'Office in Pitam Pura, New Delhi',
         bank: 'Punjab National Bank',
-        price: '₹ 6,24,00,000',
+        price: '₹ 15,24,00,000',
         date: '27 Jan 2025',
         area: '3224.50 Sq Ft',
         possession: 'Physical Possession',
@@ -87,7 +87,7 @@ const navigation: any = useNavigation();
       </Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('', { item })}
+        onPress={() => navigation.navigate('AuctionDetailScreen', { item })}
         >
         <Text style={styles.buttonText}>VIEW AUCTION</Text>
       </TouchableOpacity>
