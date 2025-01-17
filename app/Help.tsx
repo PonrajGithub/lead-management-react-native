@@ -8,7 +8,7 @@ import Closer from '../assets/images/icon/Closer.png';
 import Loan from '../assets/images/icon/Loan.png';
 
 const data = [
-  { id: '1', title: 'Closer issue', link:'https://loanguru.in/?page_id=2058', icon: Closer },
+  { id: '1', title: 'Bank issue', link:'https://loanguru.in/?page_id=2058', icon: Closer },
   { id: '2', title: 'Loan issue', link:'https://loanguru.in/?page_id=2060', icon:Loan  },
   
 ];

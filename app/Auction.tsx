@@ -38,7 +38,7 @@ const Auction = () => {
       </View>
 
       {/* Modal */}
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -56,7 +56,7 @@ const Auction = () => {
             </View>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };

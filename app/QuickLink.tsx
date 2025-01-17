@@ -13,7 +13,7 @@ import Query from '../assets/images/icon/query.png';
 const data = [
   { id: '1', title: 'Insurance', link: 'https://loanguru.in/?page_id=2034', icon: Insurance },
   { id: '2', title: 'Auction', icon: Auction },
-  { id: '3', title: 'EMI/Calculator', link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
+  { id: '3', title: 'EMI Calculator', link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
   { id: '4', title: 'Query', link: 'https://loanguru.in/?page_id=73', icon: Query },
 ];
 
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginBottom: 20,
     color: '#1E1E1E',
-    fontWeight: '900',
+    fontWeight: '700',
     textAlign: 'left',
     lineHeight: 14.4,
     letterSpacing: 2,
