@@ -13,6 +13,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import AppLoading from "expo-app-loading";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "expo-router";
+import AuctionDetailScreen from './AuctionDetailScreen';
 
 const AuctionScreen = () => {
   const navigation = useNavigation();
@@ -30,6 +31,9 @@ const AuctionScreen = () => {
       title: 'Office in Pitam Pura, New Delhi',
       bank: 'Punjab National Bank',
       price: '₹ 6,24,00,000',
+      date: '27 Jan 2025',
+      area: '3224.50 Sq Ft',
+      possession: 'Physical Possession',
       location: 'new_york',
       type: 'Commercial',
       budgetRange: '5 Cr to 25 Cr',
@@ -40,6 +44,16 @@ const AuctionScreen = () => {
         address: 'B-14, Rohini, Delhi',
         auctionDate: '12 December, 2024',
         emdDate: '10 December, 2024',
+        images: [
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+           
+        ],
+        gpsLocation: "https://maps.google.com/?q=123,Example+Street",
       },
     },
     {
@@ -47,6 +61,9 @@ const AuctionScreen = () => {
       title: 'Office in Rohini, Delhi',
       bank: 'Punjab National Bank',
       price: '₹ 99,24,00,000',
+      date: '27 Jan 2025',
+      area: '3224.50 Sq Ft',
+      possession: 'Physical Possession',
       location: 'los_angeles',
       type: 'Residential',
       budgetRange: '25 Cr to Above',
@@ -57,6 +74,16 @@ const AuctionScreen = () => {
         address: 'B-14, Rohini, Delhi',
         auctionDate: '12 December, 2024',
         emdDate: '10 December, 2024',
+        images: [
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+           
+        ],
+        gpsLocation: "https://maps.google.com/?q=123,Example+Street",
       },
     },
     {
@@ -64,6 +91,9 @@ const AuctionScreen = () => {
       title: 'Industrial Space in Chicago',
       bank: 'Punjab National Bank',
       price: '₹ 15,24,00,000',
+      date: '27 Jan 2025',
+      area: '3224.50 Sq Ft',
+      possession: 'Physical Possession',
       location: 'chicago',
       type: 'Industrial',
       budgetRange: '2 Cr to 5 Cr',
@@ -74,6 +104,16 @@ const AuctionScreen = () => {
         address: 'B-14, Rohini, Delhi',
         auctionDate: '12 December, 2024',
         emdDate: '10 December, 2024',
+        images: [
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+          "https://loanguru.in/wp-content/uploads/2025/01/image-1-scaled.jpg",
+           
+        ],
+        gpsLocation: "https://maps.google.com/?q=123,Example+Street",
       },
     },
   ];
@@ -102,10 +142,13 @@ const AuctionScreen = () => {
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.bank}>{item.bank}</Text>
       <Text style={styles.price}>{item.price}</Text>
+      <Text style={styles.details}>
+        {item.date} | {item.area} | {item.possession}
+      </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('AuctionDetailScreen', { item })}
-      >
+        >
         <Text style={styles.buttonText}>VIEW AUCTION</Text>
       </TouchableOpacity>
     </View>
@@ -128,40 +171,64 @@ const AuctionScreen = () => {
       </Text>
 
       <View style={styles.stepContainer}>
-        <ScrollView
-          style={styles.content}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <RNPickerSelect
-            onValueChange={setPropertyLocation1}
-            items={[
-              { label: 'New York', value: 'new_york' },
-              { label: 'Los Angeles', value: 'los_angeles' },
-              { label: 'Chicago', value: 'chicago' },
-            ]}
-            placeholder={{ label: 'Select Property Location', value: null }}
-          />
-          <RNPickerSelect
-            onValueChange={setPropertyLocation2}
-            items={[
-              { label: 'Residential', value: 'Residential' },
-              { label: 'Commercial', value: 'Commercial' },
-              { label: 'Industrial', value: 'Industrial' },
-            ]}
-            placeholder={{ label: 'Select Property Type', value: null }}
-          />
-          <RNPickerSelect
-            onValueChange={setBudget}
-            items={[
-              { label: '0 to 50 Lakhs', value: '0 t0 50 Lakhs' },
-              { label: '50 Lakhs to 2 Cr', value: '50 Lakhs to 2 Cr' },
-              { label: '2 Cr to 5 Cr', value: '2 Cr to 5 Cr' },
-              { label: '5 Cr to 25 Cr', value: '5 Cr to 25 Cr' },
-              { label: '25 Cr to Above', value: '25 Cr to Above' },
-            ]}
-            placeholder={{ label: 'Select Budget', value: null }}
-          />
-          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.scrollContent}
+      >
+      <View style={styles.dropdownContainer}>
+          <View style={styles.dropdownWrapper}>
+            <RNPickerSelect
+              onValueChange={setPropertyLocation1}
+              items={[
+                { label: 'New York', value: 'new_york' },
+                { label: 'Los Angeles', value: 'los_angeles' },
+                { label: 'Chicago', value: 'chicago' },
+              ]}
+              placeholder={{ label: 'Select Property Location', value: null }}
+              style={{
+                inputIOS: styles.dropdown,
+                inputAndroid: styles.dropdown,
+                iconContainer: styles.iconContainer,
+              }}
+            />
+          </View>
+          <View style={styles.dropdownWrapper}>
+            <RNPickerSelect
+              onValueChange={setPropertyLocation2}
+              items={[
+                { label: 'Residential', value: 'Residential' },
+                { label: 'Commercial', value: 'Commercial' },
+                { label: 'Industrial', value: 'Industrial' },
+              ]}
+              placeholder={{ label: 'Select Property Type', value: null }}
+              style={{
+                inputIOS: styles.dropdown,
+                inputAndroid: styles.dropdown,
+                iconContainer: styles.iconContainer,
+              }}
+            />
+          </View>
+          <View style={styles.dropdownWrapper}>
+            <RNPickerSelect
+              onValueChange={setBudget}
+              items={[
+                { label: '0 to 50 Lakhs', value: '0 to 50 Lakhs' },
+                { label: '50 Lakhs to 2 Cr', value: '50 Lakhs to 2 Cr' },
+                { label: '2 Cr to 5 Cr', value: '2 Cr to 5 Cr' },
+                { label: '5 Cr to 25 Cr', value: '5 Cr to 25 Cr' },
+                { label: '25 Cr and Above', value: '25 Cr and Above' },
+              ]}
+              placeholder={{ label: 'Select Budget', value: null }}
+              style={{
+                inputIOS: styles.dropdown,
+                inputAndroid: styles.dropdown,
+                iconContainer: styles.iconContainer,
+              }}
+            />
+          </View>
+        </View>
+          <TouchableOpacity style={styles.searchButton} 
+            onPress={handleSearch} >
             <Text style={styles.searchButtonText}>SEARCH</Text>
           </TouchableOpacity>
           <FlatList
@@ -322,28 +389,28 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   dropdownContainer: {
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingHorizontal: 15,
-  paddingVertical: 10,
-  borderWidth: 1,
-  borderColor: '#DDD',
-  borderRadius: 8,
-  backgroundColor: '#FFF',
-  marginHorizontal: 20,
-  marginBottom: 15,
-  shadowColor: '#000',
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.2,
-  shadowRadius: 3,
-  elevation: 5,
-},
-dropdownText: {
-  fontSize: 16,
-  color: '#000',
-  fontFamily: 'Lato',
-},
+    marginTop: 10,
+  },
+  dropdownWrapper: {
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#d3d3d3',
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    backgroundColor: '#fff',
+  },
+  dropdown: {
+    fontSize: 16,
+    paddingVertical: 12,
+    color: '#000',
+    fontWeight:'black',
+    fontFamily:'Lato',
+    paddingHorizontal: 8,
+  },
+  iconContainer: {
+    top: 14,
+    right: 10,
+  },
 });
 
 const pickerStyles = {

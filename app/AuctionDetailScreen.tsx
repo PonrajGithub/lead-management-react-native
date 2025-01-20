@@ -30,7 +30,7 @@ const AuctionDetailScreen = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const navigation: any = useNavigation();
 
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -43,22 +43,46 @@ const AuctionDetailScreen = () => {
 
   const openWhatsApp = () => {
     const whatsappNumber = "+917838375738"; // Replace with the owner's WhatsApp number
-    const message = `Hello! I want to know more about the property: ${item.title}`; // Include property details in the message
-
+    const message = "Hello! I want to know more about your services.";
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
     Linking.openURL(url).catch(() => {
       Alert.alert("Error", "Unable to open WhatsApp. Please make sure it is installed.");
     });
   };
 
-    // Initiate a phone call
-    const makeCall = () => {
-      const phoneNumber = "tel:+917838375738";
-  
-      Linking.openURL(phoneNumber).catch(() => {
-        Alert.alert("Error", "Unable to make a call. Please try again later.");
-      });
-    };
+  // Initiate a phone call
+  const makeCall = () => {
+    const phoneNumber = "tel:8525838636";
+
+    Linking.openURL(phoneNumber).catch(() => {
+      Alert.alert("Error", "Unable to make a call. Please try again later.");
+    });
+  };
+
+
+  const toggleSwitch = () => {
+    if (!isEnabled) {
+      // Show an alert before toggling the switch
+      Alert.alert(
+        "Confirmation",
+        "Are you sure you want to view Auction Properties?",
+        [
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+          {
+            text: "OK",
+            onPress: () => setIsEnabled(true), // Toggle the switch to enable
+          },
+        ]
+      );
+    } else {
+      // Simply toggle the switch to disable
+      setIsEnabled(false);
+    }
+  };
 
   return (
     <ImageBackground
@@ -107,13 +131,24 @@ const AuctionDetailScreen = () => {
     {/* Property Images */}
     <Text style={styles.info}>Property Images</Text>
     <View style={styles.imageContainer}>
-      <Image source={{ uri: item.details.image1 }} style={styles.image} />
-      <Image source={{ uri: item.details.image2 }} style={styles.image} />
+      {item.details.images.map((imageUrl: string, index: number) => (
+        <Image
+            key={index}
+            source={{ uri: imageUrl }}
+            style={{ width: 100, height: 100, margin: 5 }}
+          />     
+       ))}
+      
     </View>
 
     {/* GPS Location */}
     <Text style={styles.info}>GPS Location</Text>
-    <Text style={styles.gpsLink}>Click to view</Text>
+    <Text
+      style={styles.gpsLink}
+      onPress={() => Linking.openURL(item.details.gpsLocation)}
+    >
+      Click to view
+    </Text>
   </>
 )}
 
@@ -135,15 +170,14 @@ const AuctionDetailScreen = () => {
             <View style={styles.buttonRow}>
               <TouchableOpacity
                 style={styles.callButton}
-                disabled={!isChecked}
+                // disabled={!isChecked}
                 onPress={makeCall}>
                 <Text style={styles.buttonText}>CALL</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.queryButton}
-                disabled={!isChecked} // Disable the button if the checkbox is not checked
-                onPress={openWhatsApp} // Call the openWhatsApp function
-              >
+                // disabled={!isChecked}
+                onPress={openWhatsApp}>
                 <Text style={styles.buttonText}>QUERY NOW</Text>
               </TouchableOpacity>
             </View>
@@ -251,12 +285,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
     fontWeight: '700',
   },
-  imageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+ imageContainer: {
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      justifyContent: 'space-evenly',
+      marginTop: 10,
+    },
   image: {
-    width: 150,
+    width: 200,
     height: 100,
     borderRadius: 8,
     margin: 5,

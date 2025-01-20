@@ -148,7 +148,7 @@ const MultiStepForm = ({ }: any) => {
       }
     } catch (error: any) {
       // Show error message
-      ToastAndroid.show(error.message, ToastAndroid.LONG);
+      ToastAndroid.show('This email is already registered.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -192,6 +192,8 @@ const MultiStepForm = ({ }: any) => {
       handleChange('dob', formattedDate);
     }
   };
+
+  
   const handleBack = () => {
     if (step == 7 && formData?.user_type == 'Institute') {
       setStep(5)

@@ -15,12 +15,16 @@
     "ios": {
       "supportsTablet": true
     },
+  
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/loanGuru_logo.jpg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ponraj.Loanguru"
+      "package": "com.ponraj.Loanguru",
+      "permissions": [
+        "INTERNET"
+      ]
     },
     "web": {
       "bundler": "metro",
