@@ -8,6 +8,7 @@ import {
   Image,
   ImageBackground,
   Alert,
+  Switch,
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useFonts } from "expo-font";
@@ -26,9 +27,10 @@ type AuctionDetailScreenRouteProp = RouteProp<RootStackParamList, 'AuctionDetail
 const AuctionDetailScreen = () => {
   const route = useRoute<AuctionDetailScreenRouteProp>();
   const { item } = route.params;
-
+  const [isEnabled, setIsEnabled] = useState(false);
   const navigation: any = useNavigation();
 
+  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -100,28 +102,34 @@ const AuctionDetailScreen = () => {
             <Text style={styles.item}>{item.details.emdDate}</Text>
 
             {/* Property Images */}
-            <Text style={styles.info}>Property Images</Text>
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: item.details.image1 }} style={styles.image} />
-              <Image source={{ uri: item.details.image2 }} style={styles.image} />
-            </View>
+            {isEnabled && (
+  <>
+    {/* Property Images */}
+    <Text style={styles.info}>Property Images</Text>
+    <View style={styles.imageContainer}>
+      <Image source={{ uri: item.details.image1 }} style={styles.image} />
+      <Image source={{ uri: item.details.image2 }} style={styles.image} />
+    </View>
 
-            {/* GPS Location */}
-            <Text style={styles.info}>GPS Location</Text>
-            <Text style={styles.gpsLink}>Click to view</Text>
+    {/* GPS Location */}
+    <Text style={styles.info}>GPS Location</Text>
+    <Text style={styles.gpsLink}>Click to view</Text>
+  </>
+)}
 
             {/* Checkbox with Condition */}
-            <View style={styles.checkboxContainer}>
-              <Checkbox
-                value={isChecked}
-                onValueChange={setIsChecked}
-                color={isChecked ? '#622CFD' : undefined}
-                style={styles.checkbox}
-              />
-              <Text style={styles.checkboxLabel}>
-                Are you sure you want to view Auction Properties?
-              </Text>
-            </View>
+            <View style={styles.switchContainer}>
+        <Switch
+          trackColor={{ false: '#767577', true: '#622CFD' }}
+          thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        <Text style={styles.switchLabel}>
+          Are you sure you want to view Auction Properties?
+        </Text>
+      </View>
 
             {/* Buttons */}
             <View style={styles.buttonRow}>
@@ -259,20 +267,15 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginBottom: 20,
   },
-  checkboxContainer: {
+  switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    marginVertical: 10,
   },
-  checkbox: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-  },
-  checkboxLabel: {
-    fontSize: 13,
-    color: '#000',
-    fontFamily: 'Lato',
+  switchLabel: {
+    marginLeft: 10,
+    fontSize: 16,
+    color: '#333',
   },
   buttonRow: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React ,{useState } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,24 +14,25 @@ import AppLoading from "expo-app-loading";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useNavigation } from "expo-router";
 
-const AuctionScreen = ({  }: any) => {
-
-const navigation: any = useNavigation();
-const [propertyLocation1, setPropertyLocation1] = useState('');
+const AuctionScreen = () => {
+  const navigation = useNavigation();
+  const [propertyLocation1, setPropertyLocation1] = useState('');
   const [propertyLocation2, setPropertyLocation2] = useState('');
   const [budget, setBudget] = useState('');
-    const [fontsLoaded] = useFonts({
-        Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
-      });
+  const [filteredData, setFilteredData] = useState([]);
+  const [fontsLoaded] = useFonts({
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
+  });
+
   const auctionData = [
     {
       id: '1',
       title: 'Office in Pitam Pura, New Delhi',
       bank: 'Punjab National Bank',
       price: '₹ 6,24,00,000',
-      date: '27 Jan 2025',
-      area: '3224.50 Sq Ft',
-      possession: 'Physical Possession',
+      location: 'new_york',
+      type: 'Commercial',
+      budgetRange: '5 Cr to 25 Cr',
       details: {
         type: 'Residential/Commercial/Industrial',
         category: 'Floor/Flat/House',
@@ -42,188 +43,135 @@ const [propertyLocation1, setPropertyLocation1] = useState('');
       },
     },
     {
-        id: '2',
-        title: 'Office in Pitam Pura, New Delhi',
-        bank: 'Punjab National Bank',
-        price: '₹ 99,24,00,000',
-        date: '27 Jan 2025',
-        area: '3224.50 Sq Ft',
-        possession: 'Physical Possession',
-        details: {
-          type: 'Residential/Commercial/Industrial',
-          category: 'Floor/Flat/House',
-          size: '250 sq mtr',
-          address: 'B-14, Rohini, Delhi',
-          auctionDate: '12 December, 2024',
-          emdDate: '10 December, 2024',
-        },
+      id: '2',
+      title: 'Office in Rohini, Delhi',
+      bank: 'Punjab National Bank',
+      price: '₹ 99,24,00,000',
+      location: 'los_angeles',
+      type: 'Residential',
+      budgetRange: '25 Cr to Above',
+      details: {
+        type: 'Residential/Commercial/Industrial',
+        category: 'Floor/Flat/House',
+        size: '250 sq mtr',
+        address: 'B-14, Rohini, Delhi',
+        auctionDate: '12 December, 2024',
+        emdDate: '10 December, 2024',
       },
-      {
-        id: '3',
-        title: 'Office in Pitam Pura, New Delhi',
-        bank: 'Punjab National Bank',
-        price: '₹ 15,24,00,000',
-        date: '27 Jan 2025',
-        area: '3224.50 Sq Ft',
-        possession: 'Physical Possession',
-        details: {
-          type: 'Residential/Commercial/Industrial',
-          category: 'Floor/Flat/House',
-          size: '250 sq mtr',
-          address: 'B-14, Rohini, Delhi',
-          auctionDate: '12 December, 2024',
-          emdDate: '10 December, 2024',
-        },
+    },
+    {
+      id: '3',
+      title: 'Industrial Space in Chicago',
+      bank: 'Punjab National Bank',
+      price: '₹ 15,24,00,000',
+      location: 'chicago',
+      type: 'Industrial',
+      budgetRange: '2 Cr to 5 Cr',
+      details: {
+        type: 'Residential/Commercial/Industrial',
+        category: 'Floor/Flat/House',
+        size: '250 sq mtr',
+        address: 'B-14, Rohini, Delhi',
+        auctionDate: '12 December, 2024',
+        emdDate: '10 December, 2024',
       },
+    },
   ];
-  
+
   if (!fontsLoaded) {
-      return <AppLoading />;
-    }
-  const renderItem = ({ item }: any) => (
+    return <AppLoading />;
+  }
+
+  const handleSearch = () => {
+    const filtered = auctionData.filter(item => {
+      const matchesLocation =
+        !propertyLocation1 || item.location === propertyLocation1;
+      const matchesType =
+        !propertyLocation2 || item.type === propertyLocation2;
+      const matchesBudget =
+        !budget || item.budgetRange === budget;
+
+      return matchesLocation && matchesType && matchesBudget;
+    });
+
+    setFilteredData(filtered);
+  };
+
+  const renderItem = ({ item }:any) => (
     <View style={styles.card}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.bank}>{item.bank}</Text>
       <Text style={styles.price}>{item.price}</Text>
-      <Text style={styles.details}>
-        {item.date} | {item.area} | {item.possession}
-      </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.navigate('AuctionDetailScreen', { item })}
-        >
+      >
         <Text style={styles.buttonText}>VIEW AUCTION</Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-     <ImageBackground
-                  source={require('../assets/images/index.jpg')}
-                  style={styles.container}
-                  resizeMode="cover">
+    <ImageBackground
+      source={require('../assets/images/index.jpg')}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      <View style={styles.row}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="chevron-left" size={40} color="#FFF" />
+        </TouchableOpacity>
+        <Text style={styles.header}>AUCTION PROPERTY</Text>
+      </View>
+      <Text style={styles.subHeader}>
+        75453 BANK AUCTION PROPERTIES IN INDIA
+      </Text>
 
-         <View style={styles.row}>
-             <TouchableOpacity
-                 onPress={() => navigation.navigate('DashboardScreen')} >
-                 <Icon name="chevron-left" size={40} color="#FFF" />
-            </TouchableOpacity>
-                <Text style={styles.header}>AUCTION PROPERTY</Text>
-               
-         </View>  
-         <Text style={styles.subHeader}>
-                  75453 BANK AUCTION PROPERTIES IN INDIA
-                </Text> 
-        
-                <View style={styles.stepContainer}>
-        <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-          {/* Dropdowns for Filtering */}
+      <View style={styles.stepContainer}>
+        <ScrollView
+          style={styles.content}
+          contentContainerStyle={styles.scrollContent}
+        >
           <RNPickerSelect
-              onValueChange={(value) => setPropertyLocation1(value)}
-              items={[
-                { label: 'New York', value: 'new_york' },
-                { label: 'Los Angeles', value: 'los_angeles' },
-                { label: 'Chicago', value: 'chicago' },
-              ]}
-              placeholder={{ label: 'Select Property Location', value: null }}
-              style={{
-                ...pickerStyles,
-                iconContainer: {
-                  top: 12,
-                  right: 10,
-                },
-              }}
-              Icon={() => {
-                return <Icon name="chevron-right" size={20} color="#000" />;
-              }}
-            >
-          <TouchableOpacity style={styles.dropdownContainer}>
-            <Text style={styles.dropdownText}>
-              {propertyLocation1 || 'Property Location'}
-            </Text>
-            <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
-        </RNPickerSelect>
-
+            onValueChange={setPropertyLocation1}
+            items={[
+              { label: 'New York', value: 'new_york' },
+              { label: 'Los Angeles', value: 'los_angeles' },
+              { label: 'Chicago', value: 'chicago' },
+            ]}
+            placeholder={{ label: 'Select Property Location', value: null }}
+          />
           <RNPickerSelect
-            onValueChange={(value) => setPropertyLocation2(value)}
+            onValueChange={setPropertyLocation2}
             items={[
               { label: 'Residential', value: 'Residential' },
               { label: 'Commercial', value: 'Commercial' },
               { label: 'Industrial', value: 'Industrial' },
             ]}
-
-            placeholder={{ label: 'Select Property  type', value: null }}
-            style={{
-              ...pickerStyles,
-              iconContainer: {
-                top: 12,
-                right: 10,
-              },
-            }}
-            Icon={() => {
-              return <Icon name="chevron-right" size={20} color="#000" />;
-            }}
-          >
-            <TouchableOpacity style={styles.dropdownContainer}>
-            <Text style={styles.dropdownText}>
-                {propertyLocation2 || 'Property type'}
-                </Text>
-            <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
-          </RNPickerSelect>
-
+            placeholder={{ label: 'Select Property Type', value: null }}
+          />
           <RNPickerSelect
-            onValueChange={(value) => setBudget(value)}
+            onValueChange={setBudget}
             items={[
-              { label: '0 t0 50 Lakhs', value: '0 t0 50 Lakhs' },
+              { label: '0 to 50 Lakhs', value: '0 t0 50 Lakhs' },
               { label: '50 Lakhs to 2 Cr', value: '50 Lakhs to 2 Cr' },
               { label: '2 Cr to 5 Cr', value: '2 Cr to 5 Cr' },
               { label: '5 Cr to 25 Cr', value: '5 Cr to 25 Cr' },
-              { label: '25 Cr to Above', value: '25 Cr to Above'}
+              { label: '25 Cr to Above', value: '25 Cr to Above' },
             ]}
             placeholder={{ label: 'Select Budget', value: null }}
-            style={{
-              ...pickerStyles,
-              iconContainer: {
-                top: 12,
-                right: 10,
-              },
-            }}
-            Icon={() => {
-              return <Icon name="chevron-right" size={20} color="#000" />;
-            }}
-          >
-           <TouchableOpacity style={styles.dropdownContainer}>
-           <Text style={styles.dropdownText}>
-                {budget || 'Budget'}
-                </Text>
-            <Icon name="chevron-right" size={20} color="#000" />
-          </TouchableOpacity>
-          </RNPickerSelect>
-
-          {/* Search Button */}
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={() =>
-              navigation.navigate('', {
-                propertyLocation1,
-                propertyLocation2,
-                budget,
-              })
-            }
-          >
+          />
+          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
             <Text style={styles.searchButtonText}>SEARCH</Text>
           </TouchableOpacity>
-      {/* Auction List */}
-      <FlatList
-        data={auctionData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-      />
-      </ScrollView>
-    </View>
+          <FlatList
+            data={filteredData.length > 0 ? filteredData : auctionData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            contentContainerStyle={styles.list}
+          />
+        </ScrollView>
+      </View>
     </ImageBackground>
   );
 };
