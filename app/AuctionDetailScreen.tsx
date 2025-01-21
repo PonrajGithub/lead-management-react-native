@@ -35,6 +35,15 @@ const AuctionDetailScreen = () => {
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
+  const { auctionDetails }:any = route.params;
+
+  // Log the auctionDetails to check if the data is being passed correctly
+  console.log('Auction details:', auctionDetails);
+
+  if (!auctionDetails) {
+    return <Text>Error: No auction details found</Text>;
+  }
+
   const [isChecked, setIsChecked] = useState(false); // State for the checkbox
 
   if (!fontsLoaded) {
@@ -102,86 +111,73 @@ const AuctionDetailScreen = () => {
             75453 BANK AUCTION PROPERTIES IN INDIA
           </Text>
           <View style={styles.card}>
-            {/* Property details */}
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.bank}>{item.bank}</Text>
-            <Text style={styles.price}>{item.price}</Text>
-            <Text style={styles.details}>
-              {item.date} | {item.area} | {item.possession}
-            </Text>
-            <View style={styles.divider} />
-            <Text style={styles.info}>Property type:</Text>
-            <Text style={styles.item}>{item.details.type}</Text>
-            <Text style={styles.info}>Category:</Text>
-            <Text style={styles.item}>{item.details.category}</Text>
-            <Text style={styles.info}>Property Size:</Text>
-            <Text style={styles.item}>{item.details.size}</Text>
-            <Text style={styles.info}>Address:</Text>
-            <Text style={styles.item}>{item.details.address}</Text>
-            <Text style={styles.info}>Possession:</Text>
-            <Text style={styles.item}>{item.possession}</Text>
-            <Text style={styles.info}>Auction date:</Text>
-            <Text style={styles.item}>{item.details.auctionDate}</Text>
-            <Text style={styles.info}>EMD date:</Text>
-            <Text style={styles.item}>{item.details.emdDate}</Text>
+  {/* Property details */}
+  {/* <Text>{auctionDetails.title}</Text> */}
+  <Text style={styles.title}>{item?.BankName}</Text> {/* Optional chaining */}
+  <Text style={styles.bank}>{item?.Branch}</Text>
+  <Text style={styles.price}>₹{item?.ReservePrice}</Text>
+  <Text style={styles.details}>
+    {item?.AuctionDate} | {item?.PropertySize} | {item?.Possession}
+  </Text>
+  <View style={styles.divider} />
+  
+  <Text style={styles.info}>Property type:</Text>
+  <Text style={styles.item}>{item?.PropertyType}</Text>
+  
+  <Text style={styles.info}>Category:</Text>
+  <Text style={styles.item}>{item?.SubCategory}</Text>
+  
+  <Text style={styles.info}>Property Size:</Text>
+  <Text style={styles.item}>{item?.PropertySize}</Text>
+  
+  <Text style={styles.info}>Address:</Text>
+  <Text style={styles.item}>{item?.Address}</Text>
+  
+  <Text style={styles.info}>Possession:</Text>
+  <Text style={styles.item}>{item?.Possession}</Text>
+  
+  <Text style={styles.info}>Auction date:</Text>
+  <Text style={styles.item}>{item?.AuctionDate}</Text>
+  
+  <Text style={styles.info}>EMD date:</Text>
+  <Text style={styles.item}>{item?.EMDDate}</Text>
 
-            {/* Property Images */}
-            {isEnabled && (
-  <>
-    {/* Property Images */}
-    <Text style={styles.info}>Property Images</Text>
-    <View style={styles.imageContainer}>
-      {item.details.images.map((imageUrl: string, index: number) => (
-        <Image
-            key={index}
-            source={{ uri: imageUrl }}
+  {/* Property Images */}
+  {item?.Images && item?.Images !== "null" && (
+    <>
+      <Text style={styles.info}>Property Images</Text>
+      <View style={styles.imageContainer}>
+        {Array.isArray(item?.Images) ? (
+          item.Images.map((imageUrl: string, index: number) => (
+            <Image
+              key={index}
+              source={{ uri: imageUrl }}
+              style={{ width: 100, height: 100, margin: 5 }}
+            />
+          ))
+        ) : (
+          <Image
+            source={{ uri: item?.Images }}
             style={{ width: 100, height: 100, margin: 5 }}
-          />     
-       ))}
-      
-    </View>
-
-    {/* GPS Location */}
-    <Text style={styles.info}>GPS Location</Text>
-    <Text
-      style={styles.gpsLink}
-      onPress={() => Linking.openURL(item.details.gpsLocation)}
-    >
-      Click to view
-    </Text>
-  </>
-)}
-
-            {/* Checkbox with Condition */}
-            <View style={styles.switchContainer}>
-        <Switch
-          trackColor={{ false: '#767577', true: '#622CFD' }}
-          thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-        <Text style={styles.switchLabel}>
-          Are you sure you want to view Auction Properties?
-        </Text>
+          />
+        )}
       </View>
+    </>
+  )}
 
-            {/* Buttons */}
-            <View style={styles.buttonRow}>
-              <TouchableOpacity
-                style={styles.callButton}
-                // disabled={!isChecked}
-                onPress={makeCall}>
-                <Text style={styles.buttonText}>CALL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.queryButton}
-                // disabled={!isChecked}
-                onPress={openWhatsApp}>
-                <Text style={styles.buttonText}>QUERY NOW</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+  {/* GPS Location */}
+  {item?.GPSLocation && (
+    <>
+      <Text style={styles.info}>GPS Location</Text>
+      <Text
+        style={styles.gpsLink}
+        onPress={() => Linking.openURL(item?.GPSLocation)}
+      >
+        Click to view
+      </Text>
+    </>
+  )}
+</View>
         </ScrollView>
       </View>
     </ImageBackground>
