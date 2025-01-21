@@ -9,10 +9,13 @@ import {
   Image,
   Modal,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+
+const { width, height } = Dimensions.get('window');
 
 const WelcomeScreen = ({ }: any) => {
   const navigation: any = useNavigation();
@@ -26,11 +29,9 @@ const WelcomeScreen = ({ }: any) => {
     return <AppLoading />;
   }
 
-  
   const redirectToLogin = () => {
-    navigation.navigate('MultiStepForm', {Index:0});
+    navigation.navigate('MultiStepForm', { Index: 0 });
   };
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -61,18 +62,18 @@ const WelcomeScreen = ({ }: any) => {
           >
             <Text style={[styles.createAccountText]}>Get Started</Text>
           </TouchableOpacity>
-          
+
           <Text style={styles.singin}>
-         Already have an account?{' '}
-        <Text style={styles.link} onPress={redirectToLogin }>
-          Sign up here
-          </Text>
+            Already have an account?{' '}
+            <Text style={styles.link} onPress={redirectToLogin}>
+              Sign up here
+            </Text>
           </Text>
 
           <Text style={styles.terms}>
             By creating an account, you're agreeing to our{"\n"}
             <Text
-              style={{ fontWeight: "700",textDecorationLine: 'underline', }}
+              style={{ fontWeight: "700", textDecorationLine: 'underline' }}
               onPress={() => setIsModalVisible(true)}
             >
               Privacy Policy
@@ -93,14 +94,13 @@ const WelcomeScreen = ({ }: any) => {
             <View style={styles.modalContent}>
               <TouchableOpacity
                 style={styles.closeButton}
-               
               >
-                <Text style={styles.closeButtonText}  onPress={() => setIsModalVisible(false)}>X</Text>
+                <Text style={styles.closeButtonText} onPress={() => setIsModalVisible(false)}>X</Text>
               </TouchableOpacity>
               <Text style={styles.modalTitle}>Privacy Policy</Text>
               <ScrollView>
                 <Text style={styles.modalText}>
-                  Your privacy policy content goes here...
+                Your privacy policy content goes here...
                   Data Collection: We collect personal information such as name, contact details, and financial data to assess your loan application and provide services.
 
 Purpose: Your information is used to evaluate loan eligibility, process applications, and improve service quality.
@@ -160,36 +160,36 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   image: {
-    width:250,
-    height:250,
-    marginLeft:40
+    width: width * 0.6, // Responsive image size
+    height: height * 0.25,
+    marginLeft: width * 0.1,
   },
   title: {
-    fontSize: 40,
+    fontSize: width * 0.1, // Adjust font size dynamically
     fontWeight: '700',
     fontFamily: 'Lato',
-    textAlign:'left',
-    lineHeight: 48,
+    textAlign: 'left',
+    lineHeight: width * 0.12,
     color: "#FFFFFF",
   },
   description: {
-    fontWeight:'300',
-    fontSize: 20,
+    fontWeight: '300',
+    fontSize: width * 0.05,
     fontFamily: 'Lato',
-    marginTop: 20,
-    lineHeight: 30,
+    marginTop: height * 0.02,
+    lineHeight: width * 0.07,
     color: "#FFFFFF",
-    textAlign:'left',
+    textAlign: 'left',
   },
   body: {
     flex: 3,
-    paddingHorizontal:40
+    paddingHorizontal: width * 0.1,
   },
   footer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: "15%",
+    marginBottom: height * 0.05,
   },
   createAccountButton: {
     backgroundColor: '#fff',
@@ -198,45 +198,43 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 5,
-    paddingVertical: 15,
-    paddingHorizontal: 40,
+    paddingVertical: height * 0.02,
+    paddingHorizontal: width * 0.2,
     borderRadius: 10,
-    marginBottom: 20,
+    marginBottom: height * 0.02,
     width: "80%",
   },
   createAccountText: {
     color: '#622CFD',
-    fontSize: 20,
-    fontWeight:'600',
-    lineHeight:24,
+    fontSize: width * 0.05,
+    fontWeight: '600',
+    lineHeight: width * 0.06,
     fontFamily: 'Lato',
     textAlign: "center",
-
   },
   singin: {
-    fontSize: 15,
+    fontSize: width * 0.04,
     fontWeight: '300',
     textAlign: 'center',
     color: '#F5F5F5',
-    lineHeight:22.59,
+    lineHeight: height * 0.03,
     fontFamily: 'Lato',
   },
   link: {
-    color: '#F5F5F5', // Matching link color with the forgot password text
+    color: '#F5F5F5',
     fontWeight: '700',
     textDecorationLine: 'underline',
     fontFamily: 'Lato',
-    
   },
   terms: {
-    fontSize: 15,
+    fontSize: width * 0.04,
     fontWeight: '300',
     textAlign: 'center',
     color: '#F5F5F5',
-    lineHeight:22.59,
+    lineHeight: height * 0.03,
     fontFamily: 'Lato',
-    marginTop:'10%',
-    marginBottom: 30,
+    marginTop: height * 0.03,
+    marginBottom: height * 0.05,
   },
   modalOverlay: {
     flex: 1,
@@ -255,15 +253,11 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   closeButtonText: {
-    position: 'absolute',
-    right: 10,
-    marginTop:-17,
-    fontSize:30,
-    cursor: 'pointer',
+    fontSize: 30,
   },
   modalTitle: {
     fontSize: 22,
-    textAlign:'center',
+    textAlign: 'center',
     fontWeight: 'bold',
     color: 'black',
     marginBottom: 10,
@@ -272,7 +266,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#333',
     lineHeight: 24,
-    fontWeight:"semibold",
   },
 });
 

@@ -147,41 +147,75 @@ const AuctionDetailScreen = () => {
       <Text style={styles.info}>ContactNo:</Text>
       <Text style={styles.item}>{auctionDetails?.ContactNo}</Text>
 
-      {/* Property Images */}
-      {auctionDetails?.Images && auctionDetails?.Images !== "null" && (
-        <View>
-          <Text style={styles.info}>Property Images</Text>
-          <View style={styles.imageContainer}>
-            {Array.isArray(auctionDetails?.Images) ? (
-              auctionDetails.Images.map((imageUrl: string, index: number) => (
-                <Image
-                  key={index}
-                  source={{ uri: imageUrl }}
-                  style={{ width: 100, height: 100, margin: 5 }}
-                />
-              ))
-            ) : (
-              <Image
-                source={{ uri: auctionDetails?.Images }}
-                style={{ width: 100, height: 100, margin: 5 }}
-              />
-            )}
-          </View>
-        </View>
-      )}
-
-      {/* GPS Location */}
-      {/* {auctionDetails?.GPSLocation && (
+      {/* Conditional rendering for Images and GPS Location */}
+      {isEnabled && (
         <>
-          <Text style={styles.info}>GPS Location</Text>
-          <Text
-            style={styles.gpsLink}
-            onPress={() => Linking.openURL(auctionDetails?.GPSLocation)}
-          >
-            Click to view
-          </Text>
+          {/* Property Images */}
+          {auctionDetails?.Images && auctionDetails?.Images !== "null" && (
+            <View>
+              <Text style={styles.info}>Property Images</Text>
+              <View style={styles.imageContainer}>
+                {Array.isArray(auctionDetails?.Images) ? (
+                  auctionDetails.Images.map((imageUrl: string, index: number) => (
+                    <Image
+                      key={index}
+                      source={{ uri: imageUrl }}
+                      style={{ width: 100, height: 100, margin: 5 }}
+                    />
+                  ))
+                ) : (
+                  <Image
+                    source={{ uri: auctionDetails?.Images }}
+                    style={{ width: 100, height: 100, margin: 5 }}
+                  />
+                )}
+              </View>
+            </View>
+          )}
+
+          {/* GPS Location */}
+          {auctionDetails?.GPSLocation && (
+            <>
+              <Text style={styles.info}>GPS Location</Text>
+              <Text
+                style={styles.gpsLink}
+                onPress={() => Linking.openURL(auctionDetails?.GPSLocation)}
+              >
+                Click to view
+              </Text>
+            </>
+          )}
         </>
-      )} */}
+      )}
+      
+       <View style={styles.switchContainer}>
+        <Switch
+          trackColor={{ false: '#767577', true: '#622CFD' }}
+          thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+        />
+        <Text style={styles.switchLabel}>
+          Are you sure you want to view Auction Properties?
+        </Text>
+      </View>
+
+       {/* Buttons */}
+       <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={styles.callButton}
+                disabled={!isChecked}
+                onPress={makeCall}>
+                <Text style={styles.buttonText}>CALL</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.queryButton}
+                disabled={!isChecked}
+                onPress={openWhatsApp}>
+                <Text style={styles.buttonText}>QUERY NOW</Text>
+              </TouchableOpacity>
+            </View>
     </View>
   </ScrollView>
 </View>

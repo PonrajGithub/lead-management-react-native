@@ -1,9 +1,19 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ImageBackground } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  Dimensions,
+} from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// Get device dimensions
+const { width, height } = Dimensions.get('window');
 
 const FirstScreen = () => {
   const navigation: any = useNavigation();
@@ -15,21 +25,12 @@ const FirstScreen = () => {
 
   useEffect(() => {
     const checkAppState = async () => {
-      try
-       {
-        // Check if it's the first launch
-        // const isFirstLaunch = await AsyncStorage.getItem('isFirstLaunch');
-        // if (isFirstLaunch === null) {
-        //   // First launch, proceed through First, Second, Third Screens
-        //   return;
-        // }
-
-        // Check if user data exists (not first launch)
+      try {
         const storedData = await AsyncStorage.getItem('@storage_user_data');
         if (storedData !== null) {
           const parsedData = JSON.parse(storedData);
-          const token = parsedData?.data?.token; // Assuming you are storing a token
-          
+          const token = parsedData?.data?.token;
+
           if (token) {
             // Token exists, navigate to DashboardScreen
             return navigation.reset({
@@ -38,13 +39,6 @@ const FirstScreen = () => {
             });
           }
         }
-
-        // No token found or no user data, navigate to WelcomeScreen
-        // navigation.reset({
-        //   index: 0,
-        //   routes: [{ name: 'WelcomeScreen' }],
-        // });
-
       } catch (error) {
         console.error('Error checking app state:', error);
       }
@@ -52,6 +46,7 @@ const FirstScreen = () => {
 
     checkAppState();
   }, [navigation]);
+
   // Render loading state if fonts are not loaded
   if (!fontsLoaded) {
     return (
@@ -105,11 +100,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   backgroundWrapper: {
-    height: '55%',
+    height: height * 0.55, // 55% of the screen height
     width: '100%',
     overflow: 'hidden',
     backgroundColor: '#f0f0f0',
-    position: 'relative',
   },
   background: {
     flex: 1,
@@ -117,21 +111,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 25,
+    fontSize: width * 0.065, // Scaled font size
     fontWeight: '900',
     fontFamily: 'Lato',
     textAlign: 'center',
-    lineHeight: 35.25,
-    marginTop: 30,
+    lineHeight: width * 0.09, // Scaled line height
+    marginTop: height * 0.03, // Responsive margin
     color: '#001533',
   },
   description: {
     textAlign: 'center',
-    fontSize: 17,
+    fontSize: width * 0.04, // Scaled font size
     fontFamily: 'Lato',
-    marginTop: 20,
+    marginTop: height * 0.02, // Responsive margin
     color: '#001533',
-    lineHeight: 25.5,
+    lineHeight: width * 0.06, // Scaled line height
     fontWeight: '300',
   },
   footer: {
@@ -139,8 +133,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 'auto',
-    marginBottom: '10%',
-    paddingHorizontal: 40,
+    marginBottom: height * 0.1, // 10% of the screen height
+    paddingHorizontal: width * 0.1, // 10% of the screen width
     backgroundColor: '#fff',
   },
   pagination: {
@@ -148,22 +142,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: width * 0.02, // Responsive size
+    height: width * 0.02,
+    borderRadius: width * 0.01,
     backgroundColor: '#C4C4C4',
-    marginHorizontal: 4,
+    marginHorizontal: width * 0.01,
   },
   activeDot: {
-    width: 17,
-    height: 8,
-    borderRadius: 4,
+    width: width * 0.04,
+    height: width * 0.02,
+    borderRadius: width * 0.01,
     backgroundColor: '#622CFD',
   },
   nextButton: {
     backgroundColor: '#622CFD',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingVertical: height * 0.015, // Scaled padding
+    paddingHorizontal: width * 0.05,
     borderRadius: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -171,15 +165,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  nextButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
   skip: {
     color: '#555',
-    fontSize: 16,
-    paddingLeft: 120,
+    fontSize: width * 0.045,
+    paddingLeft: width * 0.3,
   },
 });
 

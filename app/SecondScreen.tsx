@@ -1,14 +1,16 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Dimensions } from 'react-native';
 import { useNavigation } from 'expo-router';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const { width, height } = Dimensions.get('window');
+
 const SecondScreen = () => {
-  const navigation :any = useNavigation();
+  const navigation: any = useNavigation();
   const [fontsLoaded] = useFonts({
-    'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
+    Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
 
   if (!fontsLoaded) {
@@ -18,12 +20,11 @@ const SecondScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.backgroundWrapper}>
-        <ImageBackground 
-          source={require('../assets/images/2.png')} 
+        <ImageBackground
+          source={require('../assets/images/2.png')}
           style={styles.background}
           resizeMode="cover"
-        >
-        </ImageBackground>
+        />
       </View>
 
       {/* Title and Description */}
@@ -57,31 +58,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   backgroundWrapper: {
-    height: '55%',
-    width:'100%',
+    height: height * 0.55, // 55% of screen height
+    width: '100%',
     overflow: 'hidden',
   },
   background: {
-    flex: 1, // This allows the image to take the full space of the wrapper
-    alignItems: 'center', 
-    justifyContent: 'center', 
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
-    fontSize: 25,
-    fontWeight:'900',
+    fontSize: width * 0.065, // Dynamic font size based on screen width
+    fontWeight: '900',
     fontFamily: 'Lato',
     textAlign: 'center',
-    lineHeight: 35.25,
-    marginTop: 30,
-    color:'#001533',
+    lineHeight: width * 0.09, // Adjust line height
+    marginTop: height * 0.03, // Dynamic margin
+    color: '#001533',
   },
   description: {
     textAlign: 'center',
-    fontSize: 17,
+    fontSize: width * 0.045,
     fontFamily: 'Lato',
-    marginTop: 15,
-    color:'#001533',
-    lineHeight: 25.5,
+    marginTop: height * 0.02,
+    color: '#001533',
+    lineHeight: width * 0.06,
     fontWeight: '300',
   },
   footer: {
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 'auto',
-    marginBottom: '10%',
-    paddingHorizontal: 40,
+    marginBottom: height * 0.05, // Dynamic margin
+    paddingHorizontal: width * 0.1, // Dynamic padding
     backgroundColor: '#fff',
   },
   pagination: {
@@ -98,33 +99,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
+    width: width * 0.02, // Dynamic width
+    height: width * 0.02, // Dynamic height
+    borderRadius: width * 0.01,
     backgroundColor: '#C4C4C4',
-    marginHorizontal: 4,
+    marginHorizontal: width * 0.01,
   },
   activeDot: {
-    width: 17,
-    height: 8,
-    borderRadius: 4,
+    width: width * 0.04, // Dynamic width
+    height: width * 0.02,
+    borderRadius: width * 0.01,
     backgroundColor: '#622CFD',
   },
   nextButton: {
     backgroundColor: '#622CFD',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 50,
+    paddingVertical: height * 0.015, // Dynamic padding
+    paddingHorizontal: width * 0.05,
+    borderRadius: width * 0.15,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,
-  },
-  nextButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    fontSize: 16,
   },
 });
 

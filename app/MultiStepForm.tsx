@@ -503,6 +503,7 @@ const MultiStepForm = ({ }: any) => {
               </View>
               </View>
               )}
+              
 
               {/* Company Name */}
               {formData?.user_type !== 'Institute' && 
