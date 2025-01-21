@@ -17,7 +17,7 @@ export default function RootLayout() {
       <Stack.Screen name='ReferralPartner' options={{ headerShown: false}} />
       <Stack.Screen name='AddReferral' options={{ headerShown: false}} />
       <Stack.Screen name='Profile' options={{ headerShown : false}} />
-      <Stack.Screen name='Auction' options={{ headerShown : false}}/>
+      {/* <Stack.Screen name='Auction' options={{ headerShown : false}}/> */}
       <Stack.Screen name='AuctionScreen' options={{ headerShown : false}}/>
       <Stack.Screen name='AuctionDetailScreen' options={{ headerShown : false}}/>
     </Stack>
