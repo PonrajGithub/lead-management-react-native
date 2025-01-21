@@ -66,7 +66,7 @@ const AuctionDetailScreen = () => {
 
   // Initiate a phone call
   const makeCall = () => {
-    const phoneNumber = "tel:8525838636";
+    const phoneNumber = "tel:+917838375738";
 
     Linking.openURL(phoneNumber).catch(() => {
       Alert.alert("Error", "Unable to make a call. Please try again later.");
@@ -205,13 +205,13 @@ const AuctionDetailScreen = () => {
        <View style={styles.buttonRow}>
               <TouchableOpacity
                 style={styles.callButton}
-                disabled={!isChecked}
+                // disabled={!isChecked}
                 onPress={makeCall}>
                 <Text style={styles.buttonText}>CALL</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.queryButton}
-                disabled={!isChecked}
+                // disabled={!isChecked}
                 onPress={openWhatsApp}>
                 <Text style={styles.buttonText}>QUERY NOW</Text>
               </TouchableOpacity>
