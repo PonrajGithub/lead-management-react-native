@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  ToastAndroid,
   ImageBackground,
 } from 'react-native';
 import axios from 'axios';
@@ -54,7 +55,7 @@ const AuctionScreen = () => {
       // Retrieve the stored token
       const token = await AsyncStorage.getItem('@storage_user_token');
       if (!token) {
-        Alert.alert('Error', 'No token found. Please log in again.');
+         ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
         return;
       }
   
@@ -79,11 +80,13 @@ const AuctionScreen = () => {
       setFilteredData(auctionData);
   
       if (auctionData.length === 0) {
-        Alert.alert('No Results Found', 'Try adjusting your search criteria.');
+        ToastAndroid.show('Try adjusting your search criteria..', ToastAndroid.SHORT);
+
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
-      Alert.alert('Error', 'Unable to fetch search results. Please try again.');
+      ToastAndroid.show('Unable to fetch search results. Please try again.', ToastAndroid.SHORT);
+
     }
   };
 
@@ -92,7 +95,7 @@ const AuctionScreen = () => {
     try {
       const token = await AsyncStorage.getItem('@storage_user_token');
       if (!token) {
-        Alert.alert('Error', 'No token found. Please log in again.');
+        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
         return;
       }
   
@@ -114,11 +117,11 @@ const AuctionScreen = () => {
         navigation.navigate('AuctionDetailScreen', { auctionDetails: response.data.data });
 
       } else {
-        Alert.alert('Error', 'Auction details not found.');
+        ToastAndroid.show('Auction details not found.',ToastAndroid.SHORT);
       }
     } catch (error) {
       console.error('Error fetching auction details:', error);
-      // Alert.alert('Error', 'Unable to fetch auction details. Please try again.');
+      ('Unable to fetch auction details. Please try again.');
     }
   };
   
@@ -130,7 +133,7 @@ const AuctionScreen = () => {
       <Text style={styles.price}>₹{item.ReservePrice}</Text>
       <Text style={styles.details}>
         {item.AuctionDate} | {item.PropertySize} | {item.Possession}
-      </Text>
+     </Text>
       <TouchableOpacity
         style={styles.button}
         onPress={() => fetchAuctionDetails(item.ListingId)} // Pass auction ID here

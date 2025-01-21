@@ -8,6 +8,7 @@ import {
   Image,
   ImageBackground,
   Alert,
+  ToastAndroid,
   Switch,
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
@@ -112,61 +113,63 @@ const AuctionDetailScreen = () => {
           </Text>
           <View style={styles.card}>
   {/* Property details */}
-  {/* <Text>{auctionDetails.title}</Text> */}
   <Text style={styles.title}>{item?.BankName}</Text> {/* Optional chaining */}
-  <Text style={styles.bank}>{item?.Branch}</Text>
-  <Text style={styles.price}>₹{item?.ReservePrice}</Text>
-  <Text style={styles.details}>
-    {item?.AuctionDate} | {item?.PropertySize} | {item?.Possession}
-  </Text>
-  <View style={styles.divider} />
-  
-  <Text style={styles.info}>Property type:</Text>
-  <Text style={styles.item}>{item?.PropertyType}</Text>
-  
-  <Text style={styles.info}>Category:</Text>
-  <Text style={styles.item}>{item?.SubCategory}</Text>
-  
-  <Text style={styles.info}>Property Size:</Text>
-  <Text style={styles.item}>{item?.PropertySize}</Text>
-  
-  <Text style={styles.info}>Address:</Text>
-  <Text style={styles.item}>{item?.Address}</Text>
-  
-  <Text style={styles.info}>Possession:</Text>
-  <Text style={styles.item}>{item?.Possession}</Text>
-  
-  <Text style={styles.info}>Auction date:</Text>
-  <Text style={styles.item}>{item?.AuctionDate}</Text>
-  
-  <Text style={styles.info}>EMD date:</Text>
-  <Text style={styles.item}>{item?.EMDDate}</Text>
+<Text style={styles.bank}>{item?.Branch}</Text>
+<Text style={styles.price}>₹{item?.ReservePrice}</Text>
+<Text style={styles.details}>
+  {item?.AuctionDate} | {item?.PropertySize} | {item?.Possession}
+</Text>
+<Text style={styles.info}>Property type:</Text>
+<Text style={styles.item}>{item?.PropertyType}</Text>
+<Text style={styles.info}>Category:</Text>
+<Text style={styles.item}>{item?.SubCategory}</Text>
+<Text style={styles.info}>Property Size:</Text>
+<Text style={styles.item}>{item?.PropertySize}</Text>
+<Text style={styles.info}>Address:</Text>
+<Text style={styles.item}>{item?.Address}</Text>
+<Text style={styles.info}>Possession:</Text>
+<Text style={styles.item}>{item?.Possession}</Text>
+<Text style={styles.info}>Auction date:</Text>
+<Text style={styles.item}>{item?.AuctionDate}</Text>
+<Text style={styles.info}>EMD date:</Text>
+<Text style={styles.item}>{item?.EMDDate}</Text>
+<Text style={styles.info}>InspectionDate:</Text>
+<Text style={styles.item}>{item?.InspectionDate}</Text>
+<Text style={styles.info}>BorrowerName:</Text>
+<Text style={styles.item}>{item?.BorrowerName}</Text>
+<Text style={styles.info}>Status:</Text>
+<Text style={styles.item}>{item?.Status}</Text>
+<Text style={styles.info}>AuthorisedOfficer:</Text>
+<Text style={styles.item}>{item?.AuthorisedOfficer}</Text>
+<Text style={styles.info}>ContactNo:</Text>
+<Text style={styles.item}>{item?.ContactNo}</Text>
 
   {/* Property Images */}
-  {item?.Images && item?.Images !== "null" && (
-    <>
-      <Text style={styles.info}>Property Images</Text>
-      <View style={styles.imageContainer}>
-        {Array.isArray(item?.Images) ? (
-          item.Images.map((imageUrl: string, index: number) => (
-            <Image
-              key={index}
-              source={{ uri: imageUrl }}
-              style={{ width: 100, height: 100, margin: 5 }}
-            />
-          ))
-        ) : (
+{item?.Images && item?.Images !== "null" && (
+  <>
+    <Text style={styles.info}>Property Images</Text>
+    <View style={styles.imageContainer}>
+      {Array.isArray(item?.Images) ? (
+        item.Images.map((imageUrl: string, index: number) => (
           <Image
-            source={{ uri: item?.Images }}
+            key={index}
+            source={{ uri: imageUrl }}
             style={{ width: 100, height: 100, margin: 5 }}
           />
-        )}
-      </View>
-    </>
-  )}
+        ))
+      ) : (
+        <Image
+          source={{ uri: item?.Images }}
+          style={{ width: 100, height: 100, margin: 5 }}
+        />
+      )}
+    </View>
+  </>
+)}
+
 
   {/* GPS Location */}
-  {item?.GPSLocation && (
+  {/* {item?.GPSLocation && (
     <>
       <Text style={styles.info}>GPS Location</Text>
       <Text
@@ -176,7 +179,7 @@ const AuctionDetailScreen = () => {
         Click to view
       </Text>
     </>
-  )}
+  )} */}
 </View>
         </ScrollView>
       </View>
