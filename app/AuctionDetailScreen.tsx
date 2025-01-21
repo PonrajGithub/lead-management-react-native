@@ -38,8 +38,11 @@ const AuctionDetailScreen = () => {
 
   const { auctionDetails }:any = route.params;
 
+
+  // console.log(auctionDetails, "KJHKHKJHKKJHJKHK")
+
   // Log the auctionDetails to check if the data is being passed correctly
-  console.log('Auction details:', auctionDetails);
+  // console.log('Auction details:', auctionDetails);
 
   if (!auctionDetails) {
     return <Text>Error: No auction details found</Text>;
@@ -107,82 +110,82 @@ const AuctionDetailScreen = () => {
       </View>
 
       <View style={styles.stepContainer}>
-        <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.subHeader}>
-            75453 BANK AUCTION PROPERTIES IN INDIA
-          </Text>
-          <View style={styles.card}>
-  {/* Property details */}
-  <Text style={styles.title}>{item?.BankName}</Text> {/* Optional chaining */}
-<Text style={styles.bank}>{item?.Branch}</Text>
-<Text style={styles.price}>₹{item?.ReservePrice}</Text>
-<Text style={styles.details}>
-  {item?.AuctionDate} | {item?.PropertySize} | {item?.Possession}
-</Text>
-<Text style={styles.info}>Property type:</Text>
-<Text style={styles.item}>{item?.PropertyType}</Text>
-<Text style={styles.info}>Category:</Text>
-<Text style={styles.item}>{item?.SubCategory}</Text>
-<Text style={styles.info}>Property Size:</Text>
-<Text style={styles.item}>{item?.PropertySize}</Text>
-<Text style={styles.info}>Address:</Text>
-<Text style={styles.item}>{item?.Address}</Text>
-<Text style={styles.info}>Possession:</Text>
-<Text style={styles.item}>{item?.Possession}</Text>
-<Text style={styles.info}>Auction date:</Text>
-<Text style={styles.item}>{item?.AuctionDate}</Text>
-<Text style={styles.info}>EMD date:</Text>
-<Text style={styles.item}>{item?.EMDDate}</Text>
-<Text style={styles.info}>InspectionDate:</Text>
-<Text style={styles.item}>{item?.InspectionDate}</Text>
-<Text style={styles.info}>BorrowerName:</Text>
-<Text style={styles.item}>{item?.BorrowerName}</Text>
-<Text style={styles.info}>Status:</Text>
-<Text style={styles.item}>{item?.Status}</Text>
-<Text style={styles.info}>AuthorisedOfficer:</Text>
-<Text style={styles.item}>{item?.AuthorisedOfficer}</Text>
-<Text style={styles.info}>ContactNo:</Text>
-<Text style={styles.item}>{item?.ContactNo}</Text>
-
-  {/* Property Images */}
-{item?.Images && item?.Images !== "null" && (
-  <>
-    <Text style={styles.info}>Property Images</Text>
-    <View style={styles.imageContainer}>
-      {Array.isArray(item?.Images) ? (
-        item.Images.map((imageUrl: string, index: number) => (
-          <Image
-            key={index}
-            source={{ uri: imageUrl }}
-            style={{ width: 100, height: 100, margin: 5 }}
-          />
-        ))
-      ) : (
-        <Image
-          source={{ uri: item?.Images }}
-          style={{ width: 100, height: 100, margin: 5 }}
-        />
-      )}
-    </View>
-  </>
-)}
-
-
-  {/* GPS Location */}
-  {/* {item?.GPSLocation && (
-    <>
-      <Text style={styles.info}>GPS Location</Text>
-      <Text
-        style={styles.gpsLink}
-        onPress={() => Linking.openURL(item?.GPSLocation)}
-      >
-        Click to view
+  <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+    <Text style={styles.subHeader}>
+      75453 BANK AUCTION PROPERTIES IN INDIA
+    </Text>
+    <View style={styles.card}>
+      {/* Property details */}
+      <Text style={styles.title}>{auctionDetails?.BankName}</Text>
+      <Text style={styles.bank}>{auctionDetails?.Branch}</Text>
+      <Text style={styles.price}>₹{auctionDetails?.ReservePrice}</Text>
+      <Text style={styles.details}>
+        {auctionDetails?.AuctionDate} | {auctionDetails?.PropertySize} | {auctionDetails?.Possession}
       </Text>
-    </>
-  )} */}
+      <Text style={styles.info}>Property type:</Text>
+      <Text style={styles.item}>{auctionDetails?.PropertyType}</Text>
+      <Text style={styles.info}>Category:</Text>
+      <Text style={styles.item}>{auctionDetails?.SubCategory}</Text>
+      <Text style={styles.info}>Property Size:</Text>
+      <Text style={styles.item}>{auctionDetails?.PropertySize}</Text>
+      <Text style={styles.info}>Address:</Text>
+      <Text style={styles.item}>{auctionDetails?.Address}</Text>
+      <Text style={styles.info}>Possession:</Text>
+     <Text style={styles.item}>{auctionDetails?.Possession}</Text>
+      <Text style={styles.info}>Auction date:</Text>
+      <Text style={styles.item}>{auctionDetails?.AuctionDate}</Text>
+      <Text style={styles.info}>EMD date:</Text>
+      <Text style={styles.item}>{auctionDetails?.EMDDate}</Text>
+      <Text style={styles.info}>InspectionDate:</Text>
+      <Text style={styles.item}>{auctionDetails?.InspectionDate}</Text>
+       <Text style={styles.info}>BorrowerName:</Text>
+      <Text style={styles.item}>{auctionDetails?.BorrowerName}</Text>
+      <Text style={styles.info}>Status:</Text>
+      <Text style={styles.item}>{auctionDetails?.Status}</Text>
+      <Text style={styles.info}>AuthorisedOfficer:</Text>
+      <Text style={styles.item}>{auctionDetails?.AuthorisedOfficer}</Text>
+      <Text style={styles.info}>ContactNo:</Text>
+      <Text style={styles.item}>{auctionDetails?.ContactNo}</Text>
+
+      {/* Property Images */}
+      {auctionDetails?.Images && auctionDetails?.Images !== "null" && (
+        <View>
+          <Text style={styles.info}>Property Images</Text>
+          <View style={styles.imageContainer}>
+            {Array.isArray(auctionDetails?.Images) ? (
+              auctionDetails.Images.map((imageUrl: string, index: number) => (
+                <Image
+                  key={index}
+                  source={{ uri: imageUrl }}
+                  style={{ width: 100, height: 100, margin: 5 }}
+                />
+              ))
+            ) : (
+              <Image
+                source={{ uri: auctionDetails?.Images }}
+                style={{ width: 100, height: 100, margin: 5 }}
+              />
+            )}
+          </View>
+        </View>
+      )}
+
+      {/* GPS Location */}
+      {/* {auctionDetails?.GPSLocation && (
+        <>
+          <Text style={styles.info}>GPS Location</Text>
+          <Text
+            style={styles.gpsLink}
+            onPress={() => Linking.openURL(auctionDetails?.GPSLocation)}
+          >
+            Click to view
+          </Text>
+        </>
+      )} */}
+    </View>
+  </ScrollView>
 </View>
-        </ScrollView>
-      </View>
+
     </ImageBackground>
   );
 };

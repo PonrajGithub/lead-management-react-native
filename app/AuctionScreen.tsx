@@ -16,7 +16,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Picker } from '@react-native-picker/picker'; // Import Picker component
 
 const AuctionScreen = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const [auctionData, setAuctionData] = useState<AuctionItem[]>([]);
   const [filteredData, setFilteredData] = useState<AuctionItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -109,12 +109,13 @@ const AuctionScreen = () => {
       );
   
       // Log the response to check the structure
-      console.log('Auction details response:', response.data);
+      // console.log('Auction details response:', response.data);
   
       // Check if the response contains the expected data
-      if (response.data && response.data.data) {
+      if (response.data && response.data.data && response.data.data[0]) {
         // Navigate to AuctionDetailScreen with the auction details
-        navigation.navigate('AuctionDetailScreen', { auctionDetails: response.data.data });
+
+        navigation.navigate('AuctionDetailScreen', { auctionDetails: response.data.data[0] });
 
       } else {
         ToastAndroid.show('Auction details not found.',ToastAndroid.SHORT);
