@@ -11,6 +11,8 @@ import {
   ToastAndroid,
   Switch,
 } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import { useFonts } from "expo-font";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -73,10 +75,9 @@ const AuctionDetailScreen = () => {
     });
   };
 
-
   const toggleSwitch = () => {
     if (!isEnabled) {
-      // Show an alert before toggling the switch
+      // Show a confirmation alert before toggling the switch
       Alert.alert(
         "Confirmation",
         "Are you sure you want to view Auction Properties?",
@@ -87,15 +88,44 @@ const AuctionDetailScreen = () => {
           },
           {
             text: "OK",
-            onPress: () => setIsEnabled(true), // Toggle the switch to enable
+            onPress: async () => {
+              setIsEnabled(true); // Enable the switch
+              try {
+                // Make the API call
+                const response = await axios.get(
+                  "https://loanguru.in/loan_guru_app/api/storeInterest",
+                  {
+                    headers: {
+                      Authorization: "Bearer YOUR_API_TOKEN", // Replace with your token
+                    },
+                  }
+                );
+  
+                // Store data in AsyncStorage
+                const token = "YOUR_STORAGE_USER_TOKEN"; // Replace with the actual token
+                await AsyncStorage.setItem("@storage_user_token", token);
+                await AsyncStorage.setItem(
+                  "@storage_user_data",
+                  JSON.stringify(response.data)
+                );
+  
+                console.log("Data stored successfully:", response.data);
+              } catch (error) {
+                console.error("Error calling API:", error.message);
+              }
+            },
           },
         ]
       );
     } else {
-      // Simply toggle the switch to disable
+      // Simply toggle the switch off
       setIsEnabled(false);
     }
   };
+  
+
+
+ 
 
   return (
     <ImageBackground
@@ -151,12 +181,12 @@ const AuctionDetailScreen = () => {
       {isEnabled && (
         <>
           {/* Property Images */}
-          {auctionDetails?.Images && auctionDetails?.Images !== "null" && (
+          {auctionDetails?.Images && auctionDetails?.Images !== 'null' && (
             <View>
               <Text style={styles.info}>Property Images</Text>
               <View style={styles.imageContainer}>
                 {Array.isArray(auctionDetails?.Images) ? (
-                  auctionDetails.Images.map((imageUrl: string, index: number) => (
+                  auctionDetails.Images.map((imageUrl:any, index:any) => (
                     <Image
                       key={index}
                       source={{ uri: imageUrl }}
@@ -187,8 +217,8 @@ const AuctionDetailScreen = () => {
           )}
         </>
       )}
-      
-       <View style={styles.switchContainer}>
+
+      <View style={styles.switchContainer}>
         <Switch
           trackColor={{ false: '#767577', true: '#622CFD' }}
           thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
@@ -379,6 +409,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontFamily: 'Lato',
   },
+  
 });
 
 export default AuctionDetailScreen;

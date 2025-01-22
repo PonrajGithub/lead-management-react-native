@@ -49,7 +49,7 @@ const About = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>LIST TO DOCUMENTS</Text>
+      <Text style={styles.header}>LIST OF DOCUMENTS</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => renderItem({ item })}

@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useNavigation } from 'expo-router';
+import AuctionScreen from './AuctionScreen';
 
 // Icon imports
 import Insurance from '../assets/images/icon/insurance.png';
@@ -12,7 +13,7 @@ import Query from '../assets/images/icon/query.png';
 
 const data = [
   { id: '1', title: 'Insurance', link: 'https://loanguru.in/?page_id=2034', icon: Insurance },
-  { id: '2', title: 'Auction', icon: Auction },
+  { id: '2', title: 'Auction', link:'', icon: Auction },
   { id: '3', title: 'EMI Calculator', link: 'https://loanguru.in/?page_id=2041', icon: Calculator },
   { id: '4', title: 'Query', link: 'https://loanguru.in/?page_id=73', icon: Query },
 ];
@@ -28,7 +29,8 @@ const QuickLink = () => {
   }
 
   const handleNavigation = (item: { link?: string }) => {
-    if (item.link) {
+    console.log('Navigating to:', item?.link ? item.link : 'AuctionScreen');
+    if (item?.link) {
       navigation.navigate('WebViewScreen', { uri: item.link });
     } else {
       navigation.navigate('AuctionScreen');

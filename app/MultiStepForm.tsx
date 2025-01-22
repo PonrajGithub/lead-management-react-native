@@ -31,9 +31,13 @@ const MultiStepForm = ({ }: any) => {
     name: '',
     dob: '',
     mobile_number: '',
+    otp:'',
     email: '',
     institution_name: '',
     occupation: '',
+    student_name: '',
+    roll_number: '',
+    course_class: '',
     company_name: '',
     designation: '',
     password: '',
@@ -69,18 +73,23 @@ const MultiStepForm = ({ }: any) => {
         break;
       case 3: // Validate DOB
         if (!formData.dob) newErrors.dob = 'Date of birth is required.';
+        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+          newErrors.email = 'Valid email is required.';
+        }
         break;
       case 4:
         if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
           newErrors.mobile_number = 'Valid mobile number is required.';
         }
-        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email = 'Valid email is required.';
-        }
+        if (!formData.otp.trim()) newErrors.otp = 'otp is required.';
+
         break;
       case 5: // Validate institution and occupation
-        if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
+         if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
         if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.';
+        if (!formData.student_name.trim()) newErrors.student_name = 'Student name is required.';
+        if (!formData.roll_number.trim()) newErrors.roll_number = 'roll number is required.';
+        if (!formData.course_class.trim()) newErrors.course_class = 'course class is required.';
         break;
       case 6: // Validate company and designation
         if (!formData.company_name.trim()) newErrors.company_name = 'company name is required.';
@@ -100,7 +109,10 @@ const MultiStepForm = ({ }: any) => {
         }
         if ( formData?.user_type == 'Institute') {
           if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
-          if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.';  
+          if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.'; 
+          if (!formData.student_name.trim()) newErrors.student_name = 'Student name is required.';
+          if (!formData.roll_number.trim()) newErrors.roll_number = 'roll number is required.';
+          if (!formData.course_class.trim()) newErrors.course_class = 'course class is required.'; 
         }
         else {
           if ( formData?.user_type !== 'Institute') {
@@ -210,6 +222,92 @@ const MultiStepForm = ({ }: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
 
+
+  const sendOtp = async () => {
+    const { mobile_number } = formData;
+  
+    if (!mobile_number) {
+      // Handle the case where mobile number is not entered
+      ToastAndroid.show('Please enter your mobile number', ToastAndroid.SHORT);
+      return;
+    }
+  
+    setLoading(true);
+  
+    try {
+      const formData = new FormData();
+      formData.append('phone', mobile_number);
+  
+      const response = await axios.post(
+        'https://loanguru.in/loan_guru_app/api/smsotp', // The API endpoint for sending OTP via phone
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+      
+      // console.log(response?.data?.data?.code); // If OTP code is in the response
+  
+      if (response.data.success) {
+        const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
+        // setReceivedOtp(receivedOtp);
+        ToastAndroid.show('OTP sent', ToastAndroid.SHORT);
+         // Proceed to OTP verification screen or next step
+      } else {
+        ToastAndroid.show(response.data.message || 'Failed to send OTP', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error(error);
+      ToastAndroid.show('An error occurred. Try again.', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const [showNavigationButtons, setShowNavigationButtons] = useState(false);
+
+  const verifyOtp = async () => {
+    const { mobile_number, otp } = formData;
+  
+    if (!otp || !mobile_number) {
+      ToastAndroid.show('Please enter both OTP and mobile number', ToastAndroid.SHORT);
+      return;
+    }
+  
+    const data = new FormData();
+    data.append('phone', mobile_number);
+    data.append('otp', otp);
+  
+    const config = {
+      method: 'post',
+      url: 'https://loanguru.in/loan_guru_app/api/verifyotp',
+      headers: {
+        'Content-Type': 'multipart/form-data', // Correct content type
+      },
+      data: data, // Send FormData directly
+    };
+  
+    try {
+      const response = await axios(config);
+  
+      console.log(JSON.stringify(response.data));
+      if (response.data.success) {
+        ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
+        // setShowNavigationButtons(true);
+        
+      } else {
+        ToastAndroid.show(response.data.message || 'OTP verification failed', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      // console.error('Error:', error);
+      ToastAndroid.show('Resend otp', ToastAndroid.SHORT);
+    }
+  };
+  
+  
+  
   useEffect(() => {
     if (step == 1) {
       setFormData({
@@ -217,9 +315,13 @@ const MultiStepForm = ({ }: any) => {
         name: '',
         dob: '',
         mobile_number: '',
+        otp:'',
         email: '',
         institution_name: '',
         occupation: '',
+        student_name: '',
+        roll_number: '',
+        course_class: '',
         company_name: '',
         designation: '',
         password: '',
@@ -270,6 +372,7 @@ const MultiStepForm = ({ }: any) => {
                 value={formData.name}
                 onChangeText={(text) => handleChange('name', text)}
               />
+
               <View style={styles.navigation}>
                 <TouchableOpacity onPress={handleBack}>
                   <Text style={styles.back}>Back</Text>
@@ -294,6 +397,12 @@ const MultiStepForm = ({ }: any) => {
                   editable={false} // Disable direct editing
                 />
               </TouchableOpacity>
+              <TextInput
+                style={[styles.input, errors.email && styles.errorInput]}
+                placeholder="Email"
+                value={formData.email}
+                onChangeText={(text) => handleChange('email', text)}
+              />
               {showPicker && (
                 <DateTimePicker
                   value={date}
@@ -326,51 +435,79 @@ const MultiStepForm = ({ }: any) => {
                 value={formData.mobile_number}
                 onChangeText={(text) => handleChange('mobile_number', text)}
               />
+              <TouchableOpacity style={styles.otpButton} onPress={sendOtp}>
+                <Text style={styles.otp}>SendOtp</Text>
+              </TouchableOpacity>
               <TextInput
-                style={[styles.input, errors.email && styles.errorInput]}
-                placeholder="Email"
-                value={formData.email}
-                onChangeText={(text) => handleChange('email', text)}
+                style={[styles.inputOtp, errors.otp && styles.errorInput]}
+                keyboardType="phone-pad"
+                placeholder="Otp"
+                value={formData.otp}
+                onChangeText={(text) => handleChange('otp', text)}
               />
-              <View style={styles.navigationCom}>
-                <TouchableOpacity onPress={handleBack}>
-                  <Text style={styles.back}>Back</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-                  <Icon name="chevron-right" size={30} color="#F5F5F5" />
-                </TouchableOpacity>
-              </View>
+              <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
+                <Text style={styles.otp}>VerifyOtp</Text>
+              </TouchableOpacity>
+             
+                <View style={styles.navigationInstitution}>
+                  <TouchableOpacity onPress={handleBack}>
+                    <Text style={styles.back}>Back</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+                    <Icon name="chevron-right" size={30} color="#F5F5F5" />
+                  </TouchableOpacity>
+                </View>
+              
             </View>
           </ScrollView>
         );
       case 5:
-        return (
-          <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-            <View style={styles.stepContainer}>
-              <Text style={styles.label}>Institute details</Text>
-              <TextInput
-                style={[styles.input, errors.institution_name && styles.errorInput]}
-                placeholder="Institution name"
-                value={formData.institution_name}
-                onChangeText={(text) => handleChange('institution_name', text)}
-              />
-              <TextInput
-                style={[styles.input, errors.occupation && styles.errorInput]}
-                placeholder="Occupation"
-                value={formData.occupation}
-                onChangeText={(text) => handleChange('occupation', text)}
-              />
-              <View style={styles.navigationCom}>
-                <TouchableOpacity onPress={handleBack}>
-                  <Text style={styles.back}>Back</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-                  <Icon name="chevron-right" size={30} color="#F5F5F5" />
-                </TouchableOpacity>
+          return (
+            <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+              <View style={styles.InstituteContainer}>
+                <Text style={styles.label}>Institute details</Text>
+                <TextInput
+                  style={[styles.input, errors.institution_name && styles.errorInput]}
+                  placeholder="Institution name"
+                  value={formData.institution_name}
+                  onChangeText={(text) => handleChange('institution_name', text)}
+                />
+                <TextInput
+                  style={[styles.input, errors.occupation && styles.errorInput]}
+                  placeholder="Occupation"
+                  value={formData.occupation}
+                  onChangeText={(text) => handleChange('occupation', text)}
+                />
+                  <TextInput
+                    style={[styles.input, errors.student_name && styles.errorInput]}
+                    placeholder="Student Name"
+                    value={formData.student_name}
+                    onChangeText={(text) => handleChange('student_name', text)}
+                  />
+                  <TextInput
+                    style={[styles.input, errors.roll_number && styles.errorInput]}
+                    placeholder="Roll Number"
+                    keyboardType="phone-pad"
+                    value={formData.roll_number}
+                    onChangeText={(text) => handleChange('roll_number', text)}
+                  />
+                   <TextInput
+                    style={[styles.input, errors.course_class && styles.errorInput]}
+                    placeholder="Course / Class"
+                    value={formData.course_class}
+                    onChangeText={(text) => handleChange('course_class', text)}
+                  />
+                <View style={styles.navigationInstitution}>
+                  <TouchableOpacity onPress={handleBack}>
+                    <Text style={styles.back}>Back</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+                    <Icon name="chevron-right" size={30} color="#F5F5F5" />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </ScrollView>
-        );
+            </ScrollView>
+          );
       case 6: // New Case for Company Name and Designation
         return (
           <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
@@ -399,7 +536,7 @@ const MultiStepForm = ({ }: any) => {
             </View>
           </ScrollView>
         );
-      case 7:
+      case 7:  
         return (
           <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
             <View style={styles.stepContainer}>
@@ -551,9 +688,28 @@ const MultiStepForm = ({ }: any) => {
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Terms and Conditions</Text>
+            <ScrollView>
             <Text style={styles.modalText}>
-              By proceeding, you agree to the loan terms and conditions, including repayment obligations and applicable fees.
+            Please read on to learn the rules and restrictions that govern your use of our Application/Services. These Terms and Conditions (the “Terms” or the “Agreement”) are a binding contract between you and Loan Guru . If you have any questions, comments, or concerns regarding these terms or the Services, please contact us at support@LoanGuru.in
+You must agree to and accept all the Terms, or you don’t have the right to use the Services. Your using the Services in any way means that you agree to all of these Terms, and these Terms will remain in effect while you use the Services. These Terms include the provisions mentioned below, as well as those in the Privacy Policy.
+•	You are aware and you accept that all information, content, materials, products on the application is protected and secured.
+•	You understand and accept that you are allowed to track your financial life through the use of Application. You agree that you will be allowed to make any transaction through the Application when you complete the KYC process and provide the complete information including personal information in accordance with the Know your client (“KYC”) guidelines issued by Securities and Exchange Board of India or any other regulator/government authorities/agencies/AMCs from time to time.
+•	You acknowledge that you will be responsible for maintaining the confidentiality of your account information and are fully responsible for all activities that occur under Your account and also agree to keep your login credentials safe and confidential at all times. You further agree to promptly inform Us immediately in case of any actual or suspected unauthorized use of Your Account. We cannot and will not be liable for any loss or damage arising from Your failure to comply with this provision.
+•	You acknowledge that the software and hardware underlying the application as well as other Internet related software which are required for accessing the application are the legal property of either Loan Guru or its respective third-party vendors. The permission given by Loan Guru to access the application will not convey any proprietary or ownership rights in the above software/hardware.
+•	You understand and accept that not all the products and services offered on or through the Application are available in all geographic areas and you may not be eligible for all the products or services offered by Loan Guru or third party providers on the Application. Loan Guru and such third party providers reserves the right to determine the availability and eligibility for any product or service offered on the application.
+•	You understand and accept that Loan Guru is not responsible for the availability of content or other services on third party sites linked from the application. You are aware that access of hyperlinks to other internet sites are at your own risk and the content, accuracy, opinions expressed, and other links provided by these sites are not verified, monitored or endorsed by Loan Guru in any way. Loan Guru  does not make any warranties and expressly disclaims all warranties express or implied, including without limitation, those of merchantability and fitness for a particular purpose, title or non-infringement with respect to any information or services or products that are available or advertised or sold through these third-party platforms.
+•	You agree that transactions made through Loan Guru  Application shall be through your own bank account only and the said transactions do not contravene any Act, Rules, Regulations, Notifications of Income tax Act, Anti money laundering laws, Anti-corruption laws or any other applicable laws.
+•	You agree to provide your explicit consent to fetch your credit data from CRIF High Mark/Experian or any other credit Bureaus on a month to month basis.
+•	You agree that you will not use the application for any purpose that is unlawful or prohibited by these Terms. You also agree you will not use the application in any manner that could damage, disable or impair the application or interfere with any other party’s use, legal rights, or enjoyment of the application. You hereby represent and warrant that you shall make use of the Application as a prudent, reasonable and law abiding citizen and you shall comply with relevant necessary laws.
+•	Loan Guru reserves the right in its sole discretion to delete, block, restrict, disable, suspends your account or part thereof. If the User is found engaging in any fraudulent/illegal activities including but not limited to the following activities i.e abusing any of the representatives of the organization, indulge in fraudulent activities on the Application, using mass media and/or bots to engage with the platform, using mass media and/or bots to malign the organization’s reputation these activities may be referred to appropriate legal authority for a legal recourse.
+•	Additionally, by continuing using the Application or Services of Loan Guru  you are confirming that:
+•	(a) You are 18 years of age or older and where you are acting as Guardian on behalf of a minor, you have the necessary authority to register/sign up for the Services on behalf of the minor. If Loan Guru learns that we have collected personal information from a person under age 18, we will delete that information as quickly as possible. If you believe that a person under 18 may have provided us with personal information, please contact us at support@LoanGuru.in 
+•	(b) You have read and understood the Privacy Policy published on the website and mobile applications of Loan Guru. The information you provide when you register on the Application is true and correct. In the event, your information is not accessible online and you wish to change or delete your personal information or other information that you may have provided, please contact us immediately at support@LoanGuru.in.
+•	(c) You shall notify Loan Guru of any material change in your personal information and/or profile. Loan Guru would rely on the most recent information provided by you.
+•	(d) You agree to be contacted by Loan Guru and its employees and partners over phone and/or E-mail and/or SMS or any other form of electronic communication in connection with your registration, advisory and transactions. This consent overrides any registration for DNC/NDNC. You agree and confirm that if your mobile number is registered in the Do Not Disturb (DND) list of TRAI, you may not receive SMS from Loan Guru. You agree to take steps to deregister from the DND list and shall not hold Loan Guru liable for non-receipt of SMS. You can always opt to stop receiving any or all such communications by writing to support@LoanGuru.in You can also delete your account at any point of time by writing to support@LoanGuru.in or by visiting the Delete Account section on the Application
+
             </Text>
+            </ScrollView>
             <Button title="Close" onPress={() => setModalVisible(false)} color="#4CAF50" />
           </View>
         </View>
@@ -643,6 +799,15 @@ const styles = StyleSheet.create({
     flex: 1,
     display: "flex",
   },
+  InstituteContainer:{
+    backgroundColor: '#FFFFFF',
+    borderTopLeftRadius: 50,
+    borderTopRightRadius: 50,
+    padding: 30,
+    marginTop: '10%',
+    flex: 1,
+    display: "flex",
+  },
   navigation: {
     top: '60%',
     // bottom:'20%',
@@ -651,7 +816,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   navigationDob: {
-    top: '50%',
+    top: '40%',
     // bottom:'20%',
     flexDirection: 'row',
     padding: 30,
@@ -677,6 +842,26 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     height: 50,
     width: 50,
+  },
+  otp:{
+   fontFamily:'Lato',
+   fontSize:16,
+   color: '#ffffff',
+   fontWeight:'600',
+  },
+  verifyButton:{
+    padding: 10,
+    backgroundColor: '#622CFD',
+    borderRadius: 50,
+    height: 50,
+    width: 120,
+  },
+  otpButton:{
+    padding: 10,
+    backgroundColor: '#622CFD',
+    borderRadius: 50,
+    height: 50,
+    width: 100,
   },
   back: {
     fontFamily: 'Lato',
@@ -770,6 +955,13 @@ const styles = StyleSheet.create({
     marginTop: 5,
     fontFamily: 'Lato',
   },
+  navigationInstitution:{
+    top: '20%',
+    // bottom:'20%',
+    flexDirection: 'row',
+    padding: 30,
+    justifyContent: 'space-between',
+  },
   label: {
     fontSize: 32,
     fontFamily: 'Lato',
@@ -791,6 +983,19 @@ const styles = StyleSheet.create({
     lineHeight: 28.8,
     padding: 10,
     marginBottom: 20,
+  },
+  inputOtp: {
+    borderWidth: 2,
+    borderColor: '#9C9C9C',
+    color: '#9C9C9C',
+    borderRadius: 10,
+    fontFamily: 'Lato',
+    fontSize: 24,
+    fontWeight: '600',
+    lineHeight: 28.8,
+    padding: 10,
+    marginBottom: 20,
+    marginTop:20,
   },
   errorInput: {
     borderColor: 'red',
@@ -895,6 +1100,7 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     width: '80%',
+    height:'60%',
     padding: 20,
     backgroundColor: '#fff',
     borderRadius: 10,
