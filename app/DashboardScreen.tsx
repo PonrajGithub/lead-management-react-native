@@ -99,7 +99,7 @@ const DashboardScreen = () => {
             <View style={styles.stepOneContainer}>
               <Loan />
               <QuickLink />
-              <Referral/>
+              {/* <Referral/> */}
               {/* <Auction/> */}
               <Job />
               <About />

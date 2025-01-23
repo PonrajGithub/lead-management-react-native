@@ -160,7 +160,7 @@ const MultiStepForm = ({ }: any) => {
       }
     } catch (error: any) {
       // Show error message
-      ToastAndroid.show('This email is already registered.', ToastAndroid.SHORT);
+      ToastAndroid.show('Server error please try again later', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -1111,6 +1111,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily:'Lato',
   },
   modalText: {
     fontSize: 20,
