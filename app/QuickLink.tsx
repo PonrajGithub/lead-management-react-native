@@ -30,7 +30,7 @@ const QuickLink = () => {
 
   const handleNavigation = (item: { link?: string }) => {
     console.log('Navigating to:', item?.link ? item.link : 'AuctionScreen');
-    if (item?.link) {
+    if (item?.link != '') {
       navigation.navigate('WebViewScreen', { uri: item.link });
     } else {
       navigation.navigate('AuctionScreen');

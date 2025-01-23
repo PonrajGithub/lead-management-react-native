@@ -73,9 +73,13 @@ const AuctionScreen = () => {
           },
         }
       );
+
+      if (!response || !response.data) {
+        throw new Error('Invalid API response');
+      }
   
       // Process and filter the response data
-      const auctionData = response.data.data || [];
+      const auctionData = response?.data?.data && response?.data?.data?.length > 0 ? response?.data?.data : [];
       setAuctionData(auctionData);
       setFilteredData(auctionData);
   
@@ -107,6 +111,10 @@ const AuctionScreen = () => {
           },
         }
       );
+
+      if (!response || !response.data) {
+        throw new Error('Invalid API response');
+      }
   
       // Log the response to check the structure
       // console.log('Auction details response:', response.data);
@@ -235,28 +243,28 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
     padding: 20,
     flex: 1,
-    marginTop:'5%',
+    marginTop:10,
     display: "flex",
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: '10%',
-    marginLeft:'3%',
+    marginTop: 50,
+    marginLeft:10,  
   },
   header: {
     color: '#FFF',
     fontSize: 22,
     fontWeight: '700',
     fontFamily: 'Lato',
-    marginLeft:'13%'
+    marginLeft: 50
   },
   subHeader: {
     color: '#FFF',
     fontSize: 16,
     fontWeight: '700',
     fontFamily: 'Lato',
-    marginLeft:'10%'
+    marginLeft: 20
   },
   filterContainer: {
     marginBottom: 10,
@@ -334,7 +342,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginHorizontal:20,
-    marginTop: '5%',
+    marginTop: 20
 },
   button: {
     backgroundColor: '#622CFD',

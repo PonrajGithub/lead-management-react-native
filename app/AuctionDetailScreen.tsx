@@ -110,7 +110,7 @@ const AuctionDetailScreen = () => {
                 );
   
                 console.log("Data stored successfully:", response.data);
-              } catch (error) {
+              } catch (error: any) {
                 console.error("Error calling API:", error.message);
               }
             },
@@ -122,10 +122,6 @@ const AuctionDetailScreen = () => {
       setIsEnabled(false);
     }
   };
-  
-
-
- 
 
   return (
     <ImageBackground
