@@ -22,9 +22,9 @@ const AuctionScreen = () => {
   const [filteredData, setFilteredData] = useState<AuctionItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [propertyLocation1, setPropertyLocation1] = useState(''); // Location filter
-  const [propertyLocation2, setPropertyLocation2] = useState(''); // Property type filter
-  const [budget, setBudget] = useState(''); // Budget filter
+  const [State, setState] = useState(''); // Location filter
+  const [PropertyType, setPropertyType] = useState(''); // Property type filter
+  const [BudgetRange, setBudgetRange] = useState(''); // Budget filter
 
 
 
@@ -51,61 +51,44 @@ const AuctionScreen = () => {
     Images: string | null; // Images can be null
   };
 
+
   const handleSearch = async () => {
     try {
-      // Retrieve the stored token
       const token = await AsyncStorage.getItem('@storage_user_token');
       if (!token) {
         ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
         return;
       }
   
+      const formData = new FormData();
+      if (State) formData.append('state', State);
+      if (PropertyType) formData.append('PropertyType', PropertyType);
+      if (BudgetRange) formData.append('BudgetRange', BudgetRange);
+  
       const response = await axios.post(
         'https://loanguru.in/loan_guru_app/api/property-auctions/search',
-        {
-          // Add search filters here
-          location: propertyLocation1,
-          type: propertyLocation2,
-          budget,
-        },
+        formData,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Use the token from AsyncStorage
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
           },
         }
       );
   
-      if (!response || !response.data) {
-        throw new Error('Invalid API response');
-      }
-  
-      const auctionData = response.data.data || [];
-  
-      // Apply additional filtering logic if needed
-      const filtered = auctionData.filter((item: AuctionItem) => {
-        const matchesLocation =
-          !propertyLocation1 || item.Address.includes(propertyLocation1);
-        const matchesType =
-          !propertyLocation2 || item.PropertyType === propertyLocation2;
-        const matchesBudget =
-          !budget || item.BudgetRange === budget;
-  
-        return matchesLocation && matchesType && matchesBudget;
-      });
-  
-      setAuctionData(auctionData);
-      setFilteredData(filtered);
-  
-      if (filtered.length === 0) {
+      if (response.data && response.data.success && response.data.data) {
+        setFilteredData(response.data.data); // Update the list with filtered data
+        // ToastAndroid.show('Auctions fetched successfully.', ToastAndroid.SHORT);
+      } else {
+        setFilteredData([]);
         ToastAndroid.show('No results match your criteria.', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.error('Error fetching search results:', error);
-      ToastAndroid.show('Unable to fetch search results. Please try again.', ToastAndroid.SHORT);
+      // console.error('Error during auction search:', error);
+      ToastAndroid.show('Failed to fetch auctions. Please try again.', ToastAndroid.SHORT);
     }
   };
   
-
   const fetchAuctionDetails = async (auctionId: string) => {
     try {
       const token = await AsyncStorage.getItem('@storage_user_token');
@@ -188,8 +171,8 @@ const AuctionScreen = () => {
       {/* Dropdown Filters */}
       <View style={styles.filterContainer}>
         <Picker
-          selectedValue={propertyLocation1}
-          onValueChange={(value) => setPropertyLocation1(value)}
+          selectedValue={State}
+          onValueChange={(value) => setState(value)}
           style={styles.picker}
         >
           <Picker.Item label="Select Location" value="" />
@@ -200,8 +183,8 @@ const AuctionScreen = () => {
         </Picker>
 
         <Picker
-          selectedValue={propertyLocation2}
-          onValueChange={(value) => setPropertyLocation2(value)}
+          selectedValue={PropertyType}
+          onValueChange={(value) => setPropertyType(value)}
           style={styles.picker}
         >
           <Picker.Item label="Select Property Type" value="" />
@@ -212,8 +195,8 @@ const AuctionScreen = () => {
         </Picker>
 
         <Picker
-          selectedValue={budget}
-          onValueChange={(value) => setBudget(value)}
+          selectedValue={BudgetRange}
+          onValueChange={(value) => setBudgetRange(value)}
           style={styles.picker}
         >
           {/* <Picker.Item label="Select Budget" value="" />

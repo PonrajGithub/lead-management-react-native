@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import {
   View,
   Text,
@@ -32,7 +32,7 @@ const AuctionDetailScreen = () => {
   const { item } = route.params;
   const [isEnabled, setIsEnabled] = useState(false);
   const [isSwitchVisible, setIsSwitchVisible] = useState(true);  const navigation: any = useNavigation();
-
+  const [isToggled, setIsToggled] = useState(false);
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
@@ -50,87 +50,145 @@ const AuctionDetailScreen = () => {
     return <Text>Error: No auction details found</Text>;
   }
 
-  const [isChecked, setIsChecked] = useState(false); // State for the checkbox
 
   if (!fontsLoaded) {
     return <AppLoading />;
   }
 
-  const openWhatsApp = () => {
-    const whatsappNumber = "+917838375738"; // Replace with the owner's WhatsApp number
-    const message = "Hello! I want to know more about your services.";
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-    Linking.openURL(url).catch(() => {
-      Alert.alert("Error", "Unable to open WhatsApp. Please make sure it is installed.");
-    });
-  };
 
-  // Initiate a phone call
-  const makeCall = () => {
-    const phoneNumber = "tel:+917838375738";
+// Function to fetch mobile data and either call or redirect
+const fetchAndCall = async () => {
+  try {
+    // Fetch token from AsyncStorage
+    const token = await AsyncStorage.getItem('@storage_user_token');
 
-    Linking.openURL(phoneNumber).catch(() => {
-      Alert.alert("Error", "Unable to make a call. Please try again later.");
-    });
-  };
+    if (!token) {
+      Alert.alert('Error', 'No token found. Please log in.');
+      return;
+    }
 
-  const toggleSwitch = () => {
-    if (!isEnabled) {
-      Alert.alert("Confirmation", "Are you sure you want to view Auction Properties?", [
-        { text: "Cancel", style: "cancel" },
-        {
-          text: "OK",
-          onPress: async () => {
-            setIsEnabled(true); // Enable the toggle
-            setIsSwitchVisible(false); // Hide the switch after enabling
-            try {
-              const token = await AsyncStorage.getItem("@storage_user_token");
-              if (!token) {
-                ToastAndroid.show("No token found. Please log in again.", ToastAndroid.SHORT);
-                setIsEnabled(false);
-                setIsSwitchVisible(true); // Show the switch again if there's an error
-                return;
-              }
-  
-              const listing_ids = [1, 2, 3, 4, 5]; // Example array
-              if (listing_ids.length > 4) {
-                Alert.alert(
-                  "Notification",
-                  "FOR BETTER EXPERIENCE, PLEASE CONTACT OUR EXPERT."
-                );
-                setIsEnabled(false);
-                setIsSwitchVisible(true); // Show the switch again if listing count exceeds limit
-                return;
-              }
-  
-              const data = { listing_ids };
-              const response = await axios.post(
-                "https://loanguru.in/loan_guru_app/api/storeInterest",
-                data,
-                {
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`, // Use the stored token
-                  },
-                }
-              );
-  
-              if (response.data) {
-                console.log("API response:", response.data);
-                ToastAndroid.show("Interest stored successfully!", ToastAndroid.SHORT);
-              }
-            } catch (error) {
-              // console.error("Error calling API:", error.message);
-              ToastAndroid.show("Unable to store interest. Please try again.", ToastAndroid.SHORT);
-              setIsEnabled(false);
-              setIsSwitchVisible(true); // Show the switch again if there's an error
-            }
-          },
-        },
-      ]);
+    // Axios configuration
+    const config = {
+      method: 'get',
+      maxBodyLength: Infinity,
+      url: 'https://loanguru.in/loan_guru_app/api/mobile',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    // Fetch data
+    const response = await axios.request(config);
+
+    if (response.data) {
+      const mobileData = response.data;
+
+      // Example: Phone call
+      if (mobileData.phoneNumber) {
+        const phoneNumber = mobileData.phoneNumber;
+        const url = `tel:${phoneNumber}`;
+        Linking.openURL(url).catch((err) =>
+          console.error('Error opening dialer:', err)
+        );
+      } else {
+        Alert.alert('Error', 'Phone number not found in the response.');
+      }
+
+      // Example: Redirect to WhatsApp
+      if (mobileData.whatsappNumber) {
+        openWhatsApp(mobileData.whatsappNumber);
+      }
+    } else {
+      Alert.alert('Error', 'No data received from the API.');
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    Alert.alert('Error', 'Failed to fetch data from the server.');
+  }
+};
+
+// Function to open WhatsApp
+const openWhatsApp = (whatsappNumber : any) => {
+  const message = 'Hello! I want to know more about your services.';
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+    message
+  )}`;
+
+  Linking.openURL(url).catch(() => {
+    Alert.alert(
+      'Error',
+      'Unable to open WhatsApp. Please make sure it is installed.'
+    );
+  });
+};
+
+
+useEffect(() => {
+  // Check if the user has already toggled the switch before
+  const checkToggleStatus = async () => {
+    const hasToggledBefore = await AsyncStorage.getItem('@user_toggled_auction');
+    if (hasToggledBefore === 'true') {
+      setIsSwitchVisible(false); // Hide switch if already toggled
+      setIsToggled(true); // Prevent further toggles
     }
   };
+  checkToggleStatus();
+}, []);
+
+const showAlertAndToggle = async () => {
+  Alert.alert(
+    "Unlock Additional Content",
+    "You’re about to unlock additional content. Tap OK to proceed or Cancel to keep it hidden.",
+    [
+      {
+        text: "Cancel",
+        onPress: () => setIsEnabled(false), // Keep the switch off if the user cancels
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: async () => {
+          setIsEnabled(true);
+          setIsSwitchVisible(false); // Hide the switch when OK is pressed
+
+          // Get the user token from AsyncStorage
+          const token = await AsyncStorage.getItem('@storage_user_token');
+
+          // If the user token exists and the user hasn't toggled the switch before
+          if (token && !isToggled) {
+            // Send the request to store user interest
+            const data = JSON.stringify({
+              listing_ids: [1, 2, 3], // Example listing IDs, modify as needed
+            });
+
+            const config = {
+              method: 'post',
+              url: 'https://loanguru.in/loan_guru_app/api/storeInterest',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              data,
+            };
+
+            try {
+              const response = await axios.request(config);
+              console.log('Response:', response.data);
+
+              // Mark that the user has toggled
+              await AsyncStorage.setItem('@user_toggled_auction', 'true');
+              setIsToggled(true); // Update local state to prevent further toggles
+            } catch (error) {
+              console.log('Error:', error);
+            }
+          }
+        },
+      },
+    ],
+    { cancelable: false }
+  );
+};
 
   return (
     <ImageBackground
@@ -221,19 +279,19 @@ const AuctionDetailScreen = () => {
   </>
 )}
      {isSwitchVisible && (
-  <View style={styles.switchContainer}>
-    <Switch
-      trackColor={{ false: '#767577', true: '#622CFD' }}
-      thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-      ios_backgroundColor="#3e3e3e"
-      onValueChange={toggleSwitch}
-      value={isEnabled}
-    />
-    <Text style={styles.switchLabel}>
-      Are you sure you want to view Auction Properties?
-    </Text>
-  </View>
-)}
+        <View style={styles.switchContainer}>
+          <Switch
+            trackColor={{ false: '#767577', true: '#622CFD' }}
+            thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={showAlertAndToggle} // Call alert function on toggle change
+            value={isEnabled}
+          />
+          <Text style={styles.switchLabel}>
+            Are you sure you want to view Auction Properties?
+          </Text>
+        </View>
+      )}
 
 
        {/* Buttons */}
@@ -241,7 +299,7 @@ const AuctionDetailScreen = () => {
               <TouchableOpacity
                 style={styles.callButton}
                 // disabled={!isChecked}
-                onPress={makeCall}>
+                onPress={fetchAndCall}>
                 <Text style={styles.buttonText}>CALL</Text>
               </TouchableOpacity>
               <TouchableOpacity
