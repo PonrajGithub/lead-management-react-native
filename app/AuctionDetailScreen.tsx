@@ -31,7 +31,7 @@ const AuctionDetailScreen = () => {
   const route = useRoute<AuctionDetailScreenRouteProp>();
   const { item } = route.params;
   const [isEnabled, setIsEnabled] = useState(false);
-  const navigation: any = useNavigation();
+  const [isSwitchVisible, setIsSwitchVisible] = useState(true);  const navigation: any = useNavigation();
 
   // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [fontsLoaded] = useFonts({
@@ -77,49 +77,58 @@ const AuctionDetailScreen = () => {
 
   const toggleSwitch = () => {
     if (!isEnabled) {
-      // Show a confirmation alert before toggling the switch
-      Alert.alert(
-        "Confirmation",
-        "Are you sure you want to view Auction Properties?",
-        [
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-          {
-            text: "OK",
-            onPress: async () => {
-              setIsEnabled(true); // Enable the switch
-              try {
-                // Make the API call
-                const response = await axios.get(
-                  "https://loanguru.in/loan_guru_app/api/storeInterest",
-                  {
-                    headers: {
-                      Authorization: "Bearer YOUR_API_TOKEN", // Replace with your token
-                    },
-                  }
-                );
-  
-                // Store data in AsyncStorage
-                const token = "YOUR_STORAGE_USER_TOKEN"; // Replace with the actual token
-                await AsyncStorage.setItem("@storage_user_token", token);
-                await AsyncStorage.setItem(
-                  "@storage_user_data",
-                  JSON.stringify(response.data)
-                );
-  
-                console.log("Data stored successfully:", response.data);
-              } catch (error: any) {
-                console.error("Error calling API:", error.message);
+      Alert.alert("Confirmation", "Are you sure you want to view Auction Properties?", [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "OK",
+          onPress: async () => {
+            setIsEnabled(true); // Enable the toggle
+            setIsSwitchVisible(false); // Hide the switch after enabling
+            try {
+              const token = await AsyncStorage.getItem("@storage_user_token");
+              if (!token) {
+                ToastAndroid.show("No token found. Please log in again.", ToastAndroid.SHORT);
+                setIsEnabled(false);
+                setIsSwitchVisible(true); // Show the switch again if there's an error
+                return;
               }
-            },
+  
+              const listing_ids = [1, 2, 3, 4, 5]; // Example array
+              if (listing_ids.length > 4) {
+                Alert.alert(
+                  "Notification",
+                  "FOR BETTER EXPERIENCE, PLEASE CONTACT OUR EXPERT."
+                );
+                setIsEnabled(false);
+                setIsSwitchVisible(true); // Show the switch again if listing count exceeds limit
+                return;
+              }
+  
+              const data = { listing_ids };
+              const response = await axios.post(
+                "https://loanguru.in/loan_guru_app/api/storeInterest",
+                data,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`, // Use the stored token
+                  },
+                }
+              );
+  
+              if (response.data) {
+                console.log("API response:", response.data);
+                ToastAndroid.show("Interest stored successfully!", ToastAndroid.SHORT);
+              }
+            } catch (error) {
+              // console.error("Error calling API:", error.message);
+              ToastAndroid.show("Unable to store interest. Please try again.", ToastAndroid.SHORT);
+              setIsEnabled(false);
+              setIsSwitchVisible(true); // Show the switch again if there's an error
+            }
           },
-        ]
-      );
-    } else {
-      // Simply toggle the switch off
-      setIsEnabled(false);
+        },
+      ]);
     }
   };
 
@@ -174,58 +183,58 @@ const AuctionDetailScreen = () => {
       <Text style={styles.item}>{auctionDetails?.ContactNo}</Text>
 
       {/* Conditional rendering for Images and GPS Location */}
-      {isEnabled && (
-        <>
-          {/* Property Images */}
-          {auctionDetails?.Images && auctionDetails?.Images !== 'null' && (
-            <View>
-              <Text style={styles.info}>Property Images</Text>
-              <View style={styles.imageContainer}>
-                {Array.isArray(auctionDetails?.Images) ? (
-                  auctionDetails.Images.map((imageUrl:any, index:any) => (
-                    <Image
-                      key={index}
-                      source={{ uri: imageUrl }}
-                      style={{ width: 100, height: 100, margin: 5 }}
-                    />
-                  ))
-                ) : (
-                  <Image
-                    source={{ uri: auctionDetails?.Images }}
-                    style={{ width: 100, height: 100, margin: 5 }}
-                  />
-                )}
-              </View>
-            </View>
+      {isEnabled && auctionDetails && (
+  <>
+    {auctionDetails?.Images && auctionDetails.Images !== "null" && (
+      <View>
+        <Text style={styles.info}>Property Images</Text>
+        <View style={styles.imageContainer}>
+          {Array.isArray(auctionDetails.Images) ? (
+            auctionDetails.Images.map((imageUrl: any, index: any) => (
+              <Image
+                key={index}
+                source={{ uri: imageUrl }}
+                style={{ width: 100, height: 100, margin: 5 }}
+              />
+            ))
+          ) : (
+            <Image
+              source={{ uri: auctionDetails.Images }}
+              style={{ width: 100, height: 100, margin: 5 }}
+            />
           )}
-
-          {/* GPS Location */}
-          {auctionDetails?.GPSLocation && (
-            <>
-              <Text style={styles.info}>GPS Location</Text>
-              <Text
-                style={styles.gpsLink}
-                onPress={() => Linking.openURL(auctionDetails?.GPSLocation)}
-              >
-                Click to view
-              </Text>
-            </>
-          )}
-        </>
-      )}
-
-      <View style={styles.switchContainer}>
-        <Switch
-          trackColor={{ false: '#767577', true: '#622CFD' }}
-          thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleSwitch}
-          value={isEnabled}
-        />
-        <Text style={styles.switchLabel}>
-          Are you sure you want to view Auction Properties?
-        </Text>
+        </View>
       </View>
+    )}
+
+    {auctionDetails?.GPSLocation && (
+      <>
+        <Text style={styles.info}>GPS Location</Text>
+        <Text
+          style={styles.gpsLink}
+          onPress={() => Linking.openURL(auctionDetails.GPSLocation)}
+        >
+          Click to view
+        </Text>
+      </>
+    )}
+  </>
+)}
+     {isSwitchVisible && (
+  <View style={styles.switchContainer}>
+    <Switch
+      trackColor={{ false: '#767577', true: '#622CFD' }}
+      thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+      ios_backgroundColor="#3e3e3e"
+      onValueChange={toggleSwitch}
+      value={isEnabled}
+    />
+    <Text style={styles.switchLabel}>
+      Are you sure you want to view Auction Properties?
+    </Text>
+  </View>
+)}
+
 
        {/* Buttons */}
        <View style={styles.buttonRow}>

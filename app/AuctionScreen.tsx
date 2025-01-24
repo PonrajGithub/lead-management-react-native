@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Alert,
+  ScrollView,
   ToastAndroid,
   ImageBackground,
 } from 'react-native';
@@ -55,7 +56,7 @@ const AuctionScreen = () => {
       // Retrieve the stored token
       const token = await AsyncStorage.getItem('@storage_user_token');
       if (!token) {
-         ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
+        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
         return;
       }
   
@@ -73,27 +74,37 @@ const AuctionScreen = () => {
           },
         }
       );
-
+  
       if (!response || !response.data) {
         throw new Error('Invalid API response');
       }
   
-      // Process and filter the response data
-      const auctionData = response?.data?.data && response?.data?.data?.length > 0 ? response?.data?.data : [];
-      setAuctionData(auctionData);
-      setFilteredData(auctionData);
+      const auctionData = response.data.data || [];
   
-      if (auctionData.length === 0) {
-        ToastAndroid.show('Try adjusting your search criteria..', ToastAndroid.SHORT);
-
+      // Apply additional filtering logic if needed
+      const filtered = auctionData.filter((item: AuctionItem) => {
+        const matchesLocation =
+          !propertyLocation1 || item.Address.includes(propertyLocation1);
+        const matchesType =
+          !propertyLocation2 || item.PropertyType === propertyLocation2;
+        const matchesBudget =
+          !budget || item.BudgetRange === budget;
+  
+        return matchesLocation && matchesType && matchesBudget;
+      });
+  
+      setAuctionData(auctionData);
+      setFilteredData(filtered);
+  
+      if (filtered.length === 0) {
+        ToastAndroid.show('No results match your criteria.', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.error('Error fetching search results:', error);
       ToastAndroid.show('Unable to fetch search results. Please try again.', ToastAndroid.SHORT);
-
     }
   };
-
+  
 
   const fetchAuctionDetails = async (auctionId: string) => {
     try {
@@ -134,7 +145,7 @@ const AuctionScreen = () => {
     }
   };
   
-
+ 
   const renderItem = ({ item }: { item: AuctionItem }) => (
     <View style={styles.card}>
       <Text style={styles.bankName}>{item.BankName}</Text>
@@ -172,6 +183,7 @@ const AuctionScreen = () => {
     <Text style={styles.subHeader}>
       75453 BANK AUCTION PROPERTIES IN INDIA
     </Text>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
     <View style={styles.stepContainer}>
       {/* Dropdown Filters */}
       <View style={styles.filterContainer}>
@@ -204,12 +216,20 @@ const AuctionScreen = () => {
           onValueChange={(value) => setBudget(value)}
           style={styles.picker}
         >
+          {/* <Picker.Item label="Select Budget" value="" />
+          <Picker.Item label="₹0 to ₹50 Lakh" value="₹0 to ₹50 Lakh" />
+          <Picker.Item label="₹50 to ₹2 Cr" value="₹50 to ₹2 Cr" />
+          <Picker.Item label="₹2 Cr to ₹5 Cr" value="₹2 Cr to ₹5 Cr" />
+          <Picker.Item label="₹5 Cr to ₹10 Cr" value="₹5 Cr to ₹10 Cr" />
+          <Picker.Item label="Above 10 Cr" value="Above 10 Cr" /> */}
+
           <Picker.Item label="Select Budget" value="" />
           <Picker.Item label="₹10 Lakh - ₹20 Lakh" value="₹10 Lakh - ₹20 Lakh" />
           <Picker.Item label="₹20 Lakh - ₹50 Lakh" value="₹20 Lakh - ₹50 Lakh" />
           <Picker.Item label="₹50 Lakh - ₹1 Crore" value="₹50 Lakh - ₹1 Crore" />
           {/* Add more budget ranges as needed */}
         </Picker>
+        
       </View>
 
       {/* Search Button */}
@@ -228,6 +248,7 @@ const AuctionScreen = () => {
         }
       />
     </View>
+    </ScrollView>
     </ImageBackground>
   );
 };
@@ -264,7 +285,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     fontFamily: 'Lato',
-    marginLeft: 20
+    textAlign:'center',
   },
   filterContainer: {
     marginBottom: 10,
@@ -334,7 +355,10 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     fontWeight: '600',
   },
- 
+   scrollViewContent: {
+    flexGrow: 1,
+    // paddingBottom: 20,
+  },
   list: {
     paddingBottom: 20,
   },
