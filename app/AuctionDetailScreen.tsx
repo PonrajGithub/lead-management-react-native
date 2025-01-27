@@ -57,9 +57,9 @@ const AuctionDetailScreen = (auctionId:any) => {
     return <AppLoading />;
   }
 
-  if (!auctionDetails.Images) {
-    ToastAndroid.show('Image not available.', ToastAndroid.SHORT); // Call outside JSX
-  }
+  // if (!auctionDetails.Images) {
+  //   ToastAndroid.show('Image not available.', ToastAndroid.SHORT); // Call outside JSX
+  // }
 
 
 // Function to fetch mobile data and either call or redirect
