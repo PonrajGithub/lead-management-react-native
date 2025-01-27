@@ -22,9 +22,9 @@ const AuctionScreen = () => {
   const [filteredData, setFilteredData] = useState<AuctionItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const [State, setState] = useState(''); // Location filter
-  const [PropertyType, setPropertyType] = useState(''); // Property type filter
-  const [BudgetRange, setBudgetRange] = useState(''); // Budget filter
+  const [State, setState] = useState('');
+  const [PropertyType, setPropertyType] = useState('');
+  const [BudgetRange, setBudgetRange] = useState('');
 
 
 
@@ -56,7 +56,12 @@ const AuctionScreen = () => {
     try {
       const token = await AsyncStorage.getItem('@storage_user_token');
       if (!token) {
-        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
+        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.LONG);
+        return;
+      }
+  
+      if (!State || !PropertyType || !BudgetRange) {
+        ToastAndroid.show('Please select all filters to search.', ToastAndroid.SHORT);
         return;
       }
   
@@ -64,6 +69,8 @@ const AuctionScreen = () => {
       if (State) formData.append('state', State);
       if (PropertyType) formData.append('PropertyType', PropertyType);
       if (BudgetRange) formData.append('BudgetRange', BudgetRange);
+  
+      setIsLoading(true); // Show loader
   
       const response = await axios.post(
         'https://loanguru.in/loan_guru_app/api/property-auctions/search',
@@ -76,16 +83,18 @@ const AuctionScreen = () => {
         }
       );
   
-      if (response.data && response.data.success && response.data.data) {
-        setFilteredData(response.data.data); // Update the list with filtered data
-        // ToastAndroid.show('Auctions fetched successfully.', ToastAndroid.SHORT);
+      const auctions = Array.isArray(response.data.data) ? response.data.data : [];
+      if (response.data.success && auctions.length > 0) {
+        setFilteredData(auctions); // Update the list with filtered data
       } else {
         setFilteredData([]);
         ToastAndroid.show('No results match your criteria.', ToastAndroid.SHORT);
       }
     } catch (error) {
-      // console.error('Error during auction search:', error);
-      ToastAndroid.show('Failed to fetch auctions. Please try again.', ToastAndroid.SHORT);
+      console.error('Error during auction search:', error || error);
+      ToastAndroid.show('Failed to fetch auctions. Please try again.', ToastAndroid.LONG);
+    } finally {
+      setIsLoading(false); // Hide loader
     }
   };
   
@@ -170,50 +179,41 @@ const AuctionScreen = () => {
     <View style={styles.stepContainer}>
       {/* Dropdown Filters */}
       <View style={styles.filterContainer}>
-        <Picker
-          selectedValue={State}
-          onValueChange={(value) => setState(value)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Select Location" value="" />
-          <Picker.Item label="Mumbai" value="Mumbai" />
-          <Picker.Item label="Delhi" value="Delhi" />
-          <Picker.Item label="Bangalore" value="Bangalore" />
-          {/* Add more locations as needed */}
-        </Picker>
+      <Picker
+        selectedValue={State}
+        onValueChange={(value) => setState(value)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Select Location" value="" />
+        <Picker.Item label="Mumbai" value="Mumbai" />
+        <Picker.Item label="Delhi" value="Delhi" />
+        <Picker.Item label="Bangalore" value="Bangalore" />
+      </Picker>
 
-        <Picker
-          selectedValue={PropertyType}
-          onValueChange={(value) => setPropertyType(value)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Select Property Type" value="" />
-          <Picker.Item label="Residential" value="Residential" />
-          <Picker.Item label="Commercial" value="Commercial" />
-          <Picker.Item label="Industrial" value="Industrial" />
-          {/* Add more property types as needed */}
-        </Picker>
+      <Picker
+        selectedValue={PropertyType}
+        onValueChange={(value) => setPropertyType(value)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Select Property Type" value="" />
+        <Picker.Item label="Residential" value="Residential" />
+        <Picker.Item label="Commercial" value="Commercial" />
+        <Picker.Item label="Industrial" value="Industrial" />
+      </Picker>
 
-        <Picker
-          selectedValue={BudgetRange}
-          onValueChange={(value) => setBudgetRange(value)}
-          style={styles.picker}
-        >
-          {/* <Picker.Item label="Select Budget" value="" />
-          <Picker.Item label="₹0 to ₹50 Lakh" value="₹0 to ₹50 Lakh" />
-          <Picker.Item label="₹50 to ₹2 Cr" value="₹50 to ₹2 Cr" />
-          <Picker.Item label="₹2 Cr to ₹5 Cr" value="₹2 Cr to ₹5 Cr" />
-          <Picker.Item label="₹5 Cr to ₹10 Cr" value="₹5 Cr to ₹10 Cr" />
-          <Picker.Item label="Above 10 Cr" value="Above 10 Cr" /> */}
-
-          <Picker.Item label="Select Budget" value="" />
-          <Picker.Item label="₹10 Lakh - ₹20 Lakh" value="₹10 Lakh - ₹20 Lakh" />
-          <Picker.Item label="₹20 Lakh - ₹50 Lakh" value="₹20 Lakh - ₹50 Lakh" />
-          <Picker.Item label="₹50 Lakh - ₹1 Crore" value="₹50 Lakh - ₹1 Crore" />
-          {/* Add more budget ranges as needed */}
-        </Picker>
-        
-      </View>
+      <Picker
+        selectedValue={BudgetRange}
+        onValueChange={(value) => setBudgetRange(value)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Select Budget" value="" />
+        <Picker.Item label="₹0 to ₹50 Lakh" value="₹0 to ₹50 Lakh" />
+        <Picker.Item label="₹50 to ₹2 Cr" value="₹50 to ₹2 Cr" />
+        <Picker.Item label="₹2 Cr to ₹5 Cr" value="₹2 Cr to ₹5 Cr" />
+        <Picker.Item label="₹5 Cr to ₹10 Cr" value="₹5 Cr to ₹10 Cr" />
+        <Picker.Item label="Above 10 Cr" value="Above 10 Cr" />
+      </Picker>
+</View>
 
       {/* Search Button */}
       <TouchableOpacity style={styles.searchButton} 

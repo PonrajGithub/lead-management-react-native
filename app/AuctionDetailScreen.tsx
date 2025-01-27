@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
+  ActivityIndicator,
   ImageBackground,
   Alert,
   ToastAndroid,
@@ -27,13 +28,14 @@ type RootStackParamList = {
 
 type AuctionDetailScreenRouteProp = RouteProp<RootStackParamList, 'AuctionDetailScreen'>;
 
-const AuctionDetailScreen = () => {
+const AuctionDetailScreen = (auctionId:any) => {
   const route = useRoute<AuctionDetailScreenRouteProp>();
   const { item } = route.params;
   const [isEnabled, setIsEnabled] = useState(false);
-  const [isSwitchVisible, setIsSwitchVisible] = useState(true);  const navigation: any = useNavigation();
-  const [isToggled, setIsToggled] = useState(false);
-  // const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+  const [isSwitchVisible, setIsSwitchVisible] = useState(true);  
+  const navigation: any = useNavigation();
+  const [imageUri, setImageUri] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -124,64 +126,37 @@ const openWhatsApp = (whatsappNumber : any) => {
 };
 
 
-useEffect(() => {
-  // Check if the user has already toggled the switch before
-  const checkToggleStatus = async () => {
-    const hasToggledBefore = await AsyncStorage.getItem('@user_toggled_auction');
-    if (hasToggledBefore === 'true') {
-      setIsSwitchVisible(false); // Hide switch if already toggled
-      setIsToggled(true); // Prevent further toggles
-    }
-  };
-  checkToggleStatus();
-}, []);
-
-const showAlertAndToggle = async () => {
+const handleSwitchToggle = async () => {
+  // Display alert when toggle is clicked
   Alert.alert(
-    "Unlock Additional Content",
-    "You’re about to unlock additional content. Tap OK to proceed or Cancel to keep it hidden.",
+    "Confirmation",
+    "Are you sure you want to view Auction Properties?",
     [
       {
-        text: "Cancel",
-        onPress: () => setIsEnabled(false), // Keep the switch off if the user cancels
+        text: "No",
+        onPress: () => {
+          console.log("User selected No");
+        },
         style: "cancel",
       },
       {
-        text: "OK",
+        text: "Yes",
         onPress: async () => {
-          setIsEnabled(true);
-          setIsSwitchVisible(false); // Hide the switch when OK is pressed
+          console.log("User selected Yes");
+          setIsEnabled(true); // Show the auction details
 
-          // Get the user token from AsyncStorage
-          const token = await AsyncStorage.getItem('@storage_user_token');
+          // Check if the token has already been saved
+          const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
+          console.log("Token saved status:", isTokenSaved);
 
-          // If the user token exists and the user hasn't toggled the switch before
-          if (token && !isToggled) {
-            // Send the request to store user interest
-            const data = JSON.stringify({
-              listing_ids: [1, 2, 3], // Example listing IDs, modify as needed
-            });
-
-            const config = {
-              method: 'post',
-              url: 'https://loanguru.in/loan_guru_app/api/storeInterest',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-              },
-              data,
-            };
-
-            try {
-              const response = await axios.request(config);
-              console.log('Response:', response.data);
-
-              // Mark that the user has toggled
-              await AsyncStorage.setItem('@user_toggled_auction', 'true');
-              setIsToggled(true); // Update local state to prevent further toggles
-            } catch (error) {
-              console.log('Error:', error);
-            }
+          if (isTokenSaved) {
+            console.log("Token already saved, hiding toggle.");
+            setIsSwitchVisible(false); // Hide the toggle button if token is saved
+          } else {
+            console.log("Saving token for the first time.");
+            await saveToken();
+            setIsSwitchVisible(false); // Hide the toggle button
+            // Save token to database and set the flag
           }
         },
       },
@@ -189,6 +164,98 @@ const showAlertAndToggle = async () => {
     { cancelable: false }
   );
 };
+
+const saveToken = async () => {
+  try {
+    // Retrieve token from AsyncStorage
+    const token = await AsyncStorage.getItem('@storage_user_token');
+    if (token) {
+      console.log("Token retrieved:", token);
+
+      // Store token in the database
+      await storeTokenToDatabase(token);
+
+      // Set the flag indicating the token is saved
+      await AsyncStorage.setItem('@storage_token_saved', 'true');
+      console.log("Token stored and flag set to true.");
+
+      // After storing token, explicitly update the state
+      setIsSwitchVisible(false);  // Hide the toggle after successful token storage
+    } else {
+      console.error("No token found in AsyncStorage.");
+    }
+  } catch (error) {
+    console.error("Error retrieving or storing token:", error);
+  }
+};
+
+const storeTokenToDatabase = async (token: any) => {
+  let data = JSON.stringify({
+    "listing_ids": [1, 2, 3],
+  });
+
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: 'https://loanguru.in/loan_guru_app/api/storeInterest',
+    headers: { 
+      'Content-Type': 'application/json', 
+      'Authorization': `Bearer ${token}`,
+    },
+    data: data,
+  };
+
+  try {
+    const response = await axios.request(config);
+    console.log('Response Data:', JSON.stringify(response.data));
+  } catch (error) {
+    if (error.response) {
+      console.error('Error storing token:', error.response.data);
+    } else if (error.request) {
+      console.error('Error storing token, no response:', error.request);
+    } else {
+      console.error('Error storing token:', error.message);
+    }
+  }
+};
+
+
+useEffect(() => {
+  const fetchImage = async () => {
+    try {
+      const token = await AsyncStorage.getItem('@storage_user_token');
+      if (token) {
+        const response = await axios.get(
+          `https://loanguru.in/loan_guru_app/api/property-auctions/ListingImages?ListingId=${auctionId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.data && response.data.image_url) {
+          setImageUri(response.data.image_url); // Assuming 'image_url' contains the image URL
+        } else {
+          ToastAndroid.show('No image found for this listing.', ToastAndroid.SHORT);
+        }
+      } else {
+        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      console.error('Error fetching image:', error);
+      ToastAndroid.show('Failed to fetch image. Please try again.', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchImage();
+}, [auctionId]);
+
+if (loading) {
+  return <ActivityIndicator size="large" color="#0000ff" />;
+}
 
   return (
     <ImageBackground
@@ -244,26 +311,30 @@ const showAlertAndToggle = async () => {
       {isEnabled && auctionDetails && (
   <>
     {auctionDetails?.Images && auctionDetails.Images !== "null" && (
-      <View>
-        <Text style={styles.info}>Property Images</Text>
-        <View style={styles.imageContainer}>
-          {Array.isArray(auctionDetails.Images) ? (
-            auctionDetails.Images.map((imageUrl: any, index: any) => (
-              <Image
-                key={index}
-                source={{ uri: imageUrl }}
-                style={{ width: 100, height: 100, margin: 5 }}
-              />
-            ))
-          ) : (
-            <Image
-              source={{ uri: auctionDetails.Images }}
-              style={{ width: 100, height: 100, margin: 5 }}
-            />
-          )}
-        </View>
-      </View>
-    )}
+  <View>
+    <Text style={styles.info}>Property Images</Text>
+    <View style={styles.imageContainer}>
+      {Array.isArray(auctionDetails.Images) ? (
+        auctionDetails.Images.map((imageUrl: any, index: any) => (
+          <Image
+            key={index}
+            source={{ uri: imageUrl }}
+            style={{ width: 100, height: 100, margin: 5 }}
+          />
+        ))
+      ) : (
+        <>
+          <Image
+            source={{ uri: auctionDetails.Images }}
+            style={{ width: 100, height: 100, margin: 5 }}
+          />
+          {ToastAndroid.show('Image not available.', ToastAndroid.SHORT)} {/* This should be outside of JSX */}
+        </>
+      )}
+    </View>
+  </View>
+)}
+
 
     {auctionDetails?.GPSLocation && (
       <>
@@ -279,19 +350,19 @@ const showAlertAndToggle = async () => {
   </>
 )}
      {isSwitchVisible && (
-        <View style={styles.switchContainer}>
-          <Switch
-            trackColor={{ false: '#767577', true: '#622CFD' }}
-            thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={showAlertAndToggle} // Call alert function on toggle change
-            value={isEnabled}
-          />
-          <Text style={styles.switchLabel}>
-            Are you sure you want to view Auction Properties?
-          </Text>
-        </View>
-      )}
+  <View style={styles.switchContainer}>
+    <Switch
+      trackColor={{ false: '#767577', true: '#622CFD' }}
+      thumbColor={isEnabled ? '#f4f3f4' : '#f4f3f4'}
+      ios_backgroundColor="#3e3e3e"
+      onValueChange={handleSwitchToggle} // Call alert function on toggle change
+      value={isEnabled}
+    />
+    <Text style={styles.switchLabel}>
+      Are you sure you want to view Auction Properties?
+    </Text>
+  </View>
+)}
 
 
        {/* Buttons */}

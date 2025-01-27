@@ -57,6 +57,7 @@ const MultiStepForm = ({ }: any) => {
     return <AppLoading />;
   }
 
+  const [otpVerified, setOtpVerified] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -266,7 +267,7 @@ const MultiStepForm = ({ }: any) => {
     }
   };
   
-  const [showNavigationButtons, setShowNavigationButtons] = useState(false);
+  // const [showNavigationButtons, setShowNavigationButtons] = useState(false);
 
   const verifyOtp = async () => {
     const { mobile_number, otp } = formData;
@@ -292,17 +293,18 @@ const MultiStepForm = ({ }: any) => {
     try {
       const response = await axios(config);
   
-      console.log(JSON.stringify(response.data));
-      if (response.data.success) {
+      // Check if response data exists and contains a success property
+      if (response.data && response.data.success) {
         ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
-        // setShowNavigationButtons(true);
-        
-      } else {
-        ToastAndroid.show(response.data.message || 'OTP verification failed', ToastAndroid.SHORT);
+         // Set OTP verified to true
+         console.log('OTP verified successfully, setting otpVerified to true');
+         setOtpVerified(true);
+        } else {
+        ToastAndroid.show(response.data?.message || 'OTP verification failed', ToastAndroid.SHORT);
       }
     } catch (error) {
-      // console.error('Error:', error);
-      ToastAndroid.show('Resend otp', ToastAndroid.SHORT);
+      // console.error('Error during OTP verification:', error);
+      ToastAndroid.show('Invalid OTP', ToastAndroid.SHORT);
     }
   };
   
@@ -426,40 +428,42 @@ const MultiStepForm = ({ }: any) => {
       case 4:
         return (
           <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
-            <View style={styles.stepContainer}>
-              <Text style={styles.label}>Contact details</Text>
-              <TextInput
-                style={[styles.input, errors.mobile_number && styles.errorInput]}
-                placeholder="Mobile number"
-                keyboardType="phone-pad"
-                value={formData.mobile_number}
-                onChangeText={(text) => handleChange('mobile_number', text)}
-              />
-              <TouchableOpacity style={styles.otpButton} onPress={sendOtp}>
-                <Text style={styles.otp}>SendOtp</Text>
-              </TouchableOpacity>
-              <TextInput
-                style={[styles.inputOtp, errors.otp && styles.errorInput]}
-                keyboardType="phone-pad"
-                placeholder="Otp"
-                value={formData.otp}
-                onChangeText={(text) => handleChange('otp', text)}
-              />
-              <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
-                <Text style={styles.otp}>VerifyOtp</Text>
-              </TouchableOpacity>
-             
-                <View style={styles.navigationInstitution}>
-                  <TouchableOpacity onPress={handleBack}>
-                    <Text style={styles.back}>Back</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.navButton} onPress={handleNext}>
-                    <Icon name="chevron-right" size={30} color="#F5F5F5" />
-                  </TouchableOpacity>
-                </View>
-              
-            </View>
-          </ScrollView>
+          <View style={styles.stepContainer}>
+            <Text style={styles.label}>Contact details</Text>
+            <TextInput
+              style={[styles.input, errors.mobile_number && styles.errorInput]}
+              placeholder="Mobile number"
+              keyboardType="phone-pad"
+              value={formData.mobile_number}
+              onChangeText={(text) => handleChange('mobile_number', text)}
+            />
+            <TouchableOpacity style={styles.otpButton} onPress={sendOtp}>
+              <Text style={styles.otp}>SendOtp</Text>
+            </TouchableOpacity>
+            <TextInput
+              style={[styles.inputOtp, errors.otp && styles.errorInput]}
+              keyboardType="phone-pad"
+              placeholder="Otp"
+              value={formData.otp}
+              onChangeText={(text) => handleChange('otp', text)}
+            />
+            <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
+              <Text style={styles.otp}>VerifyOtp</Text>
+            </TouchableOpacity>
+            
+            {/* Conditionally render the Next button */}
+            {otpVerified && (
+              <View style={styles.navigationInstitution}>
+                <TouchableOpacity onPress={handleBack}>
+                  <Text style={styles.back}>Back</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.navButton} onPress={handleNext}>
+                  <Icon name="chevron-right" size={30} color="#F5F5F5" />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
+        </ScrollView>
         );
       case 5:
           return (
@@ -848,6 +852,7 @@ const styles = StyleSheet.create({
    fontSize:16,
    color: '#ffffff',
    fontWeight:'600',
+   textAlign: 'center'
   },
   verifyButton:{
     padding: 10,
@@ -855,13 +860,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     height: 50,
     width: 120,
+    position: 'relative',
+    left: 120
   },
   otpButton:{
     padding: 10,
     backgroundColor: '#622CFD',
     borderRadius: 50,
-    height: 50,
+    height: 40,
     width: 100,
+    position: 'relative',
+    left: 120
   },
   back: {
     fontFamily: 'Lato',
