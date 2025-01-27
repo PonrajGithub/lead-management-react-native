@@ -57,6 +57,9 @@ const AuctionDetailScreen = (auctionId:any) => {
     return <AppLoading />;
   }
 
+  if (!auctionDetails.Images) {
+    ToastAndroid.show('Image not available.', ToastAndroid.SHORT); // Call outside JSX
+  }
 
 
 // Function to fetch mobile data and either call or redirect
@@ -127,36 +130,34 @@ const openWhatsApp = (whatsappNumber : any) => {
 
 
 const handleSwitchToggle = async () => {
-  // Display alert when toggle is clicked
   Alert.alert(
     "Confirmation",
     "Are you sure you want to view Auction Properties?",
     [
       {
         text: "No",
-        onPress: () => {
-          console.log("User selected No");
-        },
+        onPress: () => console.log("User selected No"),
         style: "cancel",
       },
       {
         text: "Yes",
         onPress: async () => {
           console.log("User selected Yes");
-          setIsEnabled(true); // Show the auction details
+          setIsEnabled(true); // Show auction details
 
-          // Check if the token has already been saved
-          const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
-          console.log("Token saved status:", isTokenSaved);
+          try {
+            const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
+            console.log("Token saved status:", isTokenSaved);
 
-          if (isTokenSaved) {
-            console.log("Token already saved, hiding toggle.");
-            setIsSwitchVisible(false); // Hide the toggle button if token is saved
-          } else {
-            console.log("Saving token for the first time.");
-            await saveToken();
-            setIsSwitchVisible(false); // Hide the toggle button
-            // Save token to database and set the flag
+            if (isTokenSaved === "true") {
+              console.log("Token already saved, hiding toggle.");
+              setIsSwitchVisible(false);
+            } else {
+              console.log("Saving token for the first time.");
+              await saveToken(); // Save the token and perform related actions
+            }
+          } catch (error) {
+            console.error("Error checking token saved status:", error);
           }
         },
       },
@@ -167,57 +168,74 @@ const handleSwitchToggle = async () => {
 
 const saveToken = async () => {
   try {
-    // Retrieve token from AsyncStorage
     const token = await AsyncStorage.getItem('@storage_user_token');
     if (token) {
       console.log("Token retrieved:", token);
 
-      // Store token in the database
-      await storeTokenToDatabase(token);
-
-      // Set the flag indicating the token is saved
-      await AsyncStorage.setItem('@storage_token_saved', 'true');
+      await storeTokenToDatabase(token); // Store token in the database
+      await AsyncStorage.setItem('@storage_token_saved', 'true'); // Mark token as saved
       console.log("Token stored and flag set to true.");
 
-      // After storing token, explicitly update the state
-      setIsSwitchVisible(false);  // Hide the toggle after successful token storage
+      setIsSwitchVisible(false); // Hide the toggle after successful save
     } else {
       console.error("No token found in AsyncStorage.");
     }
   } catch (error) {
-    console.error("Error retrieving or storing token:", error);
+    console.error("Error in saveToken function:", error);
   }
 };
-
 const storeTokenToDatabase = async (token: any) => {
-  let data = JSON.stringify({
+  const data = JSON.stringify({
     "listing_ids": [1, 2, 3],
   });
 
-  let config = {
+  const config = {
     method: 'post',
     maxBodyLength: Infinity,
     url: 'https://loanguru.in/loan_guru_app/api/storeInterest',
-    headers: { 
-      'Content-Type': 'application/json', 
+    headers: {
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
     data: data,
   };
 
   try {
+    // Get the current count from AsyncStorage
+    const countString = await AsyncStorage.getItem('@store_token_count');
+    const count = countString ? parseInt(countString, 10) : 0;
+
+    if (count >= 3) {
+      Alert.alert(
+        "FOR BETTER EXPERIENCE, PLEASE CONTACT OUR EXPERT."
+      );
+      console.log("Token usage limit reached.");
+      return; // Exit function without making the request
+    }
+
+    // Make the request
     const response = await axios.request(config);
-    console.log('Response Data:', JSON.stringify(response.data));
+    console.log("Response Data:", JSON.stringify(response.data));
+
+    // Increment the count and save it back to AsyncStorage
+    await AsyncStorage.setItem('@store_token_count', (count + 1).toString());
+    console.log(`Token usage count updated to ${count + 1}`);
   } catch (error) {
-    if (error.response) {
-      console.error('Error storing token:', error.response.data);
-    } else if (error.request) {
-      console.error('Error storing token, no response:', error.request);
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        console.error("Error storing token:", error.response.data);
+      } else if (error.request) {
+        console.error("Error storing token, no response:", error.request);
+      } else {
+        console.error("Error storing token:", error.message);
+      }
     } else {
-      console.error('Error storing token:', error.message);
+      console.error("Unexpected error in storeTokenToDatabase:", error);
     }
   }
 };
+
+
 
 
 useEffect(() => {
@@ -237,10 +255,10 @@ useEffect(() => {
         if (response.data && response.data.image_url) {
           setImageUri(response.data.image_url); // Assuming 'image_url' contains the image URL
         } else {
-          ToastAndroid.show('No image found for this listing.', ToastAndroid.SHORT);
+          // ToastAndroid.show('No image found for this listing.', ToastAndroid.SHORT);
         }
       } else {
-        ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
+        // ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
       }
     } catch (error) {
       console.error('Error fetching image:', error);
@@ -324,12 +342,13 @@ if (loading) {
         ))
       ) : (
         <>
-          <Image
-            source={{ uri: auctionDetails.Images }}
-            style={{ width: 100, height: 100, margin: 5 }}
-          />
-          {ToastAndroid.show('Image not available.', ToastAndroid.SHORT)} {/* This should be outside of JSX */}
-        </>
+      {auctionDetails.Images ? (
+        <Image
+          source={{ uri: auctionDetails.Images }}
+          style={{ width: 100, height: 100, margin: 5 }}
+        />
+      ) : null}
+    </>
       )}
     </View>
   </View>

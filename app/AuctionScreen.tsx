@@ -185,9 +185,10 @@ const AuctionScreen = () => {
         style={styles.picker}
       >
         <Picker.Item label="Select Location" value="" />
-        <Picker.Item label="Mumbai" value="Mumbai" />
         <Picker.Item label="Delhi" value="Delhi" />
-        <Picker.Item label="Bangalore" value="Bangalore" />
+        <Picker.Item label="BHAMASHAH MARG" value="BHAMASHAH MARG" />
+        <Picker.Item label="Rajouri Garden" value="Rajouri Garden" />
+        <Picker.Item label="Gurugram" value="Gurugram" />
       </Picker>
 
       <Picker

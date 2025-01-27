@@ -369,7 +369,7 @@ const MultiStepForm = ({ }: any) => {
             <View style={styles.stepContainer}>
               <Text style={styles.label}>What is your name?</Text>
               <TextInput
-                style={[styles.input, errors.name && styles.errorInput]}
+                style={[styles.input, errors.name ? styles.errorInput  : null]}
                 placeholder="Name"
                 value={formData.name}
                 onChangeText={(text) => handleChange('name', text)}
@@ -393,14 +393,14 @@ const MultiStepForm = ({ }: any) => {
               <Text style={styles.label}>What is your{"\n"}date of birth?</Text>
               <TouchableOpacity onPress={() => setShowPicker(true)}>
                 <TextInput
-                  style={[styles.input, errors.dob && styles.errorInput]}
+                  style={[styles.input, errors.dob ? styles.errorInput : null]}
                   placeholder="dd/mm/yyyy"
                   value={formData.dob}
                   editable={false} // Disable direct editing
                 />
               </TouchableOpacity>
               <TextInput
-                style={[styles.input, errors.email && styles.errorInput]}
+                style={[styles.input, errors.email ? styles.errorInput : null]}
                 placeholder="Email"
                 value={formData.email}
                 onChangeText={(text) => handleChange('email', text)}
@@ -431,7 +431,7 @@ const MultiStepForm = ({ }: any) => {
           <View style={styles.stepContainer}>
             <Text style={styles.label}>Contact details</Text>
             <TextInput
-              style={[styles.input, errors.mobile_number && styles.errorInput]}
+              style={[styles.input, errors.mobile_number ? styles.errorInput : null]}
               placeholder="Mobile number"
               keyboardType="phone-pad"
               value={formData.mobile_number}
@@ -441,7 +441,7 @@ const MultiStepForm = ({ }: any) => {
               <Text style={styles.otp}>SendOtp</Text>
             </TouchableOpacity>
             <TextInput
-              style={[styles.inputOtp, errors.otp && styles.errorInput]}
+              style={[styles.inputOtp, errors.otp ? styles.errorInput : null]}
               keyboardType="phone-pad"
               placeholder="Otp"
               value={formData.otp}
@@ -471,32 +471,32 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.InstituteContainer}>
                 <Text style={styles.label}>Institute details</Text>
                 <TextInput
-                  style={[styles.input, errors.institution_name && styles.errorInput]}
+                  style={[styles.input, errors.institution_name ? styles.errorInput : null]}
                   placeholder="Institution name"
                   value={formData.institution_name}
                   onChangeText={(text) => handleChange('institution_name', text)}
                 />
                 <TextInput
-                  style={[styles.input, errors.occupation && styles.errorInput]}
+                  style={[styles.input, errors.occupation ? styles.errorInput : null]}
                   placeholder="Occupation"
                   value={formData.occupation}
                   onChangeText={(text) => handleChange('occupation', text)}
                 />
                   <TextInput
-                    style={[styles.input, errors.student_name && styles.errorInput]}
+                    style={[styles.input, errors.student_name ? styles.errorInput : null]}
                     placeholder="Student Name"
                     value={formData.student_name}
                     onChangeText={(text) => handleChange('student_name', text)}
                   />
                   <TextInput
-                    style={[styles.input, errors.roll_number && styles.errorInput]}
+                    style={[styles.input, errors.roll_number ? styles.errorInput : null]}
                     placeholder="Roll Number"
                     keyboardType="phone-pad"
                     value={formData.roll_number}
                     onChangeText={(text) => handleChange('roll_number', text)}
                   />
                    <TextInput
-                    style={[styles.input, errors.course_class && styles.errorInput]}
+                    style={[styles.input, errors.course_class ? styles.errorInput : null]}
                     placeholder="Course / Class"
                     value={formData.course_class}
                     onChangeText={(text) => handleChange('course_class', text)}
@@ -518,13 +518,13 @@ const MultiStepForm = ({ }: any) => {
             <View style={styles.stepContainer}>
               <Text style={styles.label}>Company details</Text>
               <TextInput
-                style={[styles.input, errors.company_name && styles.errorInput]}
+                style={[styles.input, errors.company_name ? styles.errorInput : null]}
                 placeholder="Company Name"
                 value={formData.company_name}
                 onChangeText={(text) => handleChange('company_name', text)}
               />
               <TextInput
-                style={[styles.input, errors.designation && styles.errorInput]}
+                style={[styles.input, errors.designation ? styles.errorInput : null]}
                 placeholder="Designation"
                 value={formData.designation}
                 onChangeText={(text) => handleChange('designation', text)}
@@ -546,7 +546,7 @@ const MultiStepForm = ({ }: any) => {
             <View style={styles.stepContainer}>
               <Text style={styles.label}>Yeah! Almost done {"\n"}{"\n"}Create your Log in{"\n"}details</Text>
               <TextInput
-                style={[styles.input, errors.password && styles.errorInput]}
+                style={[styles.input, errors.password ? styles.errorInput : null]}
                 placeholder="Create Password"
                 secureTextEntry
                 value={formData.password}
@@ -584,7 +584,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Name</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.name && styles.errorInput]}
+                  style={[styles.inputReview, errors.name ? styles.errorInput : null]}
                   value={formData.name}
                   onChangeText={(value) => handleChange('name', value)}
                 />
@@ -594,7 +594,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Date of Birth</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.dob && styles.errorInput]}
+                  style={[styles.inputReview, errors.dob ? styles.errorInput : null]}
                   value={formData.dob}
                   onChangeText={(value) => handleChange('dob', value)}
                 />
@@ -604,7 +604,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Mobile Number</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.mobile_number && styles.errorInput]}
+                  style={[styles.inputReview, errors.mobile_number ? styles.errorInput : null]}
                   keyboardType="phone-pad"
                   value={formData.mobile_number}
                   onChangeText={(value) => handleChange('mobile_number', value)}
@@ -615,7 +615,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Mail ID</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.email && styles.errorInput]}
+                  style={[styles.inputReview, errors.email ? styles.errorInput : null]}
                   keyboardType="email-address"
                   value={formData.email}
                   onChangeText={(value) => handleChange('email', value)}
@@ -628,7 +628,7 @@ const MultiStepForm = ({ }: any) => {
                 <View style={styles.inputGroup}>
                   <Text style={styles.labelReview}>Institution Name</Text>
                   <TextInput
-                    style={[styles.inputReview, errors.institution_name && styles.errorInput]}
+                    style={[styles.inputReview, errors.institution_name ? styles.errorInput : null]}
                     value={formData.institution_name}
                     onChangeText={(value) => handleChange('institution_name', value)}
                   />
@@ -637,7 +637,7 @@ const MultiStepForm = ({ }: any) => {
                 <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Occupation</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.occupation && styles.errorInput]}
+                  style={[styles.inputReview, errors.occupation ? styles.errorInput : null]}
                   value={formData.occupation}
                   onChangeText={(value) => handleChange('occupation', value)}
                 />
@@ -652,7 +652,7 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Company Name</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.company_name && styles.errorInput]}
+                  style={[styles.inputReview, errors.company_name ? styles.errorInput : null]}
                   value={formData.company_name}
                   onChangeText={(value) => handleChange('company_name', value)}
                 />
@@ -660,7 +660,10 @@ const MultiStepForm = ({ }: any) => {
               <View style={styles.inputGroup}>
                 <Text style={styles.labelReview}>Designation</Text>
                 <TextInput
-                  style={[styles.inputReview, errors.designation && styles.errorInput]}
+                  style={[
+                    styles.inputReview,
+                    errors.designation ? styles.errorInput   : null,  // Apply error style conditionally
+                  ]}                  
                   value={formData.designation}
                   onChangeText={(value) => handleChange('designation', value)}
                 />
