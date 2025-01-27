@@ -22,7 +22,7 @@ const data = [
   { id: '5', name: 'DGNMES', link:'https://loanguru.in/?page_id=2047' ,icon: DGNMES },
   { id: '6', name: 'Privacy Policy', link:'https://loanguru.in/?page_id=3' ,icon: Privacy },
   { id: '7', name: 'T&C', link:'https://loanguru.in/?page_id=2050' ,icon: TC },
-  { id: '8', name: 'List', link:'https://loanguru.in/?page_id=1528', icon: List },
+  { id: '8', name: 'List Of Documents', link:'https://loanguru.in/?page_id=1528', icon: List },
 ];
 
 const About = () => {
@@ -49,7 +49,7 @@ const About = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>LIST OF DOCUMENTS</Text>
+      <Text style={styles.header}>LIST</Text>
       <FlatList
         data={data}
         renderItem={({ item }) => renderItem({ item })}
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: 'Lato',
     fontSize: 14,
-    margin: 20,
+    margin: 10,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 60,
     height: 60,
-    margin: 10,
+    margin: 5,
   },
   icon:{
     height:50,

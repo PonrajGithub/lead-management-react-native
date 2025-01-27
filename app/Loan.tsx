@@ -114,13 +114,13 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Lato',
     fontSize: 14,
-    margin: 20,
+    // margin: 10,
     color: '#1E1E1E',
     fontWeight:'900',
     marginLeft:15,
     lineHeight:14.4,
     letterSpacing:2,
-    marginTop:'7%',
+    marginTop:'5%',
   },
   row: {
     flexDirection: 'row',
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   itemContainerRow2: {
     alignItems: 'center',
-    margin: 10,
+    margin: -5,
   },
   iconContainer1: {
     backgroundColor: '#E7F4FF',

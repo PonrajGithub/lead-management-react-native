@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: 'Lato',
     fontSize: 14,
-    margin: 20,
+    margin: 10,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    // marginBottom: 20,
   },
   itemContainer: {
     alignItems: 'center',

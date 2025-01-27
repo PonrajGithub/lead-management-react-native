@@ -149,6 +149,11 @@ const LoginScreen = () => {
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
+          {/* <TouchableOpacity 
+          onPress={redirectToForgotPassword}
+          >
+            <Text style={styles.forgotPasswordText}>verify mobile</Text>
+          </TouchableOpacity> */}
 
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
             <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Sign in'}</Text>
@@ -175,7 +180,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     width: '85%',
-    marginTop: '50%',
+    marginTop: '20%',
   },
   row: {
     flexDirection: 'row',

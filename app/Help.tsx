@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    // margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
     borderColor: '#E3E2E2', // Light gray border

@@ -132,15 +132,15 @@ const openWhatsApp = (whatsappNumber : any) => {
 const handleSwitchToggle = async () => {
   Alert.alert(
     "Confirmation",
-    "Are you sure you want to view Auction Properties?",
+    "You’re about to unlock additional content. Tap OK to proceed or Cancel to keep it hidden.",
     [
       {
-        text: "No",
+        text: "Cancel",
         onPress: () => console.log("User selected No"),
         style: "cancel",
       },
       {
-        text: "Yes",
+        text: "OK",
         onPress: async () => {
           console.log("User selected Yes");
           setIsEnabled(true); // Show auction details

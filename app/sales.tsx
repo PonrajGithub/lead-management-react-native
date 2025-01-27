@@ -8,7 +8,7 @@ import ODCCIcon from '../assets/images/icon/odcc.png';
 import Loan from '../assets/images/icon/Loan.png';
 
 const data = [
-  { id: '1', title: 'Sales', link:'https://loanguru.in/?page_id=2277', icon:ODCCIcon},
+  { id: '1', title: '     Sales    ', link:'https://loanguru.in/?page_id=2277', icon:ODCCIcon},
   { id: '2', title: 'Purchase', link:'https://loanguru.in/?page_id=2279', icon:Loan  }
 ];
 
@@ -92,7 +92,8 @@ const styles = StyleSheet.create({
   itemText: {
     fontFamily:'Lato',
     fontSize: 18,
-    marginLeft: 10,
+    // marginLeft: 10,
+    textAlign:'center',
     fontWeight:'600',
     lineHeight:16.8,
     color:"#1E1E1E",

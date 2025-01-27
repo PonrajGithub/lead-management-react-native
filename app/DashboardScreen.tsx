@@ -144,8 +144,8 @@ const DashboardScreen = () => {
       flex: 1,
       backgroundColor: '#FFFFFF',
       // backgroundColor: '#f2f0ef',
-      borderTopLeftRadius: 50,
-      borderTopRightRadius: 50,
+      borderTopLeftRadius: 40,
+      borderTopRightRadius: 40,
       overflow: 'visible', 
     },
   });

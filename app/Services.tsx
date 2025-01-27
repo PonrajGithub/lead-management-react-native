@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Lato',
     fontSize: 14,
-    marginBottom: 20,
+    marginBottom: 10,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
