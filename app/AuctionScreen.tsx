@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  Alert,
   ScrollView,
   ToastAndroid,
   ImageBackground,
@@ -24,8 +23,11 @@ const AuctionScreen = () => {
 
   const [State, setState] = useState('');
   const [PropertyType, setPropertyType] = useState('');
-  const [BudgetRange, setBudgetRange] = useState('');
-
+  // const [BudgetRange, setBudgetRange] = useState('');
+  const [selectedBudgetRange, setSelectedBudgetRange] = useState('');
+  const [states, setStates] = useState([]);
+  const [propertyTypes, setPropertyTypes] = useState([]);
+  const [reservePriceRanges, setReservePriceRanges] = useState([]);
 
 
   type AuctionItem = {
@@ -51,6 +53,31 @@ const AuctionScreen = () => {
     Images: string | null; // Images can be null
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = await AsyncStorage.getItem('@storage_user_token');
+      try {
+        const response = await axios.get('https://loanguru.in/loan_guru_app/api/property-auctions', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.data && response.data.data) {
+          const { states, propertyTypes, reservePriceRanges } = response.data.data;
+          setStates(states);
+          setPropertyTypes(propertyTypes);
+          setReservePriceRanges(reservePriceRanges);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   const handleSearch = async () => {
     try {
@@ -60,7 +87,7 @@ const AuctionScreen = () => {
         return;
       }
   
-      if (!State || !PropertyType || !BudgetRange) {
+      if (!State || !PropertyType || !reservePriceRanges) {
         ToastAndroid.show('Please select all filters to search.', ToastAndroid.SHORT);
         return;
       }
@@ -68,8 +95,7 @@ const AuctionScreen = () => {
       const formData = new FormData();
       if (State) formData.append('state', State);
       if (PropertyType) formData.append('PropertyType', PropertyType);
-      if (BudgetRange) formData.append('BudgetRange', BudgetRange);
-  
+      if (selectedBudgetRange) formData.append('ReservePrice', selectedBudgetRange);
       setIsLoading(true); // Show loader
   
       const response = await axios.post(
@@ -185,10 +211,9 @@ const AuctionScreen = () => {
         style={styles.picker}
       >
         <Picker.Item label="Select Location" value="" />
-        <Picker.Item label="Delhi" value="Delhi" />
-        <Picker.Item label="BHAMASHAH MARG" value="BHAMASHAH MARG" />
-        <Picker.Item label="Rajouri Garden" value="Rajouri Garden" />
-        <Picker.Item label="Gurugram" value="Gurugram" />
+        {states.map((state, index) => (
+          <Picker.Item key={index} label={state} value={state} />
+        ))}
       </Picker>
 
       <Picker
@@ -197,23 +222,21 @@ const AuctionScreen = () => {
         style={styles.picker}
       >
         <Picker.Item label="Select Property Type" value="" />
-        <Picker.Item label="Residential" value="Residential" />
-        <Picker.Item label="Commercial" value="Commercial" />
-        <Picker.Item label="Industrial" value="Industrial" />
+        {propertyTypes.map((type, index) => (
+          <Picker.Item key={index} label={type} value={type} />
+        ))}
       </Picker>
 
       <Picker
-        selectedValue={BudgetRange}
-        onValueChange={(value) => setBudgetRange(value)}
-        style={styles.picker}
-      >
-        <Picker.Item label="Select Budget" value="" />
-        <Picker.Item label="₹0 to ₹50 Lakh" value="₹0 to ₹50 Lakh" />
-        <Picker.Item label="₹50 to ₹2 Cr" value="₹50 to ₹2 Cr" />
-        <Picker.Item label="₹2 Cr to ₹5 Cr" value="₹2 Cr to ₹5 Cr" />
-        <Picker.Item label="₹5 Cr to ₹10 Cr" value="₹5 Cr to ₹10 Cr" />
-        <Picker.Item label="Above 10 Cr" value="Above 10 Cr" />
-      </Picker>
+  selectedValue={selectedBudgetRange}
+  onValueChange={(value) => setSelectedBudgetRange(value)}
+  style={styles.picker}
+>
+  <Picker.Item label="Select Budget" value="" />
+  {reservePriceRanges.map((range, index) => (
+    <Picker.Item key={index} label={range} value={range} />
+  ))}
+</Picker>
 </View>
 
       {/* Search Button */}

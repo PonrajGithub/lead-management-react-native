@@ -168,7 +168,7 @@ const MultiStepForm = ({ }: any) => {
   };
 
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (validateStep()) {
       if (step === 8) {
         handleSubmit(); // Final step, submit data
@@ -181,6 +181,9 @@ const MultiStepForm = ({ }: any) => {
           } else {
             setStep((prev) => prev + 1); // Proceed to next step
           }
+        }
+        if (step == 4){
+          setOtpVerified(false)
         }
       }
     }
@@ -207,7 +210,7 @@ const MultiStepForm = ({ }: any) => {
   };
 
   
-  const handleBack = () => {
+  const handleBack = async () => {
     if (step == 7 && formData?.user_type == 'Institute') {
       setStep(5)
     } else {
@@ -215,6 +218,9 @@ const MultiStepForm = ({ }: any) => {
         setStep(4);
       } else {
         setStep((prev) => (prev > 1 ? prev - 1 : prev));
+      }
+      if (step == 4){
+        setOtpVerified(false)
       }
     }
   };
@@ -292,9 +298,9 @@ const MultiStepForm = ({ }: any) => {
   
     try {
       const response = await axios(config);
-  
+      console.log(response.data, "RES ")
       // Check if response data exists and contains a success property
-      if (response.data && response.data.success) {
+      if (response?.data?.status == "success") {
         ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
          // Set OTP verified to true
          console.log('OTP verified successfully, setting otpVerified to true');
@@ -303,7 +309,7 @@ const MultiStepForm = ({ }: any) => {
         ToastAndroid.show(response.data?.message || 'OTP verification failed', ToastAndroid.SHORT);
       }
     } catch (error) {
-      // console.error('Error during OTP verification:', error);
+      console.error('Error during OTP verification:', error);
       ToastAndroid.show('Invalid OTP', ToastAndroid.SHORT);
     }
   };

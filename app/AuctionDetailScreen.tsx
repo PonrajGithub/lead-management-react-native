@@ -143,13 +143,14 @@ const handleSwitchToggle = async () => {
         text: "OK",
         onPress: async () => {
           console.log("User selected Yes");
-          setIsEnabled(true); // Show auction details
+          // Show auction details
 
           try {
             const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
             console.log("Token saved status:", isTokenSaved);
 
             if (isTokenSaved === "true") {
+              setIsEnabled(true); 
               console.log("Token already saved, hiding toggle.");
               setIsSwitchVisible(false);
             } else {
@@ -235,7 +236,23 @@ const storeTokenToDatabase = async (token: any) => {
   }
 };
 
+const toggleFunction = async() => {
+  try {
+    const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
+    console.log("Token saved status:", isTokenSaved);
 
+    if (isTokenSaved === "true") {
+      setIsEnabled(true);
+      console.log("Token already saved, hiding toggle.");
+      setIsSwitchVisible(false);
+    } else {
+      console.log("Saving token for the first time.");
+      await saveToken(); // Save the token and perform related actions
+    }
+  } catch (error) {
+    console.error("Error checking token saved status:", error);
+  }
+}
 
 
 useEffect(() => {
@@ -267,7 +284,7 @@ useEffect(() => {
       setLoading(false);
     }
   };
-
+  toggleFunction();
   fetchImage();
 }, [auctionId]);
 
@@ -330,7 +347,7 @@ if (loading) {
   <>
     {auctionDetails?.Images && auctionDetails.Images !== "null" && (
   <View>
-    <Text style={styles.info}>Property Images</Text>
+    <Text style={styles.info}>Property Images:</Text>
     <View style={styles.imageContainer}>
       {Array.isArray(auctionDetails.Images) ? (
         auctionDetails.Images.map((imageUrl: any, index: any) => (
