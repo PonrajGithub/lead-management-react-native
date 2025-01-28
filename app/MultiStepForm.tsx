@@ -298,18 +298,18 @@ const MultiStepForm = ({ }: any) => {
   
     try {
       const response = await axios(config);
-      console.log(response.data, "RES ")
+      // console.log(response.data, "RES ")
       // Check if response data exists and contains a success property
       if (response?.data?.status == "success") {
         ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
          // Set OTP verified to true
-         console.log('OTP verified successfully, setting otpVerified to true');
+        //  console.log('OTP verified successfully, setting otpVerified to true');
          setOtpVerified(true);
         } else {
         ToastAndroid.show(response.data?.message || 'OTP verification failed', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.error('Error during OTP verification:', error);
+      // console.error('Error during OTP verification:', error);
       ToastAndroid.show('Invalid OTP', ToastAndroid.SHORT);
     }
   };

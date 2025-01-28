@@ -117,7 +117,7 @@ const AuctionScreen = () => {
         ToastAndroid.show('No results match your criteria.', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.error('Error during auction search:', error || error);
+      // console.error('Error during auction search:', error || error);
       ToastAndroid.show('Failed to fetch auctions. Please try again.', ToastAndroid.LONG);
     } finally {
       setIsLoading(false); // Hide loader

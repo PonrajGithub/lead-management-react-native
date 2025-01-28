@@ -108,7 +108,7 @@ const fetchAndCall = async () => {
       Alert.alert('Error', 'No data received from the API.');
     }
   } catch (error) {
-    console.error('Error fetching data:', error);
+    // console.error('Error fetching data:', error);
     Alert.alert('Error', 'Failed to fetch data from the server.');
   }
 };
@@ -142,19 +142,19 @@ const handleSwitchToggle = async () => {
       {
         text: "OK",
         onPress: async () => {
-          console.log("User selected Yes");
+          // console.log("User selected Yes");
           // Show auction details
 
           try {
             const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
-            console.log("Token saved status:", isTokenSaved);
+            // console.log("Token saved status:", isTokenSaved);
 
             if (isTokenSaved === "true") {
               setIsEnabled(true); 
-              console.log("Token already saved, hiding toggle.");
+              // console.log("Token already saved, hiding toggle.");
               setIsSwitchVisible(false);
             } else {
-              console.log("Saving token for the first time.");
+              // console.log("Saving token for the first time.");
               await saveToken(); // Save the token and perform related actions
             }
           } catch (error) {
@@ -171,11 +171,11 @@ const saveToken = async () => {
   try {
     const token = await AsyncStorage.getItem('@storage_user_token');
     if (token) {
-      console.log("Token retrieved:", token);
+      // console.log("Token retrieved:", token);
 
       await storeTokenToDatabase(token); // Store token in the database
       await AsyncStorage.setItem('@storage_token_saved', 'true'); // Mark token as saved
-      console.log("Token stored and flag set to true.");
+      // console.log("Token stored and flag set to true.");
 
       setIsSwitchVisible(false); // Hide the toggle after successful save
     } else {
@@ -210,17 +210,17 @@ const storeTokenToDatabase = async (token: any) => {
       Alert.alert(
         "FOR BETTER EXPERIENCE, PLEASE CONTACT OUR EXPERT."
       );
-      console.log("Token usage limit reached.");
+      // console.log("Token usage limit reached.");
       return; // Exit function without making the request
     }
 
     // Make the request
     const response = await axios.request(config);
-    console.log("Response Data:", JSON.stringify(response.data));
+    // console.log("Response Data:", JSON.stringify(response.data));
 
     // Increment the count and save it back to AsyncStorage
     await AsyncStorage.setItem('@store_token_count', (count + 1).toString());
-    console.log(`Token usage count updated to ${count + 1}`);
+    // console.log(`Token usage count updated to ${count + 1}`);
   } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response) {
@@ -243,10 +243,10 @@ const toggleFunction = async() => {
 
     if (isTokenSaved === "true") {
       setIsEnabled(true);
-      console.log("Token already saved, hiding toggle.");
+      // console.log("Token already saved, hiding toggle.");
       setIsSwitchVisible(false);
     } else {
-      console.log("Saving token for the first time.");
+      // console.log("Saving token for the first time.");
       await saveToken(); // Save the token and perform related actions
     }
   } catch (error) {
@@ -278,7 +278,7 @@ useEffect(() => {
         // ToastAndroid.show('No token found. Please log in again.', ToastAndroid.SHORT);
       }
     } catch (error) {
-      console.error('Error fetching image:', error);
+      // console.error('Error fetching image:', error);
       ToastAndroid.show('Failed to fetch image. Please try again.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
