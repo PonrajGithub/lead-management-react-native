@@ -90,6 +90,10 @@ const LoginScreen = () => {
   const redirectToForgotPassword = () => {
     navigation.navigate('ForgotPasswordScreen');
   };
+   
+ const redirectToMobileVerify = () =>{
+   navigation.navigate('VerifyOtpScreen');
+ }; 
 
   const redirectToCreateAccount = () => {
     navigation.navigate('MultiStepForm');
@@ -122,7 +126,7 @@ const LoginScreen = () => {
               setEmailError(false);
             }}
           />
-
+         
           <Text style={styles.text}>Password</Text>
           <View style={[styles.passwordContainer, passwordError && styles.inputError]}>
             <TextInput
@@ -142,18 +146,17 @@ const LoginScreen = () => {
                 color="#000"
               />
             </TouchableOpacity>
-          </View>
+            </View>
 
-          <TouchableOpacity 
-          onPress={redirectToForgotPassword}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity 
-          onPress={redirectToForgotPassword}
-          >
-            <Text style={styles.forgotPasswordText}>verify mobile</Text>
-          </TouchableOpacity> */}
+            <View style={styles.inlineContainer}>
+            <TouchableOpacity onPress={redirectToMobileVerify}>
+              <Text style={styles.linkText}>Login with MobileNumber</Text>
+            </TouchableOpacity>
+            <Text style={styles.separator}> / </Text>
+            <TouchableOpacity onPress={redirectToForgotPassword}>
+              <Text style={styles.linkText}>Forgot Password?</Text>
+            </TouchableOpacity>
+          </View> 
 
           <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
             <Text style={styles.buttonText}>{loading ? 'Logging in...' : 'Sign in'}</Text>
@@ -245,13 +248,27 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     lineHeight: 28.8,
   },
-  forgotPasswordText: {
+  inlineContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center', 
+    alignItems: 'center',    
+    marginTop: 10,
+    
+  },
+  linkText: {
     color: '#622CFD',
     marginTop: 20,
     textAlign: 'right',
     fontFamily: 'Lato',
     fontSize: 16,
     lineHeight: 19.2,
+    textDecorationLine: 'underline', 
+  },
+  separator: {
+    fontSize: 16,
+    color: '#000',
+    marginTop: 20,
+    marginHorizontal: 5, 
   },
   button: {
     backgroundColor: '#622CFD',

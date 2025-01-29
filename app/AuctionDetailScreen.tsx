@@ -129,7 +129,8 @@ const openWhatsApp = (whatsappNumber : any) => {
 };
 
 
-const handleSwitchToggle = async () => {
+
+const handleSwitchToggle = () => {
   Alert.alert(
     "Confirmation",
     "You’re about to unlock additional content. Tap OK to proceed or Cancel to keep it hidden.",
@@ -142,23 +143,58 @@ const handleSwitchToggle = async () => {
       {
         text: "OK",
         onPress: async () => {
-          // console.log("User selected Yes");
-          // Show auction details
-
           try {
-            const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
-            // console.log("Token saved status:", isTokenSaved);
+            const token = await AsyncStorage.getItem('@storage_user_token');
+console.log(token, "token")
+            let data = new FormData();
+            data.append('listing_id', auctionDetails?.ListingId);
 
-            if (isTokenSaved === "true") {
-              setIsEnabled(true); 
-              // console.log("Token already saved, hiding toggle.");
-              setIsSwitchVisible(false);
-            } else {
-              // console.log("Saving token for the first time.");
-              await saveToken(); // Save the token and perform related actions
+            // Store Interest API call
+            const storeResponse = await axios.post(
+              'https://loanguru.in/loan_guru_app/api/storeInterest',
+              data,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            );
+
+            // const storeResponse = await axios.request(storeConfig);
+            console.log('Store Interest Response:', storeResponse);
+
+            if (storeResponse.data.status === "error" && storeResponse.data.message === "You can only save up to 3 interests.") {
+              Alert.alert("Limit Reached", "You can only save up to 3 interests.");
+              return;
             }
-          } catch (error) {
-            console.error("Error checking token saved status:", error);
+
+            // If storeInterest was successful, proceed with checkInterest API call
+           
+            const checkResponse = await axios.post(
+              'https://loanguru.in/loan_guru_app/api/checkInterest',
+              data,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            );
+
+            
+            console.log('Check Interest Response:', checkResponse.data);
+
+            if (checkResponse.data.status === "success" && checkResponse.data.data.interested === true) {
+              setIsEnabled(true);
+              setIsSwitchVisible(false);
+              ToastAndroid.show('Interest marked successfully', ToastAndroid.SHORT);
+            } else {
+              console.error("Failed to mark interest or user has already shown interest:", checkResponse.data.message);
+              ToastAndroid.show(checkResponse.data.message || "Failed to mark interest", ToastAndroid.SHORT);
+            }
+          }catch (error) {
+            console.error("Error details:", error || error);
           }
         },
       },
@@ -167,95 +203,40 @@ const handleSwitchToggle = async () => {
   );
 };
 
-const saveToken = async () => {
-  try {
-    const token = await AsyncStorage.getItem('@storage_user_token');
-    if (token) {
-      // console.log("Token retrieved:", token);
+  
 
-      await storeTokenToDatabase(token); // Store token in the database
-      await AsyncStorage.setItem('@storage_token_saved', 'true'); // Mark token as saved
-      // console.log("Token stored and flag set to true.");
-
-      setIsSwitchVisible(false); // Hide the toggle after successful save
-    } else {
-      console.error("No token found in AsyncStorage.");
-    }
-  } catch (error) {
-    console.error("Error in saveToken function:", error);
-  }
-};
-const storeTokenToDatabase = async (token: any) => {
-  const data = JSON.stringify({
-    "listing_ids": [1, 2, 3],
-  });
-
-  const config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: 'https://loanguru.in/loan_guru_app/api/storeInterest',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
-    },
-    data: data,
-  };
-
-  try {
-    // Get the current count from AsyncStorage
-    const countString = await AsyncStorage.getItem('@store_token_count');
-    const count = countString ? parseInt(countString, 10) : 0;
-
-    if (count >= 3) {
-      Alert.alert(
-        "FOR BETTER EXPERIENCE, PLEASE CONTACT OUR EXPERT."
-      );
-      // console.log("Token usage limit reached.");
-      return; // Exit function without making the request
-    }
-
-    // Make the request
-    const response = await axios.request(config);
-    // console.log("Response Data:", JSON.stringify(response.data));
-
-    // Increment the count and save it back to AsyncStorage
-    await AsyncStorage.setItem('@store_token_count', (count + 1).toString());
-    // console.log(`Token usage count updated to ${count + 1}`);
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (error.response) {
-        console.error("Error storing token:", error.response.data);
-      } else if (error.request) {
-        console.error("Error storing token, no response:", error.request);
-      } else {
-        console.error("Error storing token:", error.message);
-      }
-    } else {
-      console.error("Unexpected error in storeTokenToDatabase:", error);
-    }
-  }
-};
-
-const toggleFunction = async() => {
-  try {
-    const isTokenSaved = await AsyncStorage.getItem('@storage_token_saved');
-    console.log("Token saved status:", isTokenSaved);
-
-    if (isTokenSaved === "true") {
-      setIsEnabled(true);
-      // console.log("Token already saved, hiding toggle.");
-      setIsSwitchVisible(false);
-    } else {
-      // console.log("Saving token for the first time.");
-      await saveToken(); // Save the token and perform related actions
-    }
-  } catch (error) {
-    console.error("Error checking token saved status:", error);
-  }
-}
 
 
 useEffect(() => {
+  const checkInterest = async () => {
+    try {
+      const token = await AsyncStorage.getItem('@storage_user_token');
+// console.log(token, "token")
+      let data = new FormData();
+      data.append('listing_id', auctionDetails?.ListingId);
+    const checkResponse = await axios.post(
+      'https://loanguru.in/loan_guru_app/api/checkInterest',
+      data,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    
+    // console.log('Check Interest Response:', checkResponse.data);
+
+    if (checkResponse.data.status === "success" && checkResponse.data.data.interested === true) {
+      setIsEnabled(true);
+      setIsSwitchVisible(false);
+      // ToastAndroid.show('Interest marked successfully', ToastAndroid.SHORT);
+    }
+  }catch (error) {
+    console.error("Error details:", error || error);
+  }
+  }
   const fetchImage = async () => {
     try {
       const token = await AsyncStorage.getItem('@storage_user_token');
@@ -284,8 +265,8 @@ useEffect(() => {
       setLoading(false);
     }
   };
-  toggleFunction();
   fetchImage();
+  checkInterest();
 }, [auctionId]);
 
 if (loading) {

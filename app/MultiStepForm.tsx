@@ -258,7 +258,7 @@ const MultiStepForm = ({ }: any) => {
       // console.log(response?.data?.data?.code); // If OTP code is in the response
   
       if (response.data.success) {
-        const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
+        // const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
         // setReceivedOtp(receivedOtp);
         ToastAndroid.show('OTP sent', ToastAndroid.SHORT);
          // Proceed to OTP verification screen or next step
