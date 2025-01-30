@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Alert, Linking } from 'react-native';
 import { useNavigation } from 'expo-router';
 import AppLoading from 'expo-app-loading';
@@ -9,24 +9,55 @@ import Vacancies from '../assets/images/icon/Vacancies.png';
 import Women from '../assets/images/icon/women.png';
 import Whatsapp from '../assets/images/icon/whatsapp.png';
 
-const data = [
-  { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2039', icon: Vacancies },
-  { id: '2', title: 'Women\nEmpower', link: 'https://loanguru.in/?page_id=2043', icon: Women },
-  { id: '3', title: 'WhatsApp', icon: Whatsapp },
-];
-
-const openWhatsApp = () => {
-  const whatsappNumber = "+917838375738"; // Replace with the owner's WhatsApp number (include country code)
-  const message = "Hello! I want to know more about your services."; // Default message
-
-  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-  Linking.openURL(url).catch(() => {
-    Alert.alert("Error", "Unable to open WhatsApp. Please make sure it is installed.");
-  });
-};
 
 const Job = () => {
   const navigation: any = useNavigation();
+  const [whatsappNumber, setWhatsappNumber] = useState<string | null>(null);
+
+  // Fetch WhatsApp number
+  useEffect(() => {
+    const fetchWhatsAppNumber = async () => {
+      try {
+        const myHeaders = new Headers();
+        myHeaders.append("Cookie", "PHPSESSID=v9e0qghjn8lfhdi879h079bgtg");
+
+        const response = await fetch("https://loanguru.in/wp-json/custom/v1/whatsapp-number", {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow"
+        });
+
+        const result = await response.json();
+        setWhatsappNumber(result.whatsapp_number);
+      } catch (error) {
+        console.error("Error fetching WhatsApp number:", error);
+      }
+    };
+
+    fetchWhatsAppNumber();
+  }, []);
+
+  // Open WhatsApp
+  const openWhatsApp = () => {
+    if (whatsappNumber) {
+      const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+      Linking.openURL(whatsappUrl).catch(() =>
+        console.error("Failed to open WhatsApp")
+      );
+    } else {
+      console.error("WhatsApp number not available");
+    }
+  };
+
+  const data = [
+    { id: '1', title: 'Job\nVacancies', link: 'https://loanguru.in/?page_id=2039', icon: Vacancies },
+    { id: '2', title: 'Women\nEmpower', link: 'https://loanguru.in/?page_id=2043', icon: Women },
+    { id: '3', title: 'WhatsApp', icon: Whatsapp },
+  ];
+  
+  
+ 
+ 
   const [fontsLoaded] = useFonts({
     'Lato': require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });

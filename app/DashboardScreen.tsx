@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, Text, Modal, StyleSheet, ScrollView, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from './Header';
 import Loan from './Loan';
@@ -8,78 +8,48 @@ import About from './About';
 import Job from './Job';
 import Services from './Services';
 import Help from './Help';
-// import ChatBot from './ChatBot';
 import Footer from './Footer';
 import SocialMedia from './SocialMedia';
 import Sales from './sales';
-import Referral from './Referral';
-import Auction from './Auction';
+
+interface Banner {
+  image: string;
+  link: string;
+  client_name: string;
+}
 
 const DashboardScreen = () => {
     const navigation = useNavigation();
-    // const [userName, setUserName] = useState('');
-    // const [token, setToken] = useState('');
-    const [currentImage, setCurrentImage] = useState(require('../assets/images/slider1.png'));
+    const [banners, setBanners] = useState<Banner[]>([]);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  useEffect(() => {
+    const myHeaders = new Headers();
+    myHeaders.append("Cookie", "PHPSESSID=v9e0qghjn8lfhdi879h079bgtg");
 
-    // useEffect(() => {
-    //     const fetchTokenAndUserName = async () => {
-    //         try {
-    //             const storedToken = await AsyncStorage.getItem('@storage_user_token');
-    //             if (storedToken) {
-    //                 setToken(storedToken);
-    //                 const config = {
-    //                     method: 'get',
-    //                     url: 'https://loanguru.in/loan_guru_app/api/userinfo',
-    //                     headers: { 'Authorization': `Bearer ${storedToken}` },
-    //                 };
-    //                 const response = await axios.request(config);
-    //                 const name = response.data?.name || 'User';
-    //                 setUserName(name);
-    //             } 
-    //         } catch (error) {
-    //             console.error('Error fetching user info:', error);
-    //             Alert.alert('Error', 'Failed to fetch user details. Please try again.');
-    //         }
-    //     };
-    //     fetchTokenAndUserName();
-    // }, []);
+    const requestOptions: RequestInit = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow" as RequestRedirect, // ✅ Fix here
+    };
 
-    // const handleLogout = async () => {
-    //     try {
-    //         const config = {
-    //             method: 'get',
-    //             url: 'https://loanguru.in/loan_guru_app/api/logout',
-    //             headers: { 'Authorization': `Bearer ${token}` },
-    //         };
-    //         await axios.request(config);
+    fetch("https://loanguru.in/wp-json/custom/v1/banners", requestOptions)
+      .then((response) => response.json()) // Parse the response as JSON
+      .then((result) => {
+        setBanners(result); // Set the fetched banners
+      })
+      .catch((error) => console.error('Error fetching banners:', error));
+  }, []);
 
-    //         await AsyncStorage.clear();
-    //         navigation.reset({
-    //             index: 0,
-    //             routes: [{ name : 'WelcomeScreen' }],
-    //         });
-    //     } catch (error) {
-    //         console.error('Error during logout:', error);
-    //         Alert.alert('Error', 'An error occurred while logging out. Please try again.');
-    //     }
-    // };
+  useEffect(() => {
+    if (banners.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % banners.length);
+      }, 5000);
 
-    useEffect(() => {
-        const images = [
-            require('../assets/images/slider1.png'),
-            require('../assets/images/slider2.png'),
-            require('../assets/images/slider3.png'),
-        ];
-        let currentIndex = 0;
-
-        const interval = setInterval(() => {
-            currentIndex = (currentIndex + 1) % images.length;
-            setCurrentImage(images[currentIndex]);
-        }, 5000);
-
-        return () => clearInterval(interval);
-    }, []);
+      return () => clearInterval(interval);
+    }
+  }, [banners]);
 
     
 
@@ -93,26 +63,26 @@ const DashboardScreen = () => {
             style={styles.background}
             resizeMode="cover"
           >
-            <View style={styles.bannerContainer}>
-                <Image source={currentImage} style={styles.bannerImage} />
-            </View>
+             <View style={styles.bannerContainer}>
+            {banners.length > 0 && (
+              <Image
+                source={{ uri: banners[currentImageIndex].image}}
+                style={styles.bannerImage}
+              />
+            )}
+          </View>
             <View style={styles.stepOneContainer}>
               <Loan />
               <QuickLink />
-              {/* <Referral/> */}
-              {/* <Auction/> */}
               <Job />
               <About />
               <Services />
               <Help />
               <Sales/>
               <SocialMedia/>
-              {/* <ChatBot/> */}
             </View>
           </ImageBackground>
         </ScrollView>
-  
-        {/* Footer */}
         <Footer />
       </View>
     );

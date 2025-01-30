@@ -28,6 +28,7 @@ type RootStackParamList = {
 
 type AuctionDetailScreenRouteProp = RouteProp<RootStackParamList, 'AuctionDetailScreen'>;
 
+
 const AuctionDetailScreen = (auctionId:any) => {
   const route = useRoute<AuctionDetailScreenRouteProp>();
   const { item } = route.params;
@@ -36,6 +37,8 @@ const AuctionDetailScreen = (auctionId:any) => {
   const navigation: any = useNavigation();
   const [imageUri, setImageUri] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [auctionCallNumber, setAuctionCallNumber] = useState("");
+  const [auctionWhatsAppNumber, setAuctionWhatsAppNumber] = useState("");
   const [fontsLoaded] = useFonts({
     Lato: require('../assets/fonts/Lato/Lato-Regular.ttf'),
   });
@@ -53,82 +56,51 @@ const AuctionDetailScreen = (auctionId:any) => {
   }
 
 
+  useEffect(() => {
+    const formdata = new FormData();
+
+    const requestOptions = {
+      method: "GET",
+      body: formdata,
+      redirect: "follow",
+    };
+
+    fetch("https://loanguru.in/loan_guru_app/api/mobile")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success && data.data.length > 0) {
+          setAuctionCallNumber(data.data[0].auction_calling_number);
+          setAuctionWhatsAppNumber(data.data[0].auction_whatsapp_number);
+        }
+      })
+      .catch((error) => console.error("API Error:", error));
+  }, []);
+
+  // Function to make a call
+  const MobileCall = () => {
+    if (auctionCallNumber) {
+      Linking.openURL(`tel:${auctionCallNumber}`);
+    } else {
+      console.error("Auction calling number not available.");
+    }
+  };
+
+  // Function to open WhatsApp
+  const openWhatsApp = () => {
+    if (auctionWhatsAppNumber) {
+      const whatsappUrl = `https://wa.me/${auctionWhatsAppNumber.replace(/\D/g, "")}`;
+      Linking.openURL(whatsappUrl);
+    } else {
+      console.error("Auction WhatsApp number not available.");
+    }
+  };
+
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
 
-  // if (!auctionDetails.Images) {
-  //   ToastAndroid.show('Image not available.', ToastAndroid.SHORT); // Call outside JSX
-  // }
-
-
-// Function to fetch mobile data and either call or redirect
-const fetchAndCall = async () => {
-  try {
-    // Fetch token from AsyncStorage
-    const token = await AsyncStorage.getItem('@storage_user_token');
-
-    if (!token) {
-      Alert.alert('Error', 'No token found. Please log in.');
-      return;
-    }
-
-    // Axios configuration
-    const config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: 'https://loanguru.in/loan_guru_app/api/mobile',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-
-    // Fetch data
-    const response = await axios.request(config);
-
-    if (response.data) {
-      const mobileData = response.data;
-
-      // Example: Phone call
-      if (mobileData.phoneNumber) {
-        const phoneNumber = mobileData.phoneNumber;
-        const url = `tel:${phoneNumber}`;
-        Linking.openURL(url).catch((err) =>
-          console.error('Error opening dialer:', err)
-        );
-      } else {
-        Alert.alert('Error', 'Phone number not found in the response.');
-      }
-
-      // Example: Redirect to WhatsApp
-      if (mobileData.whatsappNumber) {
-        openWhatsApp(mobileData.whatsappNumber);
-      }
-    } else {
-      Alert.alert('Error', 'No data received from the API.');
-    }
-  } catch (error) {
-    // console.error('Error fetching data:', error);
-    Alert.alert('Error', 'Failed to fetch data from the server.');
-  }
-};
-
-// Function to open WhatsApp
-const openWhatsApp = (whatsappNumber : any) => {
-  const message = 'Hello! I want to know more about your services.';
-  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-    message
-  )}`;
-
-  Linking.openURL(url).catch(() => {
-    Alert.alert(
-      'Error',
-      'Unable to open WhatsApp. Please make sure it is installed.'
-    );
-  });
-};
-
-
+ 
 
 const handleSwitchToggle = () => {
   Alert.alert(
@@ -165,7 +137,7 @@ console.log(token, "token")
             console.log('Store Interest Response:', storeResponse);
 
             if (storeResponse.data.status === "error" && storeResponse.data.message === "You can only save up to 3 interests.") {
-              Alert.alert("Limit Reached", "You can only save up to 3 interests.");
+              Alert.alert("Limit Reached", "For a better experience and more details,click the button below to call us directly.");
               return;
             }
 
@@ -383,20 +355,22 @@ if (loading) {
 
 
        {/* Buttons */}
-       <View style={styles.buttonRow}>
-              <TouchableOpacity
-                style={styles.callButton}
-                // disabled={!isChecked}
-                onPress={fetchAndCall}>
-                <Text style={styles.buttonText}>CALL</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.queryButton}
-                // disabled={!isChecked}
-                onPress={openWhatsApp}>
-                <Text style={styles.buttonText}>QUERY NOW</Text>
-              </TouchableOpacity>
-            </View>
+    
+        <View  style={styles.buttonRow}>
+          <TouchableOpacity
+            style={styles.callButton}
+            onPress= {MobileCall}
+          >
+            <Text style={styles.buttonText}>CALL</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.queryButton}
+            onPress={openWhatsApp}
+          >
+            <Text style={styles.buttonText}>QUERY NOW</Text>
+          </TouchableOpacity>
+        </View>
+    
     </View>
   </ScrollView>
 </View>
