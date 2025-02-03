@@ -7,7 +7,6 @@ import QuickLink from './QuickLink';
 import About from './About';
 import Job from './Job';
 import Services from './Services';
-import Help from './Help';
 import Footer from './Footer';
 import SocialMedia from './SocialMedia';
 import Sales from './sales';
@@ -81,7 +80,6 @@ const DashboardScreen = () => {
             <Job />
             <About />
             <Services />
-            <Help />
             <Sales />
             <SocialMedia />
           </View>
@@ -106,7 +104,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   bannerContainer: {
-    padding: 10,
+    padding: 3,
   },
   bannerImage: {
     width: '100%',

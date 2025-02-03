@@ -32,12 +32,12 @@ const Sales = () => {
   );
 
   return (
-    <View style={styles.container}>
-      {/* <Text style={styles.heading}>HELP</Text> */}
-      <View style={styles.row}>
-        {data.map((item) => renderItem({ item }))}
-      </View>
-    </View>
+     <View style={styles.container}>
+          <Text style={styles.heading}>HELP</Text>
+          <View style={styles.row}>
+            {data.map((item) => renderItem({ item }))}
+          </View>
+        </View>
   );
 };
 
@@ -49,20 +49,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     // paddingTop: 10,
   },
-//   heading: {
-//     fontFamily: 'Lato',
-//     fontSize: 14,
-//     margin:10,
-//     color: '#1E1E1E',
-//     fontWeight: '900',
-//     textAlign: 'left',
-//     lineHeight: 14.4,
-//     letterSpacing: 2,
-//   },
+  heading: {
+    fontFamily: 'Lato',
+    fontSize: 14,
+    margin:10,
+    color: '#1E1E1E',
+    fontWeight: '900',
+    textAlign: 'left',
+    lineHeight: 14.4,
+    letterSpacing: 2,
+  },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginBottom: 15,
+    marginBottom: 5,
   },
   itemContainer: {
     flexDirection: 'row',

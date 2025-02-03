@@ -21,6 +21,7 @@ import AppLoading from "expo-app-loading";
 import { useNavigation } from "expo-router";
 import Checkbox from 'expo-checkbox';
 import * as Linking from 'expo-linking'; // Import Linking for opening URLs
+import Footer from './Footer';
 
 type RootStackParamList = {
   AuctionDetailScreen: { item: any };
@@ -268,32 +269,86 @@ if (loading) {
       <Text style={styles.bank}>{auctionDetails?.Branch}</Text>
       <Text style={styles.price}>₹{auctionDetails?.ReservePrice}</Text>
       <Text style={styles.details}>
+      {/* style={styles.info} */}
         {auctionDetails?.AuctionDate} | {auctionDetails?.PropertySize} | {auctionDetails?.Possession}
       </Text>
+      <View>
+    
+
+  {auctionDetails?.PropertyType && (
+    <>
       <Text style={styles.info}>Property type:</Text>
-      <Text style={styles.item}>{auctionDetails?.PropertyType}</Text>
+      <Text style={styles.item}>{auctionDetails.PropertyType}</Text>
+    </>
+  )}
+
+  {auctionDetails?.SubCategory && (
+    <>
       <Text style={styles.info}>Category:</Text>
-      <Text style={styles.item}>{auctionDetails?.SubCategory}</Text>
+      <Text style={styles.item}>{auctionDetails.SubCategory}</Text>
+    </>
+  )}
+
+  {auctionDetails?.PropertySize && (
+    <>
       <Text style={styles.info}>Property Size:</Text>
-      <Text style={styles.item}>{auctionDetails?.PropertySize}</Text>
+      <Text style={styles.item}>{auctionDetails.PropertySize}</Text>
+    </>
+  )}
+
+  {auctionDetails?.Address && (
+    <>
       <Text style={styles.info}>Address:</Text>
-      <Text style={styles.item}>{auctionDetails?.Address}</Text>
+      <Text style={styles.item}>{auctionDetails.Address}</Text>
+    </>
+  )}
+
+  {auctionDetails?.Possession && (
+    <>
       <Text style={styles.info}>Possession:</Text>
-     <Text style={styles.item}>{auctionDetails?.Possession}</Text>
-      <Text style={styles.info}>Auction date:</Text>
-      <Text style={styles.item}>{auctionDetails?.AuctionDate}</Text>
+      <Text style={styles.item}>{auctionDetails.Possession}</Text>
+    </>
+  )}
+
+  {auctionDetails?.EMDDate && (
+    <>
       <Text style={styles.info}>EMD date:</Text>
-      <Text style={styles.item}>{auctionDetails?.EMDDate}</Text>
-      <Text style={styles.info}>InspectionDate:</Text>
-      <Text style={styles.item}>{auctionDetails?.InspectionDate}</Text>
-       <Text style={styles.info}>BorrowerName:</Text>
-      <Text style={styles.item}>{auctionDetails?.BorrowerName}</Text>
+      <Text style={styles.item}>{auctionDetails.EMDDate}</Text>
+    </>
+  )}
+
+  {auctionDetails?.BorrowerName && (
+    <>
+      <Text style={styles.info}>Borrower Name:</Text>
+      <Text style={styles.item}>{auctionDetails.BorrowerName}</Text>
+    </>
+  )}
+
+  {auctionDetails?.Status && (
+    <>
       <Text style={styles.info}>Status:</Text>
-      <Text style={styles.item}>{auctionDetails?.Status}</Text>
-      <Text style={styles.info}>AuthorisedOfficer:</Text>
-      <Text style={styles.item}>{auctionDetails?.AuthorisedOfficer}</Text>
-      <Text style={styles.info}>ContactNo:</Text>
-      <Text style={styles.item}>{auctionDetails?.ContactNo}</Text>
+      <Text style={styles.item}>{auctionDetails.Status}</Text>
+    </>
+  )}
+
+  {auctionDetails?.AuthorisedOfficer && (
+    <>
+      <Text style={styles.info}>Authorized Officer:</Text>
+      <Text style={styles.item}>{auctionDetails.AuthorisedOfficer}</Text>
+    </>
+  )}
+
+  {auctionDetails?.InspectionDate && (
+    <>
+      <Text style={styles.info}>Inspection Date:</Text>
+      <Text style={styles.item}>{auctionDetails.InspectionDate}</Text>
+    </>
+  )}
+</View>
+
+   
+      {/* <Text style={styles.info}>ContactNo:</Text>
+      <Text style={styles.item}>{auctionDetails?.ContactNo}</Text> */}
 
       {/* Conditional rendering for Images and GPS Location */}
       {isEnabled && auctionDetails && (
@@ -348,7 +403,7 @@ if (loading) {
       value={isEnabled}
     />
     <Text style={styles.switchLabel}>
-      Are you sure you want to view Auction Properties?
+       Click to view more details ?
     </Text>
   </View>
 )}
@@ -373,8 +428,9 @@ if (loading) {
     
     </View>
   </ScrollView>
+  
 </View>
-
+<Footer/>
     </ImageBackground>
   );
 };

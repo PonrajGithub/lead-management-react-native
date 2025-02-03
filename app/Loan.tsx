@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     // margin: 10,
     color: '#1E1E1E',
     fontWeight:'900',
-    marginLeft:15,
+    marginLeft:20,
     lineHeight:14.4,
     letterSpacing:2,
     marginTop:'5%',
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   itemContainerRow1: {
     flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    // margin: 10,
     backgroundColor: '#FFFFFF',
     borderRadius: 15,
     borderColor: '#000', 

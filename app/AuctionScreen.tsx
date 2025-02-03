@@ -14,6 +14,7 @@ import { useNavigation } from "expo-router";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Picker } from '@react-native-picker/picker'; // Import Picker component
+import Footer from './Footer';
 
 const AuctionScreen = () => {
   const navigation: any = useNavigation();
@@ -256,6 +257,7 @@ const AuctionScreen = () => {
       />
     </View>
     </ScrollView>
+    <Footer/>
     </ImageBackground>
   );
 };
@@ -272,7 +274,7 @@ const styles = StyleSheet.create({
     padding: 20,
     flex: 1,
     marginTop:10,
-    display: "flex",
+    overflow: 'visible',
   },
   row: {
     flexDirection: 'row',
@@ -356,11 +358,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
   },
   details: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#000',
     fontFamily: 'Lato',
     marginVertical: 5,
-    fontWeight: '600',
+    fontWeight: '700',
   },
    scrollViewContent: {
     flexGrow: 1,

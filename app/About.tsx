@@ -71,7 +71,9 @@ const styles = StyleSheet.create({
   header: {
     fontFamily: 'Lato',
     fontSize: 14,
-    margin: 10,
+    // margin: 10,
+    marginLeft:15,
+    marginTop:5,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
@@ -82,10 +84,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     // paddingHorizontal:10,
+    paddingBottom:-8
   },
   gridItem: {
     alignItems: 'center',
-    marginBottom: 20,
+    // marginBottom: 20,
     width: '24%',
   },
   iconContainer: {

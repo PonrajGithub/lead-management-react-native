@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: 5,
     width: '22%',
   },
   iconContainer: {

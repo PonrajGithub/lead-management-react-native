@@ -8,13 +8,11 @@ import { useNavigation } from 'expo-router';
 import Legal from '../assets/images/icon/Legal.png';
 import Start from '../assets/images/icon/Start.png';
 import Investors from '../assets/images/icon/Investors.png';
-import Gov from '../assets/images/icon/Gov.png';
 
 const data = [
     { id: '1', title: 'Legal Services', link :'https://loanguru.in/?page_id=2052', icon: Legal }, 
     { id: '2', title: 'Start up Funding', link :'https://loanguru.in/?page_id=2054', icon: Start  }, 
     { id: '3', title: 'Subsidy Schemes', link :'https://loanguru.in/?page_id=2056', icon: Investors }, 
-    { id: '4', title: 'Gov. Policies', link:'https://loanguru.in/?page_id=2265',  icon: Gov }, 
   ];
 
 const Services = () => {
@@ -58,7 +56,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Lato',
     fontSize: 14,
-    marginBottom: 10,
+    // marginBottom: 10,
     color: '#1E1E1E',
     fontWeight: '900',
     textAlign: 'left',
@@ -72,8 +70,8 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     alignItems: 'center',
-    marginBottom: 20,
-    width: '22%', // Ensure proper spacing and alignment
+    marginBottom: 5,
+    width: '33%', 
   },
   iconContainer: {
     backgroundColor: '#FFFFFF',
