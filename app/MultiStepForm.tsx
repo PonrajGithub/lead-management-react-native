@@ -703,7 +703,7 @@ const MultiStepForm = ({ }: any) => {
             <Text style={styles.modalTitle}>Terms and Conditions</Text>
             <ScrollView>
             <Text style={styles.modalText}>
-            Please read on to learn the rules and restrictions that govern your use of our Application/Services. These Terms and Conditions (the “Terms” or the “Agreement”) are a binding contract between you and Loan Guru . If you have any questions, comments, or concerns regarding these terms or the Services, please contact us at support@LoanGuru.in
+            Please read on to learn the rules and restrictions that govern your use of our Application/Services. These Terms and Conditions (the “Terms” or the “Agreement”) are a binding contract between you and Loan Guru . If you have any questions, comments, or concerns regarding these terms or the Services, please contact us at support@loanguru.in
 You must agree to and accept all the Terms, or you don’t have the right to use the Services. Your using the Services in any way means that you agree to all of these Terms, and these Terms will remain in effect while you use the Services. These Terms include the provisions mentioned below, as well as those in the Privacy Policy.
 •	You are aware and you accept that all information, content, materials, products on the application is protected and secured.
 •	You understand and accept that you are allowed to track your financial life through the use of Application. You agree that you will be allowed to make any transaction through the Application when you complete the KYC process and provide the complete information including personal information in accordance with the Know your client (“KYC”) guidelines issued by Securities and Exchange Board of India or any other regulator/government authorities/agencies/AMCs from time to time.
@@ -716,10 +716,10 @@ You must agree to and accept all the Terms, or you don’t have the right to use
 •	You agree that you will not use the application for any purpose that is unlawful or prohibited by these Terms. You also agree you will not use the application in any manner that could damage, disable or impair the application or interfere with any other party’s use, legal rights, or enjoyment of the application. You hereby represent and warrant that you shall make use of the Application as a prudent, reasonable and law abiding citizen and you shall comply with relevant necessary laws.
 •	Loan Guru reserves the right in its sole discretion to delete, block, restrict, disable, suspends your account or part thereof. If the User is found engaging in any fraudulent/illegal activities including but not limited to the following activities i.e abusing any of the representatives of the organization, indulge in fraudulent activities on the Application, using mass media and/or bots to engage with the platform, using mass media and/or bots to malign the organization’s reputation these activities may be referred to appropriate legal authority for a legal recourse.
 •	Additionally, by continuing using the Application or Services of Loan Guru  you are confirming that:
-•	(a) You are 18 years of age or older and where you are acting as Guardian on behalf of a minor, you have the necessary authority to register/sign up for the Services on behalf of the minor. If Loan Guru learns that we have collected personal information from a person under age 18, we will delete that information as quickly as possible. If you believe that a person under 18 may have provided us with personal information, please contact us at support@LoanGuru.in 
-•	(b) You have read and understood the Privacy Policy published on the website and mobile applications of Loan Guru. The information you provide when you register on the Application is true and correct. In the event, your information is not accessible online and you wish to change or delete your personal information or other information that you may have provided, please contact us immediately at support@LoanGuru.in.
+•	(a) You are 18 years of age or older and where you are acting as Guardian on behalf of a minor, you have the necessary authority to register/sign up for the Services on behalf of the minor. If Loan Guru learns that we have collected personal information from a person under age 18, we will delete that information as quickly as possible. If you believe that a person under 18 may have provided us with personal information, please contact us at support@loanguru.in 
+•	(b) You have read and understood the Privacy Policy published on the website and mobile applications of Loan Guru. The information you provide when you register on the Application is true and correct. In the event, your information is not accessible online and you wish to change or delete your personal information or other information that you may have provided, please contact us immediately at support@loanguru.in.
 •	(c) You shall notify Loan Guru of any material change in your personal information and/or profile. Loan Guru would rely on the most recent information provided by you.
-•	(d) You agree to be contacted by Loan Guru and its employees and partners over phone and/or E-mail and/or SMS or any other form of electronic communication in connection with your registration, advisory and transactions. This consent overrides any registration for DNC/NDNC. You agree and confirm that if your mobile number is registered in the Do Not Disturb (DND) list of TRAI, you may not receive SMS from Loan Guru. You agree to take steps to deregister from the DND list and shall not hold Loan Guru liable for non-receipt of SMS. You can always opt to stop receiving any or all such communications by writing to support@LoanGuru.in You can also delete your account at any point of time by writing to support@LoanGuru.in or by visiting the Delete Account section on the Application
+•	(d) You agree to be contacted by Loan Guru and its employees and partners over phone and/or E-mail and/or SMS or any other form of electronic communication in connection with your registration, advisory and transactions. This consent overrides any registration for DNC/NDNC. You agree and confirm that if your mobile number is registered in the Do Not Disturb (DND) list of TRAI, you may not receive SMS from Loan Guru. You agree to take steps to deregister from the DND list and shall not hold Loan Guru liable for non-receipt of SMS. You can always opt to stop receiving any or all such communications by writing to support@loanguru.in You can also delete your account at any point of time by writing to support@loanguru.in or by visiting the Delete Account section on the Application
 
             </Text>
             </ScrollView>
@@ -1132,10 +1132,12 @@ const styles = StyleSheet.create({
     fontFamily:'Lato',
   },
   modalText: {
-    fontSize: 20,
+    fontSize: 16,
+    lineHeight: 24,
     color: '#333',
-    textAlign: 'center',
+    alignContent:'center',
     marginBottom: 20,
+    fontFamily:'Lato',
   },
   createAccountButton: {
     backgroundColor: '#622CFD',
