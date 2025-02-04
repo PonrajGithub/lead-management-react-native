@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useNavigation } from 'expo-router';
 
-import UnsecuredIcon from '../assets/images/icon/unSecurity.png';
+import UnsecuredIcon from '../assets/images/icon/un.png';
 import SecuredIcon from '../assets/images/icon/security.png';
 import SMEIcon from '../assets/images/icon/sme.png';
 import ODCCIcon from '../assets/images/icon/odcc.png';
@@ -58,7 +58,7 @@ const Loan: React.FC = () => {
     <TouchableOpacity key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.itemContainerRow1}>
       <View style={styles.iconContainer1}>
-          <Image source={item.icon} style={styles.icon} />
+          <Image source={item.icon} style={item.title == "Unsecured\nLoan" ? styles.iconRow2 : styles.iconRow1} />
         </View>
         <Text style={styles.titleRow1}>{item.title}</Text>
       </View>
@@ -69,7 +69,7 @@ const Loan: React.FC = () => {
     <TouchableOpacity key={item.id} onPress={() => navigation.navigate('WebViewScreen', { uri: item.link })}>
       <View style={styles.itemContainerRow2}>
       <View style={styles.iconContainer}>
-          <Image source={item.icon} style={styles.icon} />
+          <Image source={item.icon} style={ styles.icon } />
         </View>
         <Text style={styles.titleRow2}>{item.title}</Text>
       </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: 'Lato',
     fontSize: 14,
-    // margin: 10,
+    margin: 6,
     color: '#1E1E1E',
     fontWeight:'900',
     marginLeft:20,
@@ -146,12 +146,11 @@ const styles = StyleSheet.create({
   iconContainer1: {
     backgroundColor: '#E7F4FF',
     padding: 10,
-    borderRadius: 15,
+    borderRadius: 50,
     height:56,
     width:56, 
     justifyContent: 'center',
     alignItems: 'center',
-    
   },
   iconContainer: {
     backgroundColor: '#E7F4FF',
@@ -162,6 +161,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom:5,
+  },
+  iconRow1: {
+    width: 45,
+    height: 45,
+    // padding:5,
+  },
+  iconRow2: {
+    width: 35,
+    height: 35,
+    // padding:5,
   },
   icon: {
     width: 50,
