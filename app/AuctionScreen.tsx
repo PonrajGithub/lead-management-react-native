@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontFamily: 'Lato',
     marginVertical: 5,
-    fontWeight: '700',
+    fontWeight: '600',
   },
    scrollViewContent: {
     flexGrow: 1,

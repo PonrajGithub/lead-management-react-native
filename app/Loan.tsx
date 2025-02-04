@@ -4,7 +4,7 @@ import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import { useNavigation } from 'expo-router';
 
-import UnsecuredIcon from '../assets/images/icon/unsecurity.png';
+import UnsecuredIcon from '../assets/images/icon/unSecurity.png';
 import SecuredIcon from '../assets/images/icon/security.png';
 import SMEIcon from '../assets/images/icon/sme.png';
 import ODCCIcon from '../assets/images/icon/odcc.png';

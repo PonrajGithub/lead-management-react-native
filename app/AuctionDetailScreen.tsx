@@ -503,11 +503,11 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
   },
   details: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#555',
-    marginBottom: 15,
     fontFamily: 'Lato',
-    fontWeight:'600',
+    marginVertical: 5,
+    fontWeight: '600',
   },
   card: {
     backgroundColor: '#FFF',
