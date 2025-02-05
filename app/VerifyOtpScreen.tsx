@@ -95,8 +95,8 @@ const VerifyOtpScreen = () => {
   
       // Check if the response status is success
       if (response?.data?.status === 'success') {
-        const { token, user_id, name, phone } = response.data.data;
-  
+        const { token } = response.data.data;
+        console.log(token);
         // Store token and user data in AsyncStorage
         await AsyncStorage.setItem('@storage_user_token', token);
         await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data.data));

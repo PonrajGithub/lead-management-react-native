@@ -26,18 +26,15 @@ const FirstScreen = () => {
   useEffect(() => {
     const checkAppState = async () => {
       try {
-        const storedData = await AsyncStorage.getItem('@storage_user_data');
+        const storedData = await AsyncStorage.getItem('@storage_user_token');
         if (storedData !== null) {
-          const parsedData = JSON.parse(storedData);
-          const token = parsedData?.data?.token;
-
-          if (token) {
+          // const parsedData = JSON.parse(storedData);
+          // const token = parsedData?.data?.token;
             // Token exists, navigate to DashboardScreen
             return navigation.reset({
               index: 0,
               routes: [{ name: 'DashboardScreen' }],
             });
-          }
         }
       } catch (error) {
         console.error('Error checking app state:', error);
