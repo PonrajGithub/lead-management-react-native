@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginRight:'90%',
-    marginBottom:'60%',
+    marginBottom:'20%',
   },
   image: {
    alignItems:'center',
-   marginBottom:'30%', 
+   marginBottom:'20%', 
   },
   heading: {
     fontSize: 40,

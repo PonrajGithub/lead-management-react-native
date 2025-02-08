@@ -10,6 +10,7 @@ import {
   ToastAndroid,
   ScrollView,
   Button,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from 'expo-router';
 import { useFonts } from 'expo-font';
@@ -157,10 +158,10 @@ const MultiStepForm = ({ }: any) => {
         // Navigate to the Congrats screen
         navigation.reset({ index: 0, routes: [{ name: 'CongratsScreen' }] });
       } else {
-        throw new Error(response.data.message || 'Unknown error occurred.');
+        throw new Error(response.data.message);
       }
-    } catch (error: any) {
-      // Show error message
+    } catch (error) {
+      console.error(error);
       ToastAndroid.show('Server error please try again later', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
@@ -420,7 +421,7 @@ const MultiStepForm = ({ }: any) => {
                   maximumDate={new Date()} // Optional: Restrict to past dates
                 />
               )}
-              <View style={styles.navigationDob}>
+              <View style={styles.navigation}>
                 <TouchableOpacity onPress={handleBack}>
                   <Text style={styles.back}>Back</Text>
                 </TouchableOpacity>
@@ -459,7 +460,7 @@ const MultiStepForm = ({ }: any) => {
             
             {/* Conditionally render the Next button */}
             {otpVerified && (
-              <View style={styles.navigationInstitution}>
+              <View style={styles.navigation}>
                 <TouchableOpacity onPress={handleBack}>
                   <Text style={styles.back}>Back</Text>
                 </TouchableOpacity>
@@ -507,7 +508,7 @@ const MultiStepForm = ({ }: any) => {
                     value={formData.course_class}
                     onChangeText={(text) => handleChange('course_class', text)}
                   />
-                <View style={styles.navigationInstitution}>
+                <View style={styles.navigation}>
                   <TouchableOpacity onPress={handleBack}>
                     <Text style={styles.back}>Back</Text>
                   </TouchableOpacity>
@@ -535,7 +536,7 @@ const MultiStepForm = ({ }: any) => {
                 value={formData.designation}
                 onChangeText={(text) => handleChange('designation', text)}
               />
-              <View style={styles.navigationCom}>
+              <View style={styles.navigation}>
                 <TouchableOpacity onPress={handleBack}>
                   <Text style={styles.back}>Back</Text>
                 </TouchableOpacity>
@@ -558,7 +559,7 @@ const MultiStepForm = ({ }: any) => {
                 value={formData.password}
                 onChangeText={(text) => handleChange('password', text)}
               />
-              <View style={styles.navigationPass}>
+              <View style={styles.navigation}>
                 <TouchableOpacity onPress={handleBack}>
                   <Text style={styles.back}>Back</Text>
                 </TouchableOpacity>
@@ -796,6 +797,7 @@ You must agree to and accept all the Terms, or you don’t have the right to use
   );
 };
 
+const { width } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -808,7 +810,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     padding: 30,
-    marginTop: '40%',
+    // marginTop: '40%',
     flex: 1,
     display: "flex",
   },
@@ -817,44 +819,32 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     padding: 30,
-    marginTop: '10%',
+    // marginTop: '10%',
     flex: 1,
     display: "flex",
   },
   navigation: {
-    top: '60%',
-    // bottom:'20%',
     flexDirection: 'row',
-    padding: 30,
     justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: width * 0.05, // 5% of screen width for padding
+    width: '100%',
   },
-  navigationDob: {
-    top: '40%',
-    // bottom:'20%',
-    flexDirection: 'row',
-    padding: 30,
-    justifyContent: 'space-between',
-  },
-  navigationCom: {
-    top: '40%',
-    // bottom:'20%',
-    flexDirection: 'row',
-    padding: 30,
-    justifyContent: 'space-between',
-  },
-  navigationPass: {
-    top: '30%',
-    // bottom:'20%',
-    flexDirection: 'row',
-    padding: 30,
-    justifyContent: 'space-between',
+  back: {
+    fontSize: width * 0.05, 
+    color: '#1E1E1E',
+    // fontWeight: '600',
+    lineHeight: 25.5,
+    fontFamily:'Lato',
   },
   navButton: {
+    // backgroundColor: '#007AFF',
+    paddingVertical: width * 0.02, // Responsive padding
+    paddingHorizontal: width * 0.04, // Responsive padding
+    borderRadius: width * 0.50,
     padding: 10,
     backgroundColor: '#622CFD',
-    borderRadius: 40,
-    height: 50,
-    width: 50,
   },
   otp:{
    fontFamily:'Lato',
@@ -880,14 +870,6 @@ const styles = StyleSheet.create({
     width: 100,
     position: 'relative',
     left: 120
-  },
-  back: {
-    fontFamily: 'Lato',
-    color: '#1E1E1E',
-    marginTop: '30%',
-    fontWeight: '400',
-    fontSize: 17,
-    lineHeight: 25.5,
   },
   stepOneLabel: {
     fontSize: 32,
@@ -972,13 +954,6 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     marginTop: 5,
     fontFamily: 'Lato',
-  },
-  navigationInstitution:{
-    top: '20%',
-    // bottom:'20%',
-    flexDirection: 'row',
-    padding: 30,
-    justifyContent: 'space-between',
   },
   label: {
     fontSize: 32,
