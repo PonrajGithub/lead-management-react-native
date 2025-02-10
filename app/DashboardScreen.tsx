@@ -9,7 +9,6 @@ import Job from './Job';
 import Services from './Services';
 import Footer from './Footer';
 import SocialMedia from './SocialMedia';
-import Sales from './sales';
 
 interface Banner {
   image: string;
@@ -70,6 +69,7 @@ const DashboardScreen = () => {
                 <Image
                   source={{ uri: banners[currentImageIndex].image }}
                   style={styles.bannerImage}
+                  resizeMode="cover"
                 />
               </TouchableOpacity>
             )}
@@ -80,7 +80,6 @@ const DashboardScreen = () => {
             <Job />
             <About />
             <Services />
-            <Sales />
             <SocialMedia />
           </View>
         </ImageBackground>
@@ -110,6 +109,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 150,
     borderRadius: 20,
+
   },
   stepOneContainer: {
     flex: 1,

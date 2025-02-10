@@ -59,6 +59,9 @@ const MultiStepForm = ({ }: any) => {
   }
 
   const [otpVerified, setOtpVerified] = useState(false);
+  const [SendOtp, setSendOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
+  const [timer, setTimer] = useState(0);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
@@ -152,7 +155,7 @@ const MultiStepForm = ({ }: any) => {
         await AsyncStorage.setItem('@storage_user_token', token);
         await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data));
         // Show success message
-        ToastAndroid.show('Registration successful!', ToastAndroid.SHORT);
+        ToastAndroid.show(response.data.message || 'Registration successful!', ToastAndroid.SHORT);
 
 
         // Navigate to the Congrats screen
@@ -229,7 +232,16 @@ const MultiStepForm = ({ }: any) => {
   const handleChange = (key: string, value: any) => {
     setFormData((prev) => ({ ...prev, [key]: value }));
   };
-
+  
+  useEffect(() => {
+    if (timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+  
+      return () => clearInterval(interval); // Cleanup on unmount
+    }
+  }, [timer]);
 
   const sendOtp = async () => {
     const { mobile_number } = formData;
@@ -258,17 +270,20 @@ const MultiStepForm = ({ }: any) => {
       
       // console.log(response?.data?.data?.code); // If OTP code is in the response
   
-      if (response.data.success) {
+      if (response.data) {
         // const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
         // setReceivedOtp(receivedOtp);
-        ToastAndroid.show('OTP sent', ToastAndroid.SHORT);
-         // Proceed to OTP verification screen or next step
+        ToastAndroid.show(response.data.message || 'OTP sent', ToastAndroid.SHORT);
+        setSendOtp(true);
+        setOtpSent(true);
+        setTimer(30);
       } else {
         ToastAndroid.show(response.data.message || 'Failed to send OTP', ToastAndroid.SHORT);
+        // setSendOtp(true);
       }
     } catch (error) {
       console.error(error);
-      ToastAndroid.show('An error occurred. Try again.', ToastAndroid.SHORT);
+      ToastAndroid.show('This mobile number is already associated with another user.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -444,19 +459,25 @@ const MultiStepForm = ({ }: any) => {
               value={formData.mobile_number}
               onChangeText={(text) => handleChange('mobile_number', text)}
             />
-            <TouchableOpacity style={styles.otpButton} onPress={sendOtp}>
-              <Text style={styles.otp}>SendOtp</Text>
+            <TouchableOpacity style={styles.otpButton} onPress={sendOtp} disabled={loading || timer > 0} >
+            <Text style={styles.otp}>
+              {loading ? 'Sending...' : otpSent ? (timer > 0 ? `Resend OTP (${timer}s)` : 'Resend OTP') : 'Send OTP'}
+            </Text>            
             </TouchableOpacity>
+            {SendOtp && (
+              <>
             <TextInput
               style={[styles.inputOtp, errors.otp ? styles.errorInput : null]}
               keyboardType="phone-pad"
-              placeholder="Otp"
+              placeholder="OTP"
               value={formData.otp}
               onChangeText={(text) => handleChange('otp', text)}
             />
             <TouchableOpacity style={styles.verifyButton} onPress={verifyOtp}>
-              <Text style={styles.otp}>VerifyOtp</Text>
+              <Text style={styles.otp}>Verify OTP</Text>
             </TouchableOpacity>
+            </>
+            )}
             
             {/* Conditionally render the Next button */}
             {otpVerified && (
@@ -848,28 +869,22 @@ const styles = StyleSheet.create({
   },
   otp:{
    fontFamily:'Lato',
-   fontSize:16,
-   color: '#ffffff',
-   fontWeight:'600',
-   textAlign: 'center'
+   color: '#fff',
+   fontSize: 18,
   },
   verifyButton:{
-    padding: 10,
     backgroundColor: '#622CFD',
-    borderRadius: 50,
-    height: 40,
-    width: 100,
-    position: 'relative',
-    left: 120
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    // marginTop:'10%',
   },
   otpButton:{
-    padding: 10,
     backgroundColor: '#622CFD',
-    borderRadius: 50,
-    height: 40,
-    width: 100,
-    position: 'relative',
-    left: 120
+    paddingVertical: 15,
+    borderRadius: 8,
+    alignItems: 'center',
+    // marginTop:'10%',
   },
   stepOneLabel: {
     fontSize: 32,

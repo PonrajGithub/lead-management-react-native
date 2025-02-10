@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    // backgroundColor: '#f2f0ef',
+    backgroundColor: '#f2f0ef',
   },
   header: {
     fontFamily: 'Lato',
@@ -73,10 +73,10 @@ const styles = StyleSheet.create({
     width: '25%',
   },
   iconContainer: {
-    backgroundColor: '#f2f0ef',
+    backgroundColor: '#FFFFFF',
     borderRadius: 15,
+    borderColor: '#E3E2E2',
     borderWidth: 1,
-    borderColor: '#f2f0ef',
     alignItems: 'center',
     justifyContent: 'center',
     width: 60,
