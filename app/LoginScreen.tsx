@@ -91,10 +91,6 @@ const LoginScreen = () => {
     navigation.navigate('ForgotPasswordScreen');
   };
    
- const redirectToMobileVerify = () =>{
-   navigation.navigate('VerifyOtpScreen');
- }; 
-
   const redirectToCreateAccount = () => {
     navigation.navigate('MultiStepForm');
   };
@@ -105,7 +101,7 @@ const LoginScreen = () => {
         <View>
           <View style={styles.row}>
             <TouchableOpacity
-              onPress={() => navigation.navigate('WelcomeScreen')}
+              onPress={() => navigation.navigate('VerifyOtpScreen')}
               style={styles.iconContainer}
             >
               <Icon name="chevron-left" size={30} color="#000" />
@@ -126,7 +122,6 @@ const LoginScreen = () => {
               setEmailError(false);
             }}
           />
-         
           <Text style={styles.text}>Password</Text>
           <View style={[styles.passwordContainer, passwordError && styles.inputError]}>
             <TextInput
@@ -149,10 +144,6 @@ const LoginScreen = () => {
             </View>
 
             <View style={styles.inlineContainer}>
-            <TouchableOpacity onPress={redirectToMobileVerify}>
-              <Text style={styles.linkText}>Login with MobileNumber</Text>
-            </TouchableOpacity>
-            <Text style={styles.separator}> / </Text>
             <TouchableOpacity onPress={redirectToForgotPassword}>
               <Text style={styles.linkText}>Forgot Password?</Text>
             </TouchableOpacity>
@@ -250,10 +241,8 @@ const styles = StyleSheet.create({
   },
   inlineContainer: {
     flexDirection: 'row',
-    justifyContent: 'center', 
-    alignItems: 'center',    
-    marginTop: 10,
-    
+    justifyContent:'flex-end',     
+    margin: 10,
   },
   linkText: {
     color: '#622CFD',

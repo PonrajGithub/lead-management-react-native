@@ -18,6 +18,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const VerifyOtpScreen = () => {
   const navigation:any = useNavigation();
+  const [userName, setUserName] = useState('');
   const [mobile_number, setMobile] = useState('');
   const [otp, setOtp] = useState('');
   const [step, setStep] = useState(1);
@@ -86,27 +87,78 @@ const VerifyOtpScreen = () => {
       const response = await axios.post(
         'https://loanguru.in/loan_guru_app/api/loginWithOtp',
         formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
+        { headers: { 'Content-Type': 'multipart/form-data' } }
+      );
+  
+      console.log('Verify OTP Response:', JSON.stringify(response.data, null, 2)); // Debugging API response
+  
+      if (response?.data?.status === 'success' && response?.data?.data) {
+        const { token, user_id, name } = response.data.data; // Adjust based on actual response
+        console.log('Extracted User Data:', { user_id, name });
+  
+        if (!token || !name) {
+          throw new Error("Missing required user data (token or name).");
+        }
+  
+        // Store user details securely
+        await AsyncStorage.setItem('@storage_user_token', token);
+        await AsyncStorage.setItem('@storage_user_data', JSON.stringify({ user_id, name }));
+        await AsyncStorage.setItem('isLoggedIn', 'true');
+  
+        if (name === "New User") {
+          console.log("Navigating to Step 3 for name update");
+          setStep(3); // Ask for name update
+        } else {
+          ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
+          navigation.navigate('DashboardScreen');
+        }
+      } else {
+        ToastAndroid.show('Invalid OTP or user data missing.', ToastAndroid.SHORT);
+      }
+    } catch (error) {
+      // console.error('OTP Verification Error:', error?.response?.data || error.message);
+      ToastAndroid.show('An error occurred. Please try again.', ToastAndroid.SHORT);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  
+  
+  const updateUserName = async () => {
+    if (!userName.trim()) {
+      ToastAndroid.show('Name cannot be empty', ToastAndroid.SHORT);
+      return;
+    }
+  
+    setLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('@storage_user_token');
+      if (!token) {
+        ToastAndroid.show('User authentication failed.', ToastAndroid.SHORT);
+        setLoading(false); // Stop loading if no token
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append("name", userName);
+  
+      const response = await axios.post(
+        "https://loanguru.in/loan_guru_app/api/updatename",
+        formData,
+        { 
+          headers: { 
+            "Authorization": `Bearer ${token}`, 
+            "Content-Type": "multipart/form-data" 
+          } 
         }
       );
   
-      // Check if the response status is success
-      if (response?.data?.status === 'success') {
-        const { token } = response.data.data;
-        console.log(token);
-        // Store token and user data in AsyncStorage
-        await AsyncStorage.setItem('@storage_user_token', token);
-        await AsyncStorage.setItem('@storage_user_data', JSON.stringify(response.data.data));
-        await AsyncStorage.setItem('isLoggedIn', 'true');
-  
-        setIsLoggedIn(true);
-        ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
-        navigation.navigate('DashboardScreen'); // Navigate to dashboard
+      if (response.data.status === "success") {
+        ToastAndroid.show('Name updated successfully!', ToastAndroid.SHORT);
+        navigation.replace('DashboardScreen'); // Ensure navigation is correct
       } else {
-        ToastAndroid.show(response?.data?.message || 'Failed to verify OTP', ToastAndroid.SHORT);
+        ToastAndroid.show(response.data.message || 'Failed to update name.', ToastAndroid.SHORT);
       }
     } catch (error) {
       ToastAndroid.show('An error occurred. Please try again.', ToastAndroid.SHORT);
@@ -115,7 +167,12 @@ const VerifyOtpScreen = () => {
     }
   };
   
-  
+
+const redirectToMobileVerify = () =>{
+  navigation.navigate('LoginScreen');
+}; 
+
+
   return (
     <ImageBackground
       source={require('../assets/images/index.jpg')}
@@ -125,7 +182,7 @@ const VerifyOtpScreen = () => {
       <View>
         <View style={styles.row}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('LoginScreen')}
+            onPress={() => navigation.navigate('WelcomeScreen')}
           >
             <Icon name="chevron-left" size={30} color="#FFF" />
           </TouchableOpacity>
@@ -146,9 +203,16 @@ const VerifyOtpScreen = () => {
                 setMobileError(false);
               }}
             />
+           
             <TouchableOpacity style={styles.button} onPress={sendOtp} disabled={loading}>
               <Text style={styles.buttonText}>{loading ? 'Sending...' : 'Send OTP'}</Text>
             </TouchableOpacity>
+
+            <View style={styles.inlineContainer}>
+             <TouchableOpacity onPress={redirectToMobileVerify}>
+                          <Text style={styles.linkText}>Login with User Name</Text>
+                        </TouchableOpacity>
+            </View>
           </View>
         </ScrollView>
       )}
@@ -166,6 +230,22 @@ const VerifyOtpScreen = () => {
             />
             <TouchableOpacity style={styles.button} onPress={verifyOtp} disabled={loading}>
               <Text style={styles.buttonText}>{loading ? 'Verifying...' : 'Verify OTP'}</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      )}
+      {step === 3 && (
+        <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+          <View style={styles.stepContainer}>
+            <Text style={styles.label}>Enter Your Name</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your name"
+              value={userName}
+              onChangeText={setUserName}
+            />
+            <TouchableOpacity style={styles.button} onPress={updateUserName} disabled={loading}>
+              <Text style={styles.buttonText}>{loading ? 'Updating...' : 'Continue'}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -231,6 +311,21 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
+  inlineContainer: {
+    flexDirection: 'row',
+    justifyContent:'flex-end',     
+    margin: 10,
+    // alignItems:'flex-end',
+  },
+  linkText: {
+    color: '#622CFD',
+    marginTop: 20,
+    textAlign: 'right',
+    fontFamily: 'Lato',
+    fontSize: 16,
+    lineHeight: 19.2,
+    textDecorationLine: 'underline', 
+  },
   passwordContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -254,7 +349,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: 'center',
-    marginTop:'10%',
+    marginTop:'5%',
   },
   buttonText: {
     color: '#fff',

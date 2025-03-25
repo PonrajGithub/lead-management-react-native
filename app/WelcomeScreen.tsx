@@ -58,7 +58,7 @@ const WelcomeScreen = ({ }: any) => {
             style={[styles.createAccountButton]}
             onPressIn={() => setIsHoveredCreate(true)}
             onPressOut={() => setIsHoveredCreate(false)}
-            onPress={() => navigation.navigate('LoginScreen')}
+            onPress={() => navigation.navigate('VerifyOtpScreen')}
           >
             <Text style={[styles.createAccountText]}>Get Started</Text>
           </TouchableOpacity>
