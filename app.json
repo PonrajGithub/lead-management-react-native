@@ -2,7 +2,7 @@
   "expo": {
     "name": "Loanguru",
     "slug": "Loanguru",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/splash.png",
     "scheme": "myapp",
@@ -17,11 +17,12 @@
     },
   
     "android": {
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/loanGuru_logo.jpg",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.ponraj.Loanguru",
+      "package": "com.Loanguru",
       "permissions": [
         "INTERNET"
       ]
@@ -33,7 +34,16 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "enableProguardInReleaseBuilds": true,
+            "proguardRules": "./proguard-rules.pro"
+          }
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
