@@ -49,9 +49,9 @@ const WelcomeScreen = ({ }: any) => {
           <Text style={styles.title}>
             Your Trusted{"\n"}Partner For All{"\n"}Loan Needs
           </Text>
-          <Text style={styles.description}>
-            A convenient app to explore {"\n"}and apply for loan options {"\n"}from trusted providers
-          </Text>
+          {/* <Text style={styles.description}>
+            Loan process made simple
+          </Text> */}
         </View>
         <View style={styles.footer}>
           <TouchableOpacity

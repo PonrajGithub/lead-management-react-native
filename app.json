@@ -2,7 +2,7 @@
   "expo": {
     "name": "Loanguru",
     "slug": "Loanguru",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/splash.png",
     "scheme": "myapp",
@@ -17,7 +17,7 @@
     },
   
     "android": {
-      "versionCode": 2,
+      "versionCode": 4,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/loanGuru_logo.jpg",
         "backgroundColor": "#ffffff"
