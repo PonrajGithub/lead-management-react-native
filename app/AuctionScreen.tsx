@@ -5,7 +5,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableOpacity,
-  ScrollView,
   ToastAndroid,
   ImageBackground,
 } from 'react-native';
@@ -202,7 +201,7 @@ const AuctionScreen = () => {
     <Text style={styles.subHeader}>
       75453 BANK AUCTION PROPERTIES IN INDIA
     </Text>
-    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+    {/* <ScrollView contentContainerStyle={styles.scrollViewContent}> */}
     <View style={styles.stepContainer}>
       {/* Dropdown Filters */}
       <View style={styles.filterContainer}>
@@ -256,7 +255,7 @@ const AuctionScreen = () => {
         }
       />
     </View>
-    </ScrollView>
+    {/* </ScrollView> */}
     <Footer/>
     </ImageBackground>
   );
@@ -363,10 +362,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Lato',
     marginVertical: 5,
     fontWeight: '600',
-  },
-   scrollViewContent: {
-    flexGrow: 1,
-    // paddingBottom: 20,
   },
   list: {
     paddingBottom: 20,

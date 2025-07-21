@@ -34,11 +34,12 @@ const VerifyOtpScreen = () => {
   }
 
   const sendOtp = async () => {
-    if (!mobile_number) {
-      setMobileError(true);
-      ToastAndroid.show('Please enter a valid mobile number', ToastAndroid.SHORT);
-      return;
-    }
+    if (!mobile_number || mobile_number.length !== 10) {
+  setMobileError(true);
+  ToastAndroid.show('Please enter a valid 10-digit Indian mobile number', ToastAndroid.SHORT);
+  return;
+}
+
   
     setLoading(true);
     try {
@@ -66,7 +67,7 @@ const VerifyOtpScreen = () => {
         ToastAndroid.show(response?.data?.message || 'Failed to send OTP', ToastAndroid.SHORT);
       }
     } catch (error) {
-      ToastAndroid.show('An error occurred. Please try again.', ToastAndroid.SHORT);
+      ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -110,14 +111,17 @@ const VerifyOtpScreen = () => {
           setStep(3); // Ask for name update
         } else {
           ToastAndroid.show('OTP verified successfully', ToastAndroid.SHORT);
-          navigation.navigate('DashboardScreen');
+           navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardScreen' }],
+          });
         }
       } else {
         ToastAndroid.show('Invalid OTP or user data missing.', ToastAndroid.SHORT);
       }
     } catch (error) {
       // console.error('OTP Verification Error:', error?.response?.data || error.message);
-      ToastAndroid.show('An error occurred. Please try again.', ToastAndroid.SHORT);
+      ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -127,7 +131,7 @@ const VerifyOtpScreen = () => {
   
   const updateUserName = async () => {
     if (!userName.trim()) {
-      ToastAndroid.show('Name cannot be empty', ToastAndroid.SHORT);
+      ToastAndroid.show("Name can't be empty", ToastAndroid.SHORT);
       return;
     }
   
@@ -156,12 +160,15 @@ const VerifyOtpScreen = () => {
   
       if (response.data.status === "success") {
         ToastAndroid.show('Name updated successfully!', ToastAndroid.SHORT);
-        navigation.replace('DashboardScreen'); // Ensure navigation is correct
+         navigation.reset({
+            index: 0,
+            routes: [{ name: 'DashboardScreen' }],
+          }); // Ensure navigation is correct
       } else {
         ToastAndroid.show(response.data.message || 'Failed to update name.', ToastAndroid.SHORT);
       }
     } catch (error) {
-      ToastAndroid.show('An error occurred. Please try again.', ToastAndroid.SHORT);
+      ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
@@ -193,17 +200,22 @@ const redirectToMobileVerify = () =>{
         <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
           <View style={styles.stepContainer}>
             <Text style={styles.label}>Enter your Mobile Number</Text>
+            <View style={styles.inputRow}>
+            <Text style={styles.prefix}>+91</Text>
             <TextInput
-              style={[styles.input, mobile_numberError && styles.inputError]}
-              placeholder="Mobile number"
+              style={[styles.inputOne, mobile_numberError && styles.inputError, { flex: 1, borderLeftWidth: 0 }]}
+              placeholder="Enter mobile number"
               value={mobile_number}
-              keyboardType="phone-pad"
+              keyboardType="number-pad"
+              maxLength={10}
               onChangeText={(text) => {
-                setMobile(text);
+                const filteredText = text.replace(/[^0-9]/g, '');
+                setMobile(filteredText);
                 setMobileError(false);
               }}
             />
-           
+          </View>
+
             <TouchableOpacity style={styles.button} onPress={sendOtp} disabled={loading}>
               <Text style={styles.buttonText}>{loading ? 'Sending...' : 'Send OTP'}</Text>
             </TouchableOpacity>
@@ -311,6 +323,34 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
   },
+  inputOne:{
+    color: '#1E1E1E',
+    borderRadius: 8,
+    fontFamily: 'Lato',
+    fontSize: 20,
+    fontWeight: '600',
+    lineHeight: 28.8,
+    padding: 10,
+    // marginBottom: 20,
+
+  },
+  inputRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  borderWidth: 1,
+  borderColor: '#000',
+  borderRadius: 8,
+  marginBottom: 20,
+  paddingHorizontal: 10,
+},
+prefix: {
+  fontSize: 20,
+  fontWeight: '600',
+  fontFamily: 'Lato',
+  marginRight: 8,
+  color: '#1E1E1E',
+},
+
   inlineContainer: {
     flexDirection: 'row',
     justifyContent:'flex-end',     

@@ -165,7 +165,7 @@ const MultiStepForm = ({ }: any) => {
       }
     } catch (error) {
       console.error(error);
-      ToastAndroid.show('Server error please try again later', ToastAndroid.SHORT);
+      ToastAndroid.show('Something went wrong. Please try again later', ToastAndroid.SHORT);
     } finally {
       setLoading(false);
     }
