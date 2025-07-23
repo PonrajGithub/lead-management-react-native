@@ -167,7 +167,7 @@ const ForgotPasswordScreen = () => {
               keyboardType="email-address"
             />
             <TouchableOpacity style={styles.button} onPress={requestOtp} disabled={loading}>
-              <Text style={styles.buttonText}>{loading ? 'Sending...' : 'Send OPT'}</Text>
+              <Text style={styles.buttonText}>{loading ? 'Sending...' : 'Sent OTP'}</Text>
             </TouchableOpacity>
           </View>
           </ScrollView>

@@ -68,71 +68,147 @@ const MultiStepForm = ({ }: any) => {
   const [date, setDate] = useState(new Date());
   const isIOS = Platform.OS === 'ios';
   const isAndroid = Platform.OS === 'android';
+  const showToast = (message: string) => {
+  ToastAndroid.show(message, ToastAndroid.LONG);
+};
 
   // Validation function
-  const validateStep = () => {
-    const newErrors: { [key: string]: string } = {};
-    switch (step) {
-      case 2:
-        if (!formData.name.trim()) newErrors.name = 'Name is required.';
-        break;
-      case 3: // Validate DOB
-        if (!formData.dob) newErrors.dob = 'Date of birth is required.';
-        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email = 'Valid email is required.';
-        }
-        break;
-      case 4:
-        if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
-          newErrors.mobile_number = 'Valid mobile number is required.';
-        }
-        if (!formData.otp.trim()) newErrors.otp = 'otp is required.';
 
-        break;
-      case 5: // Validate institution and occupation
-         if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
-        if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.';
-        if (!formData.student_name.trim()) newErrors.student_name = 'Student name is required.';
-        if (!formData.roll_number.trim()) newErrors.roll_number = 'roll number is required.';
-        if (!formData.course_class.trim()) newErrors.course_class = 'course class is required.';
-        break;
-      case 6: // Validate company and designation
-        if (!formData.company_name.trim()) newErrors.company_name = 'company name is required.';
-        if (!formData.designation.trim()) newErrors.designation = 'designation is required.';
-        break;
-      case 7: // Validate password
-        if (!formData.password.trim()) newErrors.password = 'Password is required.';
-        break;
-      case 8: // Validate terms and conditions
-        if (!formData.name.trim()) newErrors.name = 'Name is required.';
-        if (!formData.dob) newErrors.dob = 'Date of birth is required.';
-        if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
-          newErrors.mobile_number = 'Valid mobile number is required.';
-        }
-        if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
-          newErrors.email = 'Valid email is required.';
-        }
-        if ( formData?.user_type == 'Institute') {
-          if (!formData.institution_name.trim()) newErrors.institution_name = 'Institution name is required.';
-          if (!formData.occupation.trim()) newErrors.occupation = 'Occupation is required.'; 
-          if (!formData.student_name.trim()) newErrors.student_name = 'Student name is required.';
-          if (!formData.roll_number.trim()) newErrors.roll_number = 'roll number is required.';
-          if (!formData.course_class.trim()) newErrors.course_class = 'course class is required.'; 
-        }
-        else {
-          if ( formData?.user_type !== 'Institute') {
-            if (!formData.company_name.trim()) newErrors.company_name = 'company name is required.';
-            if (!formData.designation.trim()) newErrors.designation = 'designation is required.';
-          }}
-        if (!formData.agreedToTerms) {
-          newErrors.agreedToTerms = 'You must agree to the Terms and Conditions.';
-        }
-        break;
-    }
+const validateStep = () => {
+  const newErrors: { [key: string]: string } = {};
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  switch (step) {
+    case 2:
+      if (!formData.name.trim()) {
+        newErrors.name = 'Name is required.';
+        showToast(newErrors.name);
+      }
+      break;
+
+    case 3:
+      if (!formData.dob) {
+        newErrors.dob = 'Date of birth is required.';
+        showToast(newErrors.dob);
+      }
+      if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = 'Valid email is required.';
+        showToast(newErrors.email);
+      }
+      break;
+
+    case 4:
+      if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
+        newErrors.mobile_number = 'Valid mobile number is required.';
+        showToast(newErrors.mobile_number);
+      }
+      if (!formData.otp.trim()) {
+        newErrors.otp = 'OTP is required.';
+        showToast(newErrors.otp);
+      }
+      break;
+
+    case 5:
+      if (!formData.institution_name.trim()) {
+        newErrors.institution_name = 'Institution name is required.';
+        showToast(newErrors.institution_name);
+      }
+      if (!formData.occupation.trim()) {
+        newErrors.occupation = 'Occupation is required.';
+        showToast(newErrors.occupation);
+      }
+      if (!formData.student_name.trim()) {
+        newErrors.student_name = 'Student name is required.';
+        showToast(newErrors.student_name);
+      }
+      if (!formData.roll_number.trim()) {
+        newErrors.roll_number = 'Roll number is required.';
+        showToast(newErrors.roll_number);
+      }
+      if (!formData.course_class.trim()) {
+        newErrors.course_class = 'Course/class is required.';
+        showToast(newErrors.course_class);
+      }
+      break;
+
+    case 6:
+      if (!formData.company_name.trim()) {
+        newErrors.company_name = 'Company name is required.';
+        showToast(newErrors.company_name);
+      }
+      if (!formData.designation.trim()) {
+        newErrors.designation = 'Designation is required.';
+        showToast(newErrors.designation);
+      }
+      break;
+
+    case 7:
+      if (!formData.password.trim()) {
+        newErrors.password = 'Password is required.';
+        showToast(newErrors.password);
+      }
+      break;
+
+    case 8:
+      if (!formData.name.trim()) {
+        newErrors.name = 'Name is required.';
+        showToast(newErrors.name);
+      }
+      if (!formData.dob) {
+        newErrors.dob = 'Date of birth is required.';
+        showToast(newErrors.dob);
+      }
+      if (!formData.mobile_number.trim() || !/^\d{10}$/.test(formData.mobile_number)) {
+        newErrors.mobile_number = 'Valid mobile number is required.';
+        showToast(newErrors.mobile_number);
+      }
+      if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+        newErrors.email = 'Valid email is required.';
+        showToast(newErrors.email);
+      }
+
+      if (formData?.user_type === 'Institute') {
+        if (!formData.institution_name.trim()) {
+          newErrors.institution_name = 'Institution name is required.';
+          showToast(newErrors.institution_name);
+        }
+        if (!formData.occupation.trim()) {
+          newErrors.occupation = 'Occupation is required.';
+          showToast(newErrors.occupation);
+        }
+        if (!formData.student_name.trim()) {
+          newErrors.student_name = 'Student name is required.';
+          showToast(newErrors.student_name);
+        }
+        if (!formData.roll_number.trim()) {
+          newErrors.roll_number = 'Roll number is required.';
+          showToast(newErrors.roll_number);
+        }
+        if (!formData.course_class.trim()) {
+          newErrors.course_class = 'Course/class is required.';
+          showToast(newErrors.course_class);
+        }
+      } else {
+        if (!formData.company_name.trim()) {
+          newErrors.company_name = 'Company name is required.';
+          showToast(newErrors.company_name);
+        }
+        if (!formData.designation.trim()) {
+          newErrors.designation = 'Designation is required.';
+          showToast(newErrors.designation);
+        }
+      }
+
+      if (!formData.agreedToTerms) {
+        newErrors.agreedToTerms = 'You must agree to the Terms and Conditions.';
+        showToast(newErrors.agreedToTerms);
+      }
+      break;
+  }
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
+
 
   // Submit function
   const handleSubmit = async () => {
@@ -244,50 +320,52 @@ const MultiStepForm = ({ }: any) => {
   }, [timer]);
 
   const sendOtp = async () => {
-    const { mobile_number } = formData;
-  
-    if (!mobile_number) {
-      // Handle the case where mobile number is not entered
-      ToastAndroid.show('Please enter your mobile number', ToastAndroid.SHORT);
-      return;
-    }
-  
-    setLoading(true);
-  
-    try {
-      const formData = new FormData();
-      formData.append('phone', mobile_number);
-  
-      const response = await axios.post(
-        'https://loanguru.in/loan_guru_app/api/smsotp', // The API endpoint for sending OTP via phone
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-      
-      // console.log(response?.data?.data?.code); // If OTP code is in the response
-  
-      if (response.data) {
-        // const receivedOtp = response?.data?.data?.code; // Assuming the OTP is returned here
-        // setReceivedOtp(receivedOtp);
-        ToastAndroid.show(response.data.message || 'OTP sent', ToastAndroid.SHORT);
-        setSendOtp(true);
-        setOtpSent(true);
-        setTimer(30);
-      } else {
-        ToastAndroid.show(response.data.message || 'Failed to send OTP', ToastAndroid.SHORT);
-        // setSendOtp(true);
+  const { mobile_number } = formData;
+  const trimmedMobile = mobile_number.trim();
+
+  const isValidIndianMobile = /^[6-9]\d{9}$/.test(trimmedMobile);
+  const isRepeatedDigits = /^(\d)\1{9}$/.test(trimmedMobile); // Matches repeated digit 10 times
+
+  if (!trimmedMobile || !isValidIndianMobile || isRepeatedDigits) {
+    ToastAndroid.show('Please enter a valid Indian mobile number', ToastAndroid.SHORT);
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+    formData.append('phone', trimmedMobile);
+
+    const response = await axios.post(
+      'https://loanguru.in/loan_guru_app/api/smsotp',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }
-    } catch (error) {
-      console.error(error);
-      ToastAndroid.show('This mobile number is already associated with another user.', ToastAndroid.SHORT);
-    } finally {
-      setLoading(false);
+    );
+
+    if (response.data) {
+      ToastAndroid.show(response.data.message || 'OTP sent', ToastAndroid.SHORT);
+      setSendOtp(true);
+      setOtpSent(true);
+      setTimer(30); // Start resend timer
+    } else {
+      ToastAndroid.show(response.data.message || 'Failed to send OTP', ToastAndroid.SHORT);
     }
-  };
+  } catch (error) {
+    console.error(error);
+    ToastAndroid.show(
+      'This mobile number is already associated with another user.',
+      ToastAndroid.SHORT
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
   
   // const [showNavigationButtons, setShowNavigationButtons] = useState(false);
 

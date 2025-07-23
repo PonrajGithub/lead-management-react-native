@@ -33,45 +33,44 @@ const VerifyOtpScreen = () => {
     return null;
   }
 
-  const sendOtp = async () => {
-    if (!mobile_number || mobile_number.length !== 10) {
-  setMobileError(true);
-  ToastAndroid.show('Please enter a valid 10-digit Indian mobile number', ToastAndroid.SHORT);
-  return;
-}
+      const sendOtp = async () => {
+  // Simple regex to validate real Indian mobile numbers (starts with 6,7,8,9 and 10 digits)
+  const isValidIndianMobile = /^[6-9]\d{9}$/.test(mobile_number);
 
-  
-    setLoading(true);
-    try {
-      const formData = new FormData();
-      formData.append('phone', mobile_number);
-  
-      const response = await axios.post(
-        'https://loanguru.in/loan_guru_app/api/smsloginotp',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-  
-      // Updated condition to check if the message is "OTP sent successfully."
-      if (response?.data?.message === "OTP sent successfully.") {
-        ToastAndroid.show('OTP sent successfully', ToastAndroid.SHORT);
-        console.log('Response Data:', response.data);
-        console.log('Current Step Before:', step);
-        setStep(2);
-        console.log('Current Step After:', step);
-      } else {
-        ToastAndroid.show(response?.data?.message || 'Failed to send OTP', ToastAndroid.SHORT);
+  if (!mobile_number || !isValidIndianMobile || /^(\d)\1+$/.test(mobile_number)) {
+    setMobileError(true);
+    ToastAndroid.show('Please enter a valid Indian mobile number', ToastAndroid.SHORT);
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const formData = new FormData();
+    formData.append('phone', mobile_number);
+
+    const response = await axios.post(
+      'https://loanguru.in/loan_guru_app/api/smsloginotp',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       }
-    } catch (error) {
-      ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
-    } finally {
-      setLoading(false);
+    );
+
+    if (response?.data?.message === "OTP sent successfully.") {
+      ToastAndroid.show('OTP sent successfully', ToastAndroid.SHORT);
+      setStep(2);
+    } else {
+      ToastAndroid.show(response?.data?.message || 'Failed to send OTP', ToastAndroid.SHORT);
     }
-  };
+  } catch (error) {
+    ToastAndroid.show('Something went wrong. Please try again.', ToastAndroid.SHORT);
+  } finally {
+    setLoading(false);
+  }
+};
+
   
   const verifyOtp = async () => {
     if (!otp) {
